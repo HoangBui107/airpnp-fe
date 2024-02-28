@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Header from "../layout/header/Header";
-import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import ListingItem from "../components/listingitem/ListingItem";
 import LoginModal from "../components/modals/LoginModal";
 
