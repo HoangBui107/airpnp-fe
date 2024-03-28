@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { closeLogin, openLogin } from "../../redux/modal/modalSlice";
+import { closeLogin, openRegister } from "../../redux/modal/modalSlice";
 import Modal from "./Modal";
 import { useState } from "react";
 import Heading from "../Heading";

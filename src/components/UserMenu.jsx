@@ -1,19 +1,32 @@
 import { useNavigate } from "react-router-dom";
 import MenuItem from "./MenuItem";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { openLogin, openRegister } from "../redux/modal/modalSlice";
 import { AiOutlineMenu } from "react-icons/ai";
 import Avatar from "./Avatar";
 import { useDispatch } from "react-redux";
 
 const UserMenu = ({currentUser}) =>{
-
+  const dropdownRef = useRef(null);
     const navigate = useNavigate()
     const dispatch =useDispatch();
 
    
     const [isOpen, setIsOpen] = useState(false);
+
+    useEffect(() => {
+      const handleClickOutside = (event) => {
+        if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+          setIsOpen(false);
+        }
+      };
   
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }, []);
+
     const toggleOpen = useCallback(() => {
       setIsOpen((value) => !value);
     }, []);
@@ -68,6 +81,7 @@ const UserMenu = ({currentUser}) =>{
       </div>
       {isOpen && (
         <div 
+        ref={dropdownRef}
           className="
             absolute 
             rounded-xl 

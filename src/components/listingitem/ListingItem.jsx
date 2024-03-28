@@ -1,11 +1,20 @@
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
 
 const ListingItem = ({data, isFavorite, btn}) => {
+    const navigate = useNavigate()
+    const navigateDetails = () =>{
+        // console.log(data.id)
+        navigate('/details')
+    }
     return (
         <>
             <div className="col-span-1 cursor-pointer group">
                 <div className="flex flex-col gap-0 w-full">
-                    <div className="aspect-square w-full relative overflow-hidden rounded-xl bg-black">
+                    <div 
+                    className="aspect-square w-full relative overflow-hidden rounded-xl bg-black"
+                    onClick={()=>{navigateDetails()}}
+                    >
                         <img
                             className="object-cover h-full w-full group-hover:scale-110 transition"
                             src={data?.url}

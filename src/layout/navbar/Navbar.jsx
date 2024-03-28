@@ -3,8 +3,10 @@ import { FaAirbnb } from "react-icons/fa6";
 import { IoPersonCircleSharp } from "react-icons/io5";
 import { IoMdMenu } from "react-icons/io";
 import UserMenu from "../../components/UserMenu";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () =>{
+    const navigate = useNavigate()
     const [type, setType] = useState('current')
     const handleChangeType = (currentType)=>{
         setType(currentType)
@@ -12,8 +14,11 @@ const Navbar = () =>{
 
     return(
         <>
-        <div className="h-20 flex items-center pl-6">
-            <FaAirbnb className="font-semibold transform rotate-180" color="#F5385D" size={40}/>
+        <div 
+        className="h-20 flex items-center sm:pl-6"
+     
+        >
+            <FaAirbnb className="font-semibold transform rotate-180 cursor-pointer" color="#F5385D" size={40}  onClick={()=>{navigate('/')}}/>
             <h1 className="text-primary text-lg font-semibold font-circular pl-3">Airpnp</h1>
           
 
