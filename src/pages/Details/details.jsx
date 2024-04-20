@@ -1,10 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CiMenuKebab } from "react-icons/ci";
 import { FaStar } from "react-icons/fa6";
 import { IoBedOutline } from "react-icons/io5";
 import { MdOutlineSoupKitchen } from "react-icons/md";
-import Map from "../../components/Map";
+import Map from "../../components/common/Map";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { getRoomById } from "../../redux/room/roomThunks";
+import { Link } from "react-router-dom";
+
 const Details = () => {
+    const dispatch = useDispatch()
+    const { id } = useParams()
+    const { details } = useSelector((state) => state.room)
+    console.log(details)
+    useEffect(() => {
+        dispatch(getRoomById({ id: id }))
+    }, [])
     const img = [
         {
             id: 1,
@@ -24,51 +36,49 @@ const Details = () => {
         },
 
     ]
-
+    // useEffect(())
     const [center, setCenter] = useState({
         lat: 16.042834,
         lng: 108.169094,
         address: "My Hotel",
-      });
+    });
 
-    const data = 
-        {
-            id:1,
-            category:{
-                id:1,
-                name: 'studio'
-            },
-            name: 'Nha long',
-            streets: '91 phuoc ly 1',
-            district:'Son tra',
-            city:'Da nang',
-            country:'Viet Nam',
-            email:'hoangbui23@gmail.com',
-            longitude:'',
-            latitude:'',
-            price:'320',
-            description:'There is a place filled with sunshine & sea breeze near My Khe beach called Astro House, where you can catch the vibe of Santorini in Danang. Nested on 3rd floor, city views appear through the big windows.',
-            feedbacks:[
-                {
-                    userId: '',
-                    hotelId:'',
-                    content:'phong dep vcl',
-                }
-            ],
-            roomImages:[
-                {
-                    id: 1,
-                    url:"",
-                }
-            ]
-        }
-    
+    const data =
+    {
+        id: 1,
+        category: {
+            id: 1,
+            name: 'studio'
+        },
+        name: 'Nha long',
+        streets: '91 phuoc ly 1',
+        district: 'Son tra',
+        city: 'Da nang',
+        country: 'Viet Nam',
+        email: 'hoangbui23@gmail.com',
+        longitude: '',
+        latitude: '',
+        price: '320',
+        description: 'There is a place filled with sunshine & sea breeze near My Khe beach called Astro House, where you can catch the vibe of Santorini in Danang. Nested on 3rd floor, city views appear through the big windows.',
+        feedbacks: [
+            {
+                userId: '',
+                hotelId: '',
+                content: 'phong dep vcl',
+            }
+        ],
+        roomImages: [
+            {
+                id: 1,
+                url: "",
+            }
+        ]
+    }
+
     return (
         <>
             <div className="sm:container mx-auto">
                 <div>
-
-                    <h1 className="font-semibold text-xl">{data?.name}/ {data?.category?.name} </h1>
                     <div className="relative">
                         <div className="grid gap-1 grid-cols-2 overflow-hidden">
                             <div className="aspect-square w-full ">
@@ -92,18 +102,14 @@ const Details = () => {
                                     )
                                 })}
                             </div>
-                            <button className="flex items-center justify-center absolute bottom-3 right-3 py-2 px-4 border border-black rounded-xl bg-white">
-                                <CiMenuKebab size={16} />
-                                More
-                            </button>
                         </div>
                     </div>
 
                     <div className="flex py-5 px-5 sm:px-0 flex-col sm:flex-row ">
                         <div className="flex sm:w-2/3 flex-col">
                             <div className="mb-6">
-                                <h1 className="font-semibold text-xl mb-4">{data?.district} {data?.category?.name} at {data?.country}</h1>
-                                <h2>4 khách2 phòng ngủ 2 giường2 phòng tắm</h2>
+                                <h1 className="font-semibold text-xl mb-4">Euro Villa Hoa Xuan Da Nang</h1>
+                                <h2>Euro Villa Hoa Xuan Da Nang</h2>
                             </div>
                             <div className="py-5 px-2 border border-black rounded-xl grid grid-cols-3">
                                 <div className="flex items-center justify-center border-r border-gray-400">
@@ -135,24 +141,10 @@ const Details = () => {
                             <div className="border border-gray-200 w-full"></div>
                             <div className="py-5">
                                 <h1 className="font-semibold pb-2">Description</h1>
-                                <h6 className="pb-2">{data?.description}</h6>
+                                <h6 className="pb-2">{details?.description}</h6>
                                 <h2 className="underline">More </h2>
                             </div>
-                            <div className="border border-gray-200 w-full"></div>
-                            <div className="py-6">
-                                <h1 className="font-semibold text-2xl">Where's yoy'll slep</h1>
-                                <div className="grid grid-cols-3 gap-2 py-4">
-                                    <div className="flex border border-gray-400 flex-col rounded-lg justify-center">
-                                        <div className="py-6 px-4 ">
-                                            <IoBedOutline size={26} />
-                                            <h1 className="font-medium text-lg">Living area</h1>
-                                            <h2>King bed</h2>
-                                        </div>
-
-                                    </div>
-                                </div>
-
-                            </div>
+                        
                             <div className="border border-gray-200 w-full"></div>
                             <div className="py-6">
                                 <h1 className="py-2 font-semibold text-2xl">What this place offers</h1>
@@ -222,41 +214,26 @@ const Details = () => {
                                 <h1 className="">Where you’ll be</h1>
                                 map
                             </div>
-                           
+
                         </div>
 
                         <div className="flex sm:w-1/3  justify-end ">
-                            <div 
-                            className=
-                            "flex flex-col border border-black py-4 px-4 rounded-lg shadow-2xl sm:max-h-[70vh]  lg:max-h-[60vh] sm:sticky sm:top-20 lg:top-44 object-cover"
+                            <div
+                                className=
+                                "flex flex-col border border-black py-4 px-4 rounded-lg shadow-2xl sm:max-h-[70vh]  lg:max-h-[60vh] sm:sticky sm:top-20 lg:top-44 object-cover"
                             >
                                 <div className="flex flex-row items-center">
                                     <h1 className="font-bold text-2xl">$19</h1>
                                     <h1>/night</h1>
                                 </div>
-                                <div className="py-4">
-                                    <div className="flex flex-row">
-                                        <input
-                                            type="text"
-                                            className="border w-1/2 rounded-tl-md "
-                                        />
-                                        <input
-                                            type="text"
-                                            className="border w-1/2 rounded-tr-md"
-                                        />
-                                    </div>
-                                    <div className="">
-                                        <input type="text" className="border w-full rounded-b-md" />
-                                    </div>
-                                </div>
                                 <span className="py-2">
-                                    <button className="flex py-2 border border-none justify-center items-center w-full rounded-lg bg-primary text-white">
-                                        Booking
-                                    </button>
+                                    <Link to={`/order/${id}`}>
+                                        <button className="flex py-2 border border-none justify-center items-center w-full rounded-lg bg-primary text-white">
+                                            Booking
+                                        </button><i className="fas fa-eye  ms-2"></i>
+                                    </Link>
+
                                 </span>
-                                <div className="flex py-2 justify-center items-center">
-                                    You don't payment
-                                </div>
 
                                 <div className="flex py-2 justify-between">
                                     <h1 className="underline">$72 x 5 đêm Hiển thị chi tiết giá</h1>
@@ -280,28 +257,28 @@ const Details = () => {
                     <div className="border border-gray-200 w-full"></div>
 
                     <div className="py-8 px-5">
-                            <h1 className="text-xl font-semibold py-4">Things to now</h1>
-                            <div className="grid grid-cols-1 sm:grid-cols-3">
-                                <div className="flex flex-col">
-                                    <h1 className="font-semibold text-lg">House rule</h1>
-                                    <h1>Check in</h1>
-                                    <h1>Check out</h1>
-                                    <h1>4 guest maximum</h1>
-                                </div>
-                                <div className="flex flex-col">
-                                    <h1 className="font-semibold text-lg">Safety & property</h1>
-                                    <h1>Nearby lake, river, other body of water</h1>
-                                    <h1>Carbon monoxide alarm</h1>
-                                    <h1>Smoke alarm</h1>
-                                </div>
-                                <div className="flex flex-col">
-                                    <h1 className="font-semibold text-lg">Cancellation policy</h1>
-                                    <h1>This reservation is non-refundable.</h1>
-                                    <h1>Review the Host’s full cancellation policy which applies even if you cancel for illness or disruptions caused by COVID-19.</h1>
+                        <h1 className="text-xl font-semibold py-4">Things to now</h1>
+                        <div className="grid grid-cols-1 sm:grid-cols-3">
+                            <div className="flex flex-col">
+                                <h1 className="font-semibold text-lg">House rule</h1>
+                                <h1>Check in</h1>
+                                <h1>Check out</h1>
+                                <h1>4 guest maximum</h1>
+                            </div>
+                            <div className="flex flex-col">
+                                <h1 className="font-semibold text-lg">Safety & property</h1>
+                                <h1>Nearby lake, river, other body of water</h1>
+                                <h1>Carbon monoxide alarm</h1>
+                                <h1>Smoke alarm</h1>
+                            </div>
+                            <div className="flex flex-col">
+                                <h1 className="font-semibold text-lg">Cancellation policy</h1>
+                                <h1>This reservation is non-refundable.</h1>
+                                <h1>Review the Host’s full cancellation policy which applies even if you cancel for illness or disruptions caused by COVID-19.</h1>
 
-                                </div>
                             </div>
                         </div>
+                    </div>
                 </div>
 
             </div>

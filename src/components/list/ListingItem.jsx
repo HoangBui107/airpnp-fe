@@ -5,11 +5,11 @@ const ListingItem = ({data, isFavorite, btn}) => {
     const navigate = useNavigate()
     const navigateDetails = () =>{
         // console.log(data.id)
-        navigate('/details')
+        navigate(`/details/${data?.id}`)
     }
     return (
         <>
-            <div className="col-span-1 cursor-pointer group">
+            <div className="col-span-1 cursor-pointer group ">
                 <div className="flex flex-col gap-0 w-full">
                     <div 
                     className="aspect-square w-full relative overflow-hidden rounded-xl bg-black"

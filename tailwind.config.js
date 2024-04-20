@@ -9,7 +9,7 @@ module.exports = {
         primary: '#F5385D',
       },
       screens:{
-        'phone': '320px'
+        'p': '320px'
       }
     },
   },

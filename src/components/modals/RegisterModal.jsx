@@ -1,24 +1,28 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../../redux/auth/authThunks";
-import { closeLogin, openRegister } from "../../redux/modal/modalSlice";
+import {  register } from "../../redux/auth/authThunks";
+import {  closeRegister, openLogin } from "../../redux/modal/modalSlice";
 import Heading from "../common/Heading";
 import Modal from "./Modal";
 
-const LoginModal = () =>{
+const RegisterModal = () =>{
     const dispatch = useDispatch()
     const {isLoading} = useSelector((state)  => state.auth)
     const [account, setAccount] = useState({
       email: "",
       password: "",
+      confirmPassword: "",
     });
-    const open = useSelector((state) => state.modal.login)
+    const open = useSelector((state) => state.modal.register)
+
+
     const onClose = () =>{
-        dispatch(closeLogin())
+        dispatch(closeRegister())
     }
     const [errors, setErrors] = useState({
       email: "",
       password: "",
+      confirmPassword: "",
       login: "", 
     });
   
@@ -36,6 +40,13 @@ const LoginModal = () =>{
       });
       setErrors((prev) => ({ ...prev, password: "" }));
     };
+
+    const confirmPassword = (e) => {
+        setAccount((prev) => {
+          return { ...prev, confirmPassword: e.target.value };
+        });
+        setErrors((prev) => ({ ...prev, password: "" }));
+      };
   
     const validateInputs = () => {
       let isValid = true;
@@ -53,6 +64,15 @@ const LoginModal = () =>{
         newErrors.password = "Please enter your password.";
         isValid = false;
       }
+
+      if (!account.confirmPassword.trim()) {
+        newErrors.confirmPassword = "Please confirm your password.";
+        isValid = false;
+      } else if (account.password.trim() !== account.confirmPassword.trim()) {
+        newErrors.confirmPassword = "Passwords do not match.";
+        isValid = false;
+      }
+    
   
       setErrors((prev) => ({ ...prev, ...newErrors }));
   
@@ -62,7 +82,7 @@ const LoginModal = () =>{
     const onSubmit = async () => {
       if (validateInputs()) {
         try {
-          await dispatch(login(account)).unwrap();
+          await dispatch(register({email: account.email, password:account.password})).unwrap();
           onClose();
         } catch (error) {
           setErrors((prev) => ({ ...prev, login: "Email or password is incorrect." }));
@@ -71,8 +91,8 @@ const LoginModal = () =>{
     };
   
     const openRegisterHandler = () => {
-      dispatch(closeLogin())
-      dispatch(openRegister())
+      dispatch(closeRegister())
+      dispatch(openLogin())
     }
   
     const bodyContent = (
@@ -96,6 +116,15 @@ const LoginModal = () =>{
             onChange={handlePassword}
           />
           {errors.password && <p className="text-red-500">{errors.password}</p>}
+          <input
+            className="w-full text-center mx-0 my-2.5 px-0 py-[7px] border rounded-[10px] border-[solid] border-[black]"
+            name="password"
+            placeholder="Password"
+            type="password"
+            value={account.confirmPassword}
+            onChange={confirmPassword}
+          />
+          {errors.confirmPassword && <p className="text-red-500">{errors.confirmPassword}</p>}
         </div>
       );
     
@@ -133,8 +162,8 @@ const LoginModal = () =>{
         <Modal
           disabled={isLoading}
           isOpen={open}
-          title="Login"
-          actionLabel="Log In"
+          title="Register"
+          actionLabel="Sign In"
           onClose={onClose}
           onSubmit={onSubmit}
           body={bodyContent}
@@ -143,4 +172,4 @@ const LoginModal = () =>{
       );
     };
 
-export default LoginModal;
+export default RegisterModal;

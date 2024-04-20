@@ -1,17 +1,19 @@
 import { useNavigate } from "react-router-dom";
-import MenuItem from "./MenuItem";
+import MenuItem from "../common/MenuItem";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { openLogin, openRegister } from "../redux/modal/modalSlice";
+import { openLogin, openRegister } from "../../redux/modal/modalSlice";
 import { AiOutlineMenu } from "react-icons/ai";
 import Avatar from "./Avatar";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import LoginModal from "../modals/LoginModal";
+import RegisterModal from "../modals/RegisterModal";
 
 const UserMenu = ({currentUser}) =>{
   const dropdownRef = useRef(null);
     const navigate = useNavigate()
     const dispatch =useDispatch();
-
-   
+    const {isLogin} = useSelector((state) => state.auth)
+    console.log(isLogin)
     const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
@@ -33,11 +35,14 @@ const UserMenu = ({currentUser}) =>{
   
     const loginModal = () => {
         dispatch(openLogin())
-      };
+    };
+    const registerModal = () => {
+      dispatch(openRegister())
+  };
 
     return(
         <div className="relative">
-      <div className="flex flex-row items-center gap-3">
+      <div className="flex flex-row items-center gap-2">
         <div 
         //   onClick={onRent}
           className="
@@ -75,7 +80,7 @@ const UserMenu = ({currentUser}) =>{
         >
           <AiOutlineMenu />
           <div className="hidden md:block">
-            <Avatar src={currentUser?.image} />
+            <Avatar src={currentUser?.image || 'https://www.w3schools.com/howto/img_avatar.png'} />
           </div>
         </div>
       </div>
@@ -96,23 +101,23 @@ const UserMenu = ({currentUser}) =>{
           "
         >
           <div className="flex flex-col cursor-pointer">
-            {currentUser ? (
+            {isLogin ? (
               <>
                 <MenuItem 
-                  label="My trips" 
-                  onClick={() => navigate.push('/trips')}
+                  label="My Orders" 
+                  onClick={() => navigate('/orders')}
                 />
                 <MenuItem 
                   label="My favorites" 
-                  onClick={() => navigate.push('/favorites')}
+                  onClick={() => navigate('/favorites')}
                 />
                 <MenuItem 
                   label="My reservations" 
-                  onClick={() => navigate.push('/reservations')}
+                  onClick={() => navigate('/reservations')}
                 />
                 <MenuItem 
-                  label="My properties" 
-                  onClick={() => navigate.push('/properties')}
+                  label="My Account" 
+                  onClick={() => navigate('/account-setting')}
                 />
                 <MenuItem 
                   label="Airbnb your home" 
@@ -130,10 +135,12 @@ const UserMenu = ({currentUser}) =>{
                   label="Login" 
                   onClick={()=>{loginModal()}}
                 />
+                <LoginModal/>
                 <MenuItem 
                   label="Sign up" 
-                  onClick={openRegister()}
+                  onClick={()=>{registerModal()}}
                 />
+                <RegisterModal/>
               </>
             )}
           </div>

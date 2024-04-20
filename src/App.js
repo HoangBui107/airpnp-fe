@@ -1,15 +1,22 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useParams } from 'react-router-dom';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Navbar from './layout/navbar/Navbar';
-import Details from './pages/Details/details';
-import ListPage from './pages/list/ListPage';
-import { useEffect, useState } from 'react';
+import Details from './pages/Details/Details';
+import ListPage from './pages/List/ListPage';
+import { Suspense, useEffect, useState } from 'react';
 import BottomNavigation from './layout/bottom/BottomNavigation';
-import AccountSetting from './pages/account-setting/AccountSetting';
-import PersonalInfo from './pages/account-setting/PersonalInfo';
+import AccountSetting from './pages/Setting/AccountSetting';
+import PersonalInfo from './pages/Setting/PersonalInfo';
+import HomeAdmin from './pages/HomeAdmin/HomeAdmin';
+import OwnerPage from './pages/HomeOwner/OwnerPage';
+import DetailsOrder from './pages/Orders/DetailsOrder';
+import ListOrder from './pages/Orders/ListOrder';
+import CreateRoom from './pages/Room/CreateRoom';
+import './App.css';
 
 function App() {
+  const currentPath = window.location.pathname.split('/');
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   useEffect(() => {
     function handleResize() {
@@ -21,27 +28,39 @@ function App() {
   }, [])
   return (
     <>
-      <div>
-        <Navbar />
+      <div className='h-20 relative '>
+  
+          <div className='fixed top-0 w-full z-50'>
+            {currentPath[1] === "admin" ? "" : <Navbar />}
+          </div>
+
       </div>
-      <div className="App">
+      <div className="">
+        <Suspense fallback={<div>Loading...</div>}>
         <Routes>
           <Route path='/' element={<Home />} />
+          <Route path='/owner' element={<OwnerPage />} />
           <Route path='/login' element={<Login />} />
-          <Route path='/details' element={<Details />} />
+          <Route path='/details/:id' element={<Details />} />
           <Route path='/list' element={<ListPage />} />
+          <Route path='/createRoom' element={<CreateRoom />} />
+          <Route path='/order/:id' element={<DetailsOrder />} />
+          <Route path='/orders' element={<ListOrder />} />
           <Route path='account-setting' >
-              <Route path='' element={<AccountSetting />} />
-              <Route path='personal-info' element={<PersonalInfo/>}/>
-              
-          </Route>
-          
+            <Route path='' element={<AccountSetting />} />
+            <Route path='personal-info' element={<PersonalInfo />} />
 
+          </Route>
+          <Route path='admin' element={<HomeAdmin />} >
+            {/* <Route path='personal-info' element={<PersonalInfo/>}/> */}
+
+          </Route>
         </Routes>
+        </Suspense>
       </div>
-        {/* <div className={isSmallScreen ? '' : 'hidden'}>
-          <BottomNavigation />
-        </div> */}
+      <div className={isSmallScreen ? '' : 'hidden'}>
+        <BottomNavigation />
+      </div>
     </>
   );
 }

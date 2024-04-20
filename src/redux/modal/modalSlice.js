@@ -16,6 +16,7 @@ const modalSlice = createSlice({
         } ,
         closeLogin: (state, action)=>{
             state.login = false;
+           
         },
         openRegister: (state, action)=>{
             state.register = true;
