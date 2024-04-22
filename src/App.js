@@ -28,13 +28,13 @@ function App() {
   }, [])
   return (
     <>
-      <div className='h-20 relative '>
+      {/* <div className='h-20 relative '>
   
           <div className='fixed top-0 w-full z-50'>
             {currentPath[1] === "admin" ? "" : <Navbar />}
           </div>
 
-      </div>
+      </div> */}
       <div className="">
         <Suspense fallback={<div>Loading...</div>}>
         <Routes>
@@ -59,7 +59,7 @@ function App() {
         </Suspense>
       </div>
       <div className={isSmallScreen ? '' : 'hidden'}>
-        <BottomNavigation />
+        {/* <BottomNavigation /> */}
       </div>
     </>
   );

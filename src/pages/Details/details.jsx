@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getRoomById } from "../../redux/room/roomThunks";
 import { Link } from "react-router-dom";
+import DatePicker from "../../components/calendar/Calendar";
 
 const Details = () => {
     const dispatch = useDispatch()
@@ -17,6 +18,23 @@ const Details = () => {
     useEffect(() => {
         dispatch(getRoomById({ id: id }))
     }, [])
+    const [selectedDateRange, setSelectedDateRange] = useState({
+        startDate: new Date(),
+        endDate: new Date(),
+        key: 'selection',
+    });
+    const slotsString = [
+        "2024-04-25",
+        "2024-04-26",
+        "2024-04-27",
+        "2024-04-28",
+        "2024-05-08",
+        "2024-09-09",
+        "2024-09-10",
+    ];
+    const handleDateChange = (selected) => {
+        setSelectedDateRange(selected.selection);
+    };
     const img = [
         {
             id: 1,
@@ -74,7 +92,7 @@ const Details = () => {
             }
         ]
     }
-
+    const disabledDates = slotsString.map(dateString => new Date(dateString));
     return (
         <>
             <div className="sm:container mx-auto">
@@ -105,8 +123,8 @@ const Details = () => {
                         </div>
                     </div>
 
-                    <div className="flex py-5 px-5 sm:px-0 flex-col sm:flex-row ">
-                        <div className="flex sm:w-2/3 flex-col">
+                    <div className="flex py-5 px-5 sm:px-0 flex-col  lg:flex-row ">
+                        <div className="flex w-full lg:w-2/3 flex-col">
                             <div className="mb-6">
                                 <h1 className="font-semibold text-xl mb-4">Euro Villa Hoa Xuan Da Nang</h1>
                                 <h2>Euro Villa Hoa Xuan Da Nang</h2>
@@ -144,7 +162,7 @@ const Details = () => {
                                 <h6 className="pb-2">{details?.description}</h6>
                                 <h2 className="underline">More </h2>
                             </div>
-                        
+
                             <div className="border border-gray-200 w-full"></div>
                             <div className="py-6">
                                 <h1 className="py-2 font-semibold text-2xl">What this place offers</h1>
@@ -170,8 +188,8 @@ const Details = () => {
                                     <h2> Joined in November 2017</h2>
                                 </div>
                             </div>
-                            <div className="flex flex-col sm:flex-row py-4">
-                                <div className="flex sm:w-2/4 flex-col">
+                            <div className="flex flex-col-reverse lg:flex-row py-4">
+                                <div className="flex w-full lg:w-2/4 flex-col">
                                     <div className="py-2">
                                         <h1 className="font-bold text-lg"> Introduction</h1>
                                         <span>
@@ -195,7 +213,7 @@ const Details = () => {
                                         </span>
                                     </div>
                                 </div>
-                                <div className="flex sm:w-2/4 flex-col sm:ml-40">
+                                <div className="flex w-full lg:w-2/4 flex-col lg:ml-40">
                                     <ul>
                                         <li>Language: english</li>
                                         <li>Response rate: 89%</li>
@@ -210,17 +228,44 @@ const Details = () => {
                                 </div>
                             </div>
                             <div className="border border-gray-200 w-full"></div>
-                            <div className="py-4">
-                                <h1 className="">Where you’ll be</h1>
-                                map
+                            <div className="hidden sm:flex justify-center flex-col py-4 w-full ">
+                                <div>
+                                    <h1 className=" text-3xl font-bold ">5 ddeem tai khach san nha long</h1>
+                                </div>
+                                {/* <h1 className="">Where you’ll be</h1> */}
+                                <DatePicker
+                                    value={selectedDateRange}
+                                    onChange={handleDateChange}
+                                    disabledDates={disabledDates}
+                                />
                             </div>
 
                         </div>
+                        <div class="lg:hidden  fixed z-50 w-full h-20 -translate-x-1/2 bg-white bottom-0 left-1/2 shadow-[1px_1px_5px_-1px_rgba(0,0,0,0.3)] ">
 
-                        <div className="flex sm:w-1/3  justify-end ">
+                            <div class="grid h-full grid-cols-2 mx-auto">
+                                <div className="flex flex-col justify-start px-6 py-4">
+                                    <h1>1231231</h1>
+                                    <p className=" font-medium underline underline-offset-4 cursor-pointer">ngay 09 - ngay 12 thang 4</p>
+                                    
+
+                                </div>
+                                <div className="flex items-center justify-center">
+                                <Link className="flex items-center"  to={`/order/${id}`}>
+                                        <button className="flex py-3 px-8 border border-none justify-center items-center w-full rounded-2xl bg-primary text-white">
+                                            Booking
+                                        </button><i className="fas fa-eye  ms-2"></i>
+                                    </Link>
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                        <div className="hidden lg:flex  lg:w-1/3  lg:justify-end  ">
                             <div
                                 className=
-                                "flex flex-col border border-black py-4 px-4 rounded-lg shadow-2xl sm:max-h-[70vh]  lg:max-h-[60vh] sm:sticky sm:top-20 lg:top-44 object-cover"
+                                "hidden lg:flex flex-col border border-black py-4 px-4 rounded-lg shadow-2xl sm:max-h-[70vh]  lg:max-h-[60vh] sm:sticky sm:top-20 lg:top-44 object-cover"
                             >
                                 <div className="flex flex-row items-center">
                                     <h1 className="font-bold text-2xl">$19</h1>

@@ -24,7 +24,6 @@ const categorySlice = createSlice({
         })
         builder.addCase(getAllCategory.fulfilled, (state, action) =>{
             state.loading=false
-            console.log(action.payload)
             state.category = action.payload
             state.error = ''
         })

@@ -4,6 +4,7 @@ import { combineReducers, configureStore  } from "@reduxjs/toolkit";
 import profileSlice from "./profile/profileSlice";
 import roomSlice from "./room/roomSlice";
 import categorySlice from "./category/categorySlice";
+import commonSlice from "./common/commonSlice";
 
 
 const reducer = combineReducers({
@@ -11,7 +12,8 @@ const reducer = combineReducers({
     auth: authSlice,
     profile: profileSlice,
     room: roomSlice,
-    category: categorySlice
+    category: categorySlice,
+    common: commonSlice
 })
 
 const store = configureStore({
