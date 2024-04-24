@@ -7,8 +7,8 @@ export const menu = [
       listItems: [
         {
           id: 1,
-          title: "Home",
-          url: "/",
+          title: "Dashboard",
+          url: "/Dashboard",
           icon: <MdHome />,
         },
         {

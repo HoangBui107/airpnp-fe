@@ -1,7 +1,13 @@
+import { useEffect } from "react";
 import { MdOutlineMedicalInformation, MdPayments, MdOutlineSecurity } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+
+  
+
+
 const AccountSetting = () => {
     const navigate = useNavigate();
+
     const options = [
         {
             name: "Personal Info",
@@ -30,6 +36,9 @@ const AccountSetting = () => {
             description: ""
         },
     ]
+
+
+
     return (
         <>
             <div className="sm:container px-6 sm:mx-auto">

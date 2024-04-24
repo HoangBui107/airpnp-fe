@@ -14,6 +14,7 @@ import DetailsOrder from './pages/Orders/DetailsOrder';
 import ListOrder from './pages/Orders/ListOrder';
 import CreateRoom from './pages/Room/CreateRoom';
 import './App.css';
+import Dashboard from './pages/HomeAdmin/Dashboard/Dashboard';
 
 function App() {
   const currentPath = window.location.pathname.split('/');
@@ -28,13 +29,16 @@ function App() {
   }, [])
   return (
     <>
-      {/* <div className='h-20 relative '>
-  
-          <div className='fixed top-0 w-full z-50'>
-            {currentPath[1] === "admin" ? "" : <Navbar />}
+    {currentPath[1] === "admin" ? (
+      <>
+      </>
+    ) : (
+      <div className={currentPath[1] === "admin" ? '' :'h-20 relative '}>
+          <div className={currentPath[1] === "admin" ? '' : 'fixed top-0 w-full z-50'}>
+            <Navbar />
           </div>
-
-      </div> */}
+      </div>
+    )}
       <div className="">
         <Suspense fallback={<div>Loading...</div>}>
         <Routes>
@@ -52,7 +56,7 @@ function App() {
 
           </Route>
           <Route path='admin' element={<HomeAdmin />} >
-            {/* <Route path='personal-info' element={<PersonalInfo/>}/> */}
+            <Route path='dashboard' element={<Dashboard/>}/>
 
           </Route>
         </Routes>

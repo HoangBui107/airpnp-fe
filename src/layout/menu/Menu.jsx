@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { menu } from "../../data";
-
+import { MdHome } from "react-icons/md";
 
 const Menu = () => {
   return (
@@ -10,7 +10,10 @@ const Menu = () => {
           <span className="text-sm font-extralight text-[#ddd] uppercase ">{item.title}</span>
           {item.listItems.map((listItem) => (
             <Link to={listItem.url} className="flex items-center gap-[10px] p-[10px] rounded-[5px] hover:bg-[#384256]" key={listItem.id}>
-              <img src={listItem.icon} alt="" />
+              {/* <img src={listItem.icon} alt="" /> */}
+              {
+  listItem.icon && <span>{listItem.icon}</span>
+}
               <span className="listItemTitle">{listItem.title}</span>
             </Link>
           ))}

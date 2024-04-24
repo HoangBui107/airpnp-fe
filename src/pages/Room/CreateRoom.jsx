@@ -12,8 +12,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { getCityByCountry, getCountry, getDistrictByCityId } from "../../redux/common/commonThunk";
 import { getAllCategory } from "../../redux/category/categoryThunk";
 import getCoordinatesFromAddress from "./GetCoordinatesFromAddress ";
+import { createRoom } from "../../redux/room/roomThunks";
+import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 const CreateRoom = () => {
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const [userInfo, setuserInfo] = useState({
         title: '',
     });
@@ -29,6 +33,8 @@ const CreateRoom = () => {
     const [nameDistrict, setNameDistrict] = useState('')
     const { country, city, district } = useSelector((state) => state.common)
     const { category } = useSelector((state) => state.category)
+    const user = jwtDecode(localStorage.getItem('token'))
+    console.log(user)
     const onChangeValue = (e) => {
         setuserInfo({
             ...userInfo,
@@ -40,14 +46,16 @@ const CreateRoom = () => {
         street: '',
         city: '',
         country: '',
-        description: '',
+        description: 'as',
         district: '',
-        email: '',
+        email: user?.UserName,
         latitude: '',
         longitude: '',
-        userId: '',
+        userId: user?.UserId,
         categoryId: '',
-        price: ''
+        price: '',
+        latitude:"16.028102540830243",
+        longitude:"108.23789666115937"
     };
 
     const validate = (values) => {
@@ -59,6 +67,10 @@ const CreateRoom = () => {
 
     const onSubmit = (values, { setSubmitting }) => {
         console.log(values);
+        const{price, ...data} =values
+        dispatch(createRoom(data)).unwrap().then((res)=>{
+        navigate('/')
+        })
         setSubmitting(false);
     };
 
@@ -166,8 +178,8 @@ const CreateRoom = () => {
                                         <Field type="number" name="price" id="price" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="$2999" required="" />
                                     </div>
                                     <div>
-                                        <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
-                                        <Field as="select" name="country"
+                                        <label for="categoryId" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
+                                        <Field as="select" name="categoryId"
                                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                             <option value="">Select category</option>
                                             {category?.map(item => (
@@ -254,7 +266,7 @@ const CreateRoom = () => {
                                     <div class="sm:col-span-2">
                                         <div className='editor'>
                                             <ReactQuill theme='snow' name="description" value={value}
-                                                onChange={setValue}
+                                                onChange={()=>{setFieldValue('description'),value}}
                                                 className='editor-input'
                                                 modules={modules}
                                             />

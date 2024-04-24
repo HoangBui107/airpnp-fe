@@ -148,15 +148,15 @@ const Details = () => {
                                 <h2>Total Price: 120 $</h2>
                             </div>
                             <PayPalScriptProvider
-                                options={{
-                                    clientId: "AeQMw89L51bliYPAQrRK19jWw_MEcS6VozON1cwxcYZqecmznj3ZIJ61WM9Rubh4aj0LjttEf4DXy3tc",
-                                }}
-                            >
-                                <PayPalButtons
-                                    createOrder={handleCreateOrder}
-                                    onApprove={handleOnApprove}
-                                />
-                            </PayPalScriptProvider>
+                  options={{
+                    clientId: "AVUFZ--HoO4trdrJGthrRsviaWOTpJBKuFzvGGP2I8lxw9JpgpFTdGou-2Ou7sO3177PY4u-zx33LdiC",
+                  }}
+                >
+                  <PayPalButtons
+                    createOrder={createOrder}
+                    onApprove={onApprove}
+                  />
+                </PayPalScriptProvider>
                         </div>
                     </div>
 
@@ -192,3 +192,44 @@ const Details = () => {
     )
 }
 export default Details;
+
+function createOrder() {
+    // replace this url with your server
+    return fetch("https://react-paypal-js-storybook.fly.dev/api/paypal/create-order", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        // use the "body" param to optionally pass additional order information
+        // like product ids and quantities
+        body: JSON.stringify({
+            cart: [
+                {
+                    sku: "1blwyeo8",
+                    quantity: 2,
+                },
+            ],
+        }),
+    })
+        .then((response) => response.json())
+        .then((order) => {
+            // Your code here after create the order
+            return order.id;
+        });
+}
+function onApprove(data) {
+    // replace this url with your server
+    return fetch("https://react-paypal-js-storybook.fly.dev/api/paypal/capture-order", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            orderID: data.orderID,
+        }),
+    })
+        .then((response) => response.json())
+        .then((orderData) => {
+            // Your code here after capture the order
+        });
+}

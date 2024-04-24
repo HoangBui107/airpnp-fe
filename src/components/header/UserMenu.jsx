@@ -7,44 +7,49 @@ import Avatar from "./Avatar";
 import { useDispatch, useSelector } from "react-redux";
 import LoginModal from "../modals/LoginModal";
 import RegisterModal from "../modals/RegisterModal";
-
-const UserMenu = ({currentUser}) =>{
+import { logOut } from "../../redux/auth/authSlice"
+import { Breadcrumb } from "antd";
+const UserMenu = ({ currentUser }) => {
   const dropdownRef = useRef(null);
-    const navigate = useNavigate()
-    const dispatch =useDispatch();
-    const {isLogin} = useSelector((state) => state.auth)
-    console.log(isLogin)
-    const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const { isLogin } = useSelector((state) => state.auth)
+  console.log(isLogin)
+  const [isOpen, setIsOpen] = useState(false);
 
-    useEffect(() => {
-      const handleClickOutside = (event) => {
-        if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-          setIsOpen(false);
-        }
-      };
-  
-      document.addEventListener('mousedown', handleClickOutside);
-      return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
-      };
-    }, []);
-
-    const toggleOpen = useCallback(() => {
-      setIsOpen((value) => !value);
-    }, []);
-  
-    const loginModal = () => {
-        dispatch(openLogin())
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
     };
-    const registerModal = () => {
-      dispatch(openRegister())
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const toggleOpen = useCallback(() => {
+    setIsOpen((value) => !value);
+  }, []);
+
+  const loginModal = () => {
+    dispatch(openLogin())
+  };
+  const registerModal = () => {
+    dispatch(openRegister())
   };
 
-    return(
-        <div className="relative">
+  const logout = () => {
+    dispatch(logOut())
+  };
+
+  return (
+    <div className="relative">
       <div className="flex flex-row items-center gap-2">
-        <div 
-        //   onClick={onRent}
+        <div
+          //   onClick={onRent}
           className="
             hidden
             md:block
@@ -60,9 +65,9 @@ const UserMenu = ({currentUser}) =>{
         >
           Airbnb your home
         </div>
-        <div 
-        onClick={toggleOpen}
-        className="
+        <div
+          onClick={toggleOpen}
+          className="
           p-4
           md:py-1
           md:px-2
@@ -85,8 +90,8 @@ const UserMenu = ({currentUser}) =>{
         </div>
       </div>
       {isOpen && (
-        <div 
-        ref={dropdownRef}
+        <div
+          ref={dropdownRef}
           className="
             absolute 
             rounded-xl 
@@ -103,51 +108,51 @@ const UserMenu = ({currentUser}) =>{
           <div className="flex flex-col cursor-pointer">
             {isLogin ? (
               <>
-                <MenuItem 
-                  label="My Orders" 
+                <MenuItem
+                  label="My Orders"
                   onClick={() => navigate('/orders')}
                 />
-                <MenuItem 
-                  label="My favorites" 
+                <MenuItem
+                  label="My favorites"
                   onClick={() => navigate('/favorites')}
                 />
-                <MenuItem 
-                  label="My reservations" 
+                <MenuItem
+                  label="My reservations"
                   onClick={() => navigate('/reservations')}
                 />
-                <MenuItem 
-                  label="My Account" 
+                <MenuItem
+                  label="My Account"
                   onClick={() => navigate('/account-setting')}
                 />
-                <MenuItem 
-                  label="Airbnb your home" 
+                <MenuItem
+                  label="Airbnb your home"
                 //   onClick={rentModal.onOpen}
                 />
                 <hr />
-                <MenuItem 
-                  label="Logout" 
-                //   onClick={() => signOut()}
+                <MenuItem
+                  label="Logout"
+                  onClick={() => { logout() }}
                 />
               </>
             ) : (
               <>
-                <MenuItem 
-                  label="Login" 
-                  onClick={()=>{loginModal()}}
+                <MenuItem
+                  label="Login"
+                  onClick={() => { loginModal() }}
                 />
-                <LoginModal/>
-                <MenuItem 
-                  label="Sign up" 
-                  onClick={()=>{registerModal()}}
+                <LoginModal />
+                <MenuItem
+                  label="Sign up"
+                  onClick={() => { registerModal() }}
                 />
-                <RegisterModal/>
+                <RegisterModal />
               </>
             )}
           </div>
         </div>
       )}
     </div>
-    )
+  )
 }
 
 export default UserMenu;
