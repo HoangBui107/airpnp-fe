@@ -1,24 +1,22 @@
 import { Link } from "react-router-dom";
-import { menu } from "../../data";
-import { MdHome } from "react-icons/md";
 
 const Menu = () => {
   return (
     <div className="flex flex-col gap-5 bg-[#222b3c] border-r-2 border-solid border-[#384256] h-[93vh] px-6">
-      {menu.map((item) => (
-        <div className="text-sm font-extralight text-[white] uppercase flex flex-col  " key={item.id}>
-          <span className="text-sm font-extralight text-[#ddd] uppercase ">{item.title}</span>
-          {item.listItems.map((listItem) => (
-            <Link to={listItem.url} className="flex items-center gap-[10px] p-[10px] rounded-[5px] hover:bg-[#384256]" key={listItem.id}>
-              {/* <img src={listItem.icon} alt="" /> */}
-              {
-  listItem.icon && <span>{listItem.icon}</span>
-}
-              <span className="listItemTitle">{listItem.title}</span>
-            </Link>
-          ))}
+        <div className="text-sm font-extralight text-[white] uppercase flex flex-col  ">
+          <Link to={`/categories`} className="flex items-center gap-[10px] p-[10px] rounded-[5px] hover:bg-[#384256]">
+            <span>Manage Categories</span>
+          </Link>
+          <Link to={`/categories`} className="flex items-center gap-[10px] p-[10px] rounded-[5px] hover:bg-[#384256]">
+            <span>Manage User</span>
+          </Link>
+          <Link to={`/categories`} className="flex items-center gap-[10px] p-[10px] rounded-[5px] hover:bg-[#384256]">
+            <span>Manage Owner Hotel</span>
+          </Link>
+          <Link to={`/categories`} className="flex items-center gap-[10px] p-[10px] rounded-[5px] hover:bg-[#384256]">
+            <span>Manage </span>
+          </Link>
         </div>
-      ))}
     </div>
   );
 };

@@ -18,6 +18,7 @@ import ForgetPassword from './components/modals/ForgetPassword';
 import LoginModal from './components/modals/LoginModal';
 import RegisterModal from './components/modals/RegisterModal';
 import Security from './pages/Setting/Security';
+import ManageCategories from './pages/Categories/ManageCategory';
 function App() {
   const currentPath = window.location.pathname.split('/');
   const [isSmallScreen, setIsSmallScreen] = useState(false);
@@ -57,6 +58,8 @@ function App() {
           <Route path='/editRoom/:id' element={<CreateRoom />} />
           <Route path='/order/:id' element={<DetailsOrder />} />
           <Route path='/orders' element={<ListOrder />} />
+          <Route path='/categories' element={<ManageCategories />} />
+          
           <Route path='account-setting' >
             <Route path='' element={<AccountSetting />} />
             <Route path='personal-info' element={<PersonalInfo />} />
