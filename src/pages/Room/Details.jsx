@@ -6,9 +6,10 @@ import { MdOutlineSoupKitchen } from "react-icons/md";
 import Map from "../../components/common/Map";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getRoomById } from "../../redux/room/roomThunks";
+import { getRoomById, sendFeedback } from "../../redux/room/roomThunks";
 import { Link } from "react-router-dom";
 import DatePicker from "../../components/calendar/Calendar";
+import TextField from '@mui/material/TextField';
 
 const Details = () => {
     const dispatch = useDispatch()
@@ -18,6 +19,17 @@ const Details = () => {
     useEffect(() => {
         dispatch(getRoomById({ id: id }))
     }, [])
+    const [feedback, setFeedback] = useState('')
+    const handleChange = (event) => {
+        // Lấy giá trị người dùng nhập vào từ input
+        const newFeedback = event.target.value;
+        // Cập nhật state feedback
+        setFeedback(newFeedback);
+      };
+
+      const handleSendFeedback = (event) => {
+       dispatch(sendFeedback({id: id, feedback: feedback}))
+      };
     const [selectedDateRange, setSelectedDateRange] = useState({
         startDate: new Date(),
         endDate: new Date(),
@@ -126,8 +138,8 @@ const Details = () => {
                     <div className="flex py-5 px-5 sm:px-0 flex-col  lg:flex-row ">
                         <div className="flex w-full lg:w-2/3 flex-col">
                             <div className="mb-6">
-                                <h1 className="font-semibold text-xl mb-4">Euro Villa Hoa Xuan Da Nang</h1>
-                                <h2>Euro Villa Hoa Xuan Da Nang</h2>
+                                <h1 className="font-semibold text-xl mb-4">{details.name}</h1>
+                                <h2>{details.street}</h2>
                             </div>
                             <div className="py-5 px-2 border border-black rounded-xl grid grid-cols-3">
                                 <div className="flex items-center justify-center border-r border-gray-400">
@@ -184,8 +196,8 @@ const Details = () => {
                                     <img src="https://static.vecteezy.com/system/resources/previews/002/002/257/non_2x/beautiful-woman-avatar-character-icon-free-vector.jpg" alt="" />
                                 </div>
                                 <div className="flex px-5 flex-col justify-center">
-                                    <h1 className="text-2xl font-bold">Hoster By : Hoang</h1>
-                                    <h2> Joined in November 2017</h2>
+                                    <h1 className="text-2xl font-bold">Hoster By : {details?.user?.profile?.fullName}</h1>
+                                    <h2> Joined in November {details?.user?.profile?.createdAt}</h2>
                                 </div>
                             </div>
                             <div className="flex flex-col-reverse lg:flex-row py-4">
@@ -193,7 +205,7 @@ const Details = () => {
                                     <div className="py-2">
                                         <h1 className="font-bold text-lg"> Introduction</h1>
                                         <span>
-                                            Hi, my name is Tùng, and welcome to Vietnam. I have been staying and working in hospitality in Da nang for over 3 years.
+                                            Hi, my name is {details?.user?.profile?.fullName}, and welcome to Vietnam. I have been staying and working in hospitality in Da nang for over 3 years.
                                             Da Nang is blessed with its spectacular nature and especially the sweet and friendly people, you will love this city.
                                             I will do my best to ensure you will have a wonderful time, so feel free to ask me anything.
                                         </span>
@@ -207,22 +219,26 @@ const Details = () => {
                                     </div>
 
                                     <div className="py-2">
-                                        <h1 className="font-bold text-lg"> Tung is a Superhost</h1>
+                                        <h1 className="font-bold text-lg"> {details?.user?.profile?.fullName} is a Superhost</h1>
                                         <span>
                                             Superhosts are experienced, highly rated hosts who are committed to providing great stays for guests.
                                         </span>
                                     </div>
                                 </div>
                                 <div className="flex w-full lg:w-2/4 flex-col lg:ml-40">
-                                    <ul>
-                                        <li>Language: english</li>
-                                        <li>Response rate: 89%</li>
-                                        <li>Response time: within an hour</li>
-                                    </ul>
+                                    <TextField id="outlined-multiline-static"
+                                     value={feedback}
+                                     onChange={handleChange}
+                                        label="Feedback"
+                                        multiline
+                                        rows={12}
+                                        placeholder="Feedback"
+                                    />
+
 
                                     <div className="py-4">
-                                        <button className="py-3 px-6 border border-black rounded-xl font-semibold">
-                                            Contact Host
+                                        <button className="py-3 px-6 border border-black rounded-xl font-semibold" onClick={handleSendFeedback}>
+                                            Send feedback to owner room
                                         </button>
                                     </div>
                                 </div>
@@ -247,11 +263,11 @@ const Details = () => {
                                 <div className="flex flex-col justify-start px-6 py-4">
                                     <h1>1231231</h1>
                                     <p className=" font-medium underline underline-offset-4 cursor-pointer">ngay 09 - ngay 12 thang 4</p>
-                                    
+
 
                                 </div>
                                 <div className="flex items-center justify-center">
-                                <Link className="flex items-center"  to={`/order/${id}`}>
+                                    <Link className="flex items-center" to={`/order/${id}`}>
                                         <button className="flex py-3 px-8 border border-none justify-center items-center w-full rounded-2xl bg-primary text-white">
                                             Booking
                                         </button><i className="fas fa-eye  ms-2"></i>
@@ -268,7 +284,7 @@ const Details = () => {
                                 "hidden lg:flex flex-col border border-black py-4 px-4 rounded-lg shadow-2xl sm:max-h-[70vh]  lg:max-h-[60vh] sm:sticky sm:top-20 lg:top-44 object-cover"
                             >
                                 <div className="flex flex-row items-center">
-                                    <h1 className="font-bold text-2xl">$19</h1>
+                                    <h1 className="font-bold text-2xl">{details?.price}</h1>
                                     <h1>/night</h1>
                                 </div>
                                 <span className="py-2">
@@ -293,7 +309,7 @@ const Details = () => {
 
                                 <div className="flex py-2 justify-between">
                                     <h1 className="font-bold text-xl">Total before taxes</h1>
-                                    <h1 className="font-blod text-xl">${data?.price}</h1>
+                                    <h1 className="font-blod text-xl">${details?.price}</h1>
                                 </div>
                             </div>
 

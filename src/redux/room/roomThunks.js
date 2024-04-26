@@ -41,3 +41,32 @@ export const createRoom = createAsyncThunk('room/createRoom', async(data, thunkA
         return thunkApi.rejectWithValue(error)
     }
 })
+
+
+export const deleteRoom = createAsyncThunk('room/deleteRoom', async(data, thunkApi)=>{
+    try {
+        const reponse = await http.delete(`api/Rooms/${data}`)
+        return reponse
+    } catch (error) {
+        if(error.statusCode ===403){
+            // thunkApi.dispatch(a({message:"Your account is block! Please contact Admin", notificationType: 'error'}))
+
+        }
+        return thunkApi.rejectWithValue(error)
+    }
+})
+
+
+export const sendFeedback = createAsyncThunk('room/sendFeedback', async(data, thunkApi)=>{
+    try {    const {id} = data
+
+        const reponse = await http.post(`api/Rooms/SendFeedback/${id}`, data)
+        return reponse
+    } catch (error) {
+        if(error.statusCode ===403){
+            // thunkApi.dispatch(a({message:"Your account is block! Please contact Admin", notificationType: 'error'}))
+
+        }
+        return thunkApi.rejectWithValue(error)
+    }
+})

@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 
 const ListingItem = ({data, isFavorite, btn}) => {
     const navigate = useNavigate()
+    console.log(data?.roomImages?.[0]?.url)
     const navigateDetails = () =>{
-        // console.log(data.id)
         navigate(`/details/${data?.id}`)
     }
     return (
@@ -17,7 +17,7 @@ const ListingItem = ({data, isFavorite, btn}) => {
                     >
                         <img
                             className="object-cover h-full w-full group-hover:scale-110 transition"
-                            src={data?.url}
+                            src={data?.roomImages?.[0]?.url}
                             alt=""
                         />
                         <div className="absolute top-2 left-2 border border-white rounded-3xl p-1 bg-white">
@@ -37,6 +37,9 @@ const ListingItem = ({data, isFavorite, btn}) => {
                                 />
                             </div>
                         </div>
+                    </div>
+                    <div className="font-semibold text-lg">
+                        {data?.name} 
                     </div>
                     <div className="font-semibold text-lg">
                         {data?.country} , {data?.city}

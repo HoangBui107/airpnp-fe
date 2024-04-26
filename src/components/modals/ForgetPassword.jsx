@@ -1,20 +1,20 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../../redux/auth/authThunks";
-import { closeLogin, openForgetPassword, openRegister } from "../../redux/modal/modalSlice";
+import { login, resetPassword } from "../../redux/auth/authThunks";
+import { closeFotgetPassword, openLogin } from "../../redux/modal/modalSlice";
 import Heading from "../common/Heading";
 import Modal from "./Modal";
 
-const LoginModal = () =>{
+const ForgetPassword = () =>{
     const dispatch = useDispatch()
     const {isLoading} = useSelector((state)  => state.auth)
     const [account, setAccount] = useState({
       email: "",
       password: "",
     });
-    const open = useSelector((state) => state.modal.login)
+    const open = useSelector((state) => state.modal.forgetPassword)
     const onClose = () =>{
-        dispatch(closeLogin())
+        dispatch(closeFotgetPassword())
     }
     const [errors, setErrors] = useState({
       email: "",
@@ -30,12 +30,7 @@ const LoginModal = () =>{
       setErrors((prev) => ({ ...prev, email: "" }));
     };
   
-    const handlePassword = (e) => {
-      setAccount((prev) => {
-        return { ...prev, password: e.target.value };
-      });
-      setErrors((prev) => ({ ...prev, password: "" }));
-    };
+
   
     const validateInputs = () => {
       let isValid = true;
@@ -49,10 +44,6 @@ const LoginModal = () =>{
         isValid = false;
       }
   
-      if (!account.password.trim()) {
-        newErrors.password = "Please enter your password.";
-        isValid = false;
-      }
   
       setErrors((prev) => ({ ...prev, ...newErrors }));
   
@@ -62,7 +53,7 @@ const LoginModal = () =>{
     const onSubmit = async () => {
       if (validateInputs()) {
         try {
-          await dispatch(login(account)).unwrap();
+          await dispatch(resetPassword(account)).unwrap();
           onClose();
         } catch (error) {
           setErrors((prev) => ({ ...prev, login: "Email or password is incorrect." }));
@@ -70,14 +61,9 @@ const LoginModal = () =>{
       }
     };
   
-    const openRegisterHandler = () => {
-      dispatch(closeLogin())
-      dispatch(openRegister())
-    }
-
-    const openForgetHandler = () => {
-      dispatch(closeLogin())
-      dispatch(openForgetPassword())
+    const openLoginHandler = () => {
+      dispatch(closeFotgetPassword())
+      dispatch(openLogin())
     }
   
     const bodyContent = (
@@ -92,15 +78,6 @@ const LoginModal = () =>{
             onChange={handleEmail}
           />
           {errors.email && <p className="text-red-500">{errors.email}</p>}
-          <input
-            className="w-full text-center mx-0 my-2.5 px-0 py-[7px] border rounded-[10px] border-[solid] border-[black]"
-            name="password"
-            placeholder="Password"
-            type="password"
-            value={account.password}
-            onChange={handlePassword}
-          />
-          {errors.password && <p className="text-red-500">{errors.password}</p>}
         </div>
       );
     
@@ -124,20 +101,10 @@ const LoginModal = () =>{
               Already have an account?
               <span
                 className="text-neutral-800 cursor-pointer hover:underline"
-                onClick={openRegisterHandler}
+                onClick={openLoginHandler}
               >
                 {" "}
                 Log In
-              </span>
-            </p>
-            <p>
-              Don't have password?
-              <span
-                className="text-neutral-800 cursor-pointer hover:underline"
-                onClick={openForgetHandler}
-              >
-                {" "}
-                Forget Password
               </span>
             </p>
           </div>
@@ -158,4 +125,4 @@ const LoginModal = () =>{
       );
     };
 
-export default LoginModal;
+export default ForgetPassword;

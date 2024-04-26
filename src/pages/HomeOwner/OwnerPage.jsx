@@ -1,7 +1,9 @@
 import { Link, useNavigate, Await, useLoaderData } from "react-router-dom";
-import { Suspense, useContext } from "react";
+import { Suspense, useContext, useEffect } from "react";
 import List from "../../components/list/List";
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllRooms } from "../../redux/room/roomThunks";
 
 function OwnerPage() {
     // const data = useLoaderData();
@@ -9,36 +11,12 @@ function OwnerPage() {
     // const { updateUser, currentUser } = useContext(AuthContext);
 
     const navigate = useNavigate();
-    const [postData, setPostData] = useState([
-        {
-          id: 1,
-          title: "Beautiful House in the Suburbs",
-          images: ["https://media-cdn-v2.laodong.vn/Storage/NewsPortal/2023/1/30/1142340/Honda-Wr-V.jpeg"],
-          address: "123 Suburbia Street",
-          price: 2500,
-          bedroom: 3,
-          bathroom: 2
-        },
-        {
-          id: 2,
-          title: "Cozy Apartment in the City Center",
-          images: ["https://media-cdn-v2.laodong.vn/Storage/NewsPortal/2023/1/30/1142340/Honda-Wr-V.jpeg"],
-          address: "456 Downtown Avenue",
-          price: 1800,
-          bedroom: 2,
-          bathroom: 1
-        },
-        {
-          id: 3,
-          title: "Luxurious Villa with Ocean View",
-          images: ["https://media-cdn-v2.laodong.vn/Storage/NewsPortal/2023/1/30/1142340/Honda-Wr-V.jpeg"],
-          address: "789 Oceanfront Drive",
-          price: 7500,
-          bedroom: 5,
-          bathroom: 4
-        }
-      ]);
-    
+    const dispatch = useDispatch();
+    const {room} = useSelector((state)=> state.room)
+    console.log(room)
+    useEffect(()=>{
+      dispatch(getAllRooms())
+    },[])
     // const handleLogout = async () => {
     //     try {
     //         await apiRequest.post("/auth/logout");
@@ -86,11 +64,11 @@ function OwnerPage() {
         </div>
         <Suspense fallback={<p>Loading...</p>}>
           <Await
-            resolve={postData}
+            resolve={room}
             errorElement={<p>Error loading posts!</p>}
           >
             
-            <List posts={postData} />
+            <List posts={room} />
           </Await>
         </Suspense>
 

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createRoom, getAllRooms, getRoomById } from "./roomThunks";
+import { createRoom, deleteRoom, getAllRooms, getRoomById } from "./roomThunks";
 
 
 
@@ -7,7 +7,7 @@ const initialState ={
     loading: false,
     error: '',
     room: [],
-    details:[],
+    details:{},
 }
 
 
@@ -15,7 +15,11 @@ const roomSlice = createSlice({
     name: "room",
     initialState,
     reducers:{
+        filterByName: (state, action) => {
+            const data = state.room
+            state.room = data.filter((item) => item.name.toLowerCase().includes(action.payload.toLowerCase()))
 
+        }
     },
     extraReducers: builder=>{
         builder.addCase(getAllRooms.pending,(state,action)=>{
@@ -59,10 +63,24 @@ const roomSlice = createSlice({
             state.error = action.payload
         })
 
+        builder.addCase(deleteRoom.pending,(state,action)=>{
+            state.loading = true
+            state.error = ''
+        })
+        builder.addCase(deleteRoom.fulfilled, (state, action) =>{
+            state.loading=false
+            state.room = state.room.filter((item) => item.id !== action.payload)
+            state.error = ''
+        })
+        builder.addCase(deleteRoom.rejected, (state,action) =>{
+            state.loading= false
+            state.error = action.payload
+        })
+
 
     }
    
 });
 
-
+export const {filterByName} = roomSlice.actions
 export default roomSlice.reducer

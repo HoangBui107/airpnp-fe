@@ -2,10 +2,9 @@ import { Routes, Route, useParams } from 'react-router-dom';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Navbar from './layout/navbar/Navbar';
-import Details from './pages/Details/Details';
+import Details from './pages/Room/Details';
 import ListPage from './pages/List/ListPage';
 import { Suspense, useEffect, useState } from 'react';
-import BottomNavigation from './layout/bottom/BottomNavigation';
 import AccountSetting from './pages/Setting/AccountSetting';
 import PersonalInfo from './pages/Setting/PersonalInfo';
 import HomeAdmin from './pages/HomeAdmin/HomeAdmin';
@@ -15,7 +14,10 @@ import ListOrder from './pages/Orders/ListOrder';
 import CreateRoom from './pages/Room/CreateRoom';
 import './App.css';
 import Dashboard from './pages/HomeAdmin/Dashboard/Dashboard';
-
+import ForgetPassword from './components/modals/ForgetPassword';
+import LoginModal from './components/modals/LoginModal';
+import RegisterModal from './components/modals/RegisterModal';
+import Security from './pages/Setting/Security';
 function App() {
   const currentPath = window.location.pathname.split('/');
   const [isSmallScreen, setIsSmallScreen] = useState(false);
@@ -40,7 +42,11 @@ function App() {
       </div>
     )}
       <div className="">
+
         <Suspense fallback={<div>Loading...</div>}>
+          <ForgetPassword/>
+          <LoginModal />
+          <RegisterModal />
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/owner' element={<OwnerPage />} />
@@ -48,11 +54,13 @@ function App() {
           <Route path='/details/:id' element={<Details />} />
           <Route path='/list' element={<ListPage />} />
           <Route path='/createRoom' element={<CreateRoom />} />
+          <Route path='/editRoom/:id' element={<CreateRoom />} />
           <Route path='/order/:id' element={<DetailsOrder />} />
           <Route path='/orders' element={<ListOrder />} />
           <Route path='account-setting' >
             <Route path='' element={<AccountSetting />} />
             <Route path='personal-info' element={<PersonalInfo />} />
+            <Route path='secutiry' element={<Security/>}/>
 
           </Route>
           <Route path='admin' element={<HomeAdmin />} >

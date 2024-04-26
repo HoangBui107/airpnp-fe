@@ -38,3 +38,22 @@ export const register = createAsyncThunk('auth/register', async(data, {rejectWit
 //         return thunkApi.rejectWithValue(error)
 //     }
 // })
+
+export const changePassword = createAsyncThunk('auth/changePassword', async(data, {rejectWithValue})=>{
+    try {
+        const reponse = await http.post('ChangePassword', data)
+        return reponse
+    } catch (error) {
+        return rejectWithValue(error)
+    }
+})
+
+export const resetPassword = createAsyncThunk('auth/resetPassword', async(data, {rejectWithValue})=>{
+    const {email} = data
+    try {
+        const reponse = await http.post(`ResetPassword/${email}`)
+        return reponse
+    } catch (error) {
+        return rejectWithValue(error)
+    }
+})

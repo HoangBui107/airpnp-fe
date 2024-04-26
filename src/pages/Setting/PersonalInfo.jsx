@@ -6,12 +6,8 @@ import BreadcrumbSetting from "./Breadcrumb";
 import { Flex, message, Upload } from 'antd';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import { getPreSignURL, uploadImageProductToS3 } from "../../redux/file/fileThunk";
-
-// const getBase64 = (img, callback) => {
-//     const reader = new FileReader();
-//     reader.addEventListener('load', () => callback(reader.result));
-//     reader.readAsDataURL(img);
-// };
+import axios from "axios"
+import { jwtDecode } from "jwt-decode";
 
 const beforeUpload = (file) => {
     const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
@@ -28,9 +24,9 @@ const beforeUpload = (file) => {
 const PersonalInfo = () => {
     const dispatch = useDispatch();
     const { profile } = useSelector((state) => state.profile)
-    const { user } = useSelector((state) => state.auth)
+    const user  = jwtDecode(localStorage.getItem('token'))
     const { data } = useSelector((state) => state.file)
-    // console.log(data.result.preSignedUrl)
+    const [imageUrl, setImageUrl] = useState('https://d1wuv3pdivt0vy.cloudfront.net/avatar-users/5b383afb-771b-4729-847f-ad6e366795cd.jpg');
     const [fields, setFields] = useState([
         {
             name: 'Personal info',
@@ -63,6 +59,8 @@ const PersonalInfo = () => {
                 value: res.payload[fieldAttributeMap[field.name]]
 
             }));
+            console.log(res)
+            setImageUrl(res?.payload?.avatarUrl)
             setFields(updatedFields);
         }).catch(error => {
             console.error('Lỗi khi lấy dữ liệu hồ sơ:', error);
@@ -113,43 +111,27 @@ const PersonalInfo = () => {
 
 
     const [loading, setLoading] = useState(false);
-    const [imageUrl, setImageUrl] = useState('');
-    
-    const formData = new FormData();
-    const handleChange = async (info) => {
+   
+    const axiosClient = axios.create({
+        baseURL: "",
+      });
 
-        const file = info.file.originFileObj;
-        // console.log(info.file.originFileObj)
-        // const file = info.file.originFileObj
-        // // // Append the file to the FormData instance
-        // formData.append('file',info.file.originFileObj);
-        // console.log(formData)
-        try {
-            if (info.file.status === 'uploading') {
-                setLoading(true);
-                console.log("a")
-                await dispatch(getPreSignURL()).unwrap().then((res) => {
-                    dispatch(uploadImageProductToS3({file:file, url: res?.result?.preSignedUrl }))
+    const handleChange = async (event) => {
+
+    //     const file = event.target.files[0];
+    const file = event.fileList[0].originFileObj
+
+
+        if (file) {
+            await dispatch(getPreSignURL()).unwrap().then(async (res)=>{
+                const reponse = await axiosClient.put( res?.result?.preSignedUrl, file)
+                await dispatch(getProfileByToken()).unwrap().then((res)=>{
+                    setImageUrl(res?.avatarUrl)
                 })
-                console.log("v")
-                return;
-            }
-
-        } catch (error) {
-
-        } finally {
-            // setLoading(false);
-
-        }
-        return;
-
-        // console.log(data?.result?.preSignedUrl)
-        // if (info.file.status === 'done') {
-        //     console.log("A")
-        //     // getBase64(info.file.originFileObj, (url) => {
-        //     //     setImageUrl(url);
-        //     // });
-        // }
+                return reponse
+            })
+        
+    }
     };
 
     const uploadButton = (
@@ -162,13 +144,6 @@ const PersonalInfo = () => {
         <>
             <div className="flex flex-col px-6 sm:container sm:mx-atuo">
                 <div className="flex flex-col w-full sm:px-12 md:px-24 py-14 gap-4">
-                    {/* <div className="flex flex-row gap-4">
-                        <a href="#" className="font-[500] text-xl hover:underline">Account</a>
-                        <p>Personal info</p>
-                    </div>
-                    <div>
-                        <h1>Personal info</h1>
-                    </div> */}
                     <BreadcrumbSetting />
                 </div>
                 <div className="flex flex-row sm:px-12 md:px-24 gap-4 ">
@@ -185,6 +160,28 @@ const PersonalInfo = () => {
                             >
                                 {imageUrl ? <img className=" rounded-full" src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
                             </Upload>
+                            <div>
+                                <label
+                                    htmlFor="customFile"
+                                    style={{
+                                        cursor: "pointer",
+                                        backgroundColor: "#1976d2",
+                                        color: "white",
+                                        padding: "6px 16px",
+                                        borderRadius: "4px",
+                                    }}
+                                >
+                                    Upload Avatar
+                                </label>
+                                <input
+                                    type="file"
+                                    className="form-control"
+                                    id="customFile"
+                                    style={{ display: "none" }}
+                                    onChange={handleChange}
+                                    name="video"
+                                />
+                            </div>
                         </div>
                         {fields?.map((item) => {
                             return (

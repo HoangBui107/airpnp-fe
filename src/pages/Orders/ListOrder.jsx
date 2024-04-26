@@ -7,12 +7,14 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { Link } from "react-router-dom";
 import './ListOrder.css';
-
+import { getOrder } from "../../redux/order/orderThunk";
+import { MdOutlineRemoveShoppingCart } from "react-icons/md";
+import SpinLoading from "../../components/spin/Spin";
 const ListOrder = () => {
   const dispatch = useDispatch()
   const { id } = useParams()
-  const { details } = useSelector((state) => state.room)
-  console.log(details)
+  const { data, loading } = useSelector((state) => state.room)
+  console.log(data)
   const handleCreateOrder = () => {
     // const orderId = dispatch(createOrderAction(totalPrice));
     // return orderId;
@@ -22,7 +24,7 @@ const ListOrder = () => {
   };
 
   useEffect(() => {
-    dispatch(getRoomById({ id: id }))
+    dispatch(getOrder())
   }, [])
   const img = [
     {
@@ -50,40 +52,43 @@ const ListOrder = () => {
     address: "My Hotel",
   });
 
-  const data =
-  {
-    id: 1,
-    category: {
-      id: 1,
-      name: 'studio'
-    },
-    name: 'Nha long',
-    streets: '91 phuoc ly 1',
-    district: 'Son tra',
-    city: 'Da nang',
-    country: 'Viet Nam',
-    email: 'hoangbui23@gmail.com',
-    longitude: '',
-    latitude: '',
-    price: '320',
-    description: 'There is a place filled with sunshine & sea breeze near My Khe beach called Astro House, where you can catch the vibe of Santorini in Danang. Nested on 3rd floor, city views appear through the big windows.',
-    feedbacks: [
-      {
-        userId: '',
-        hotelId: '',
-        content: 'phong dep vcl',
-      }
-    ],
-    roomImages: [
-      {
-        id: 1,
-        url: "",
-      }
-    ]
-  }
+  // const data =
+  // {
+  //   id: 1,
+  //   category: {
+  //     id: 1,
+  //     name: 'studio'
+  //   },
+  //   name: 'Nha long',
+  //   streets: '91 phuoc ly 1',
+  //   district: 'Son tra',
+  //   city: 'Da nang',
+  //   country: 'Viet Nam',
+  //   email: 'hoangbui23@gmail.com',
+  //   longitude: '',
+  //   latitude: '',
+  //   price: '320',
+  //   description: 'There is a place filled with sunshine & sea breeze near My Khe beach called Astro House, where you can catch the vibe of Santorini in Danang. Nested on 3rd floor, city views appear through the big windows.',
+  //   feedbacks: [
+  //     {
+  //       userId: '',
+  //       hotelId: '',
+  //       content: 'phong dep vcl',
+  //     }
+  //   ],
+  //   roomImages: [
+  //     {
+  //       id: 1,
+  //       url: "",
+  //     }
+  //   ]
+  // }
 
   return (
     <>
+    {loading ? (
+      <SpinLoading />
+    ) : (
       <div className="flex flex-col container mx-auto">
         <div className="py-10">
           <h1 className=" text-3xl font-semibold">Welcome, Hoang!</h1>
@@ -103,20 +108,31 @@ const ListOrder = () => {
           </div>
         </div>
         <div className="bg-[#F7F7F7] flex ">
-          <div className="flex flex-row py-4 px-2 gap-4">
+          {data ? (
+            <>
+              <div className="flex flex-row py-4 px-2 gap-4">
 
-            <div className=" relative h-48 w-48">
-              <img className=" object-cover max-w-48 max-h-48 rounded-xl" src="https://vcdn1-dulich.vnecdn.net/2021/07/16/1-1626437591.jpg?w=460&h=0&q=100&dpr=2&fit=crop&s=i2M2IgCcw574LT-bXFY92g" alt="" />
-            </div>
-            <div className="flex flex-col justify-center gap-3">
+                <div className=" relative h-48 w-48">
+                  <img className=" object-cover max-w-48 max-h-48 rounded-xl" src="https://vcdn1-dulich.vnecdn.net/2021/07/16/1-1626437591.jpg?w=460&h=0&q=100&dpr=2&fit=crop&s=i2M2IgCcw574LT-bXFY92g" alt="" />
+                </div>
+                <div className="flex flex-col justify-center gap-3">
 
-              <h1 className="text-xl font-medium">Khach san hoang bui</h1>
-              <p>24/04/2024 -- 30/05/20</p>
-              <p>300$</p>
-              <p>khach san xin vcl</p>
-              <p>loai 1 phong ngu </p>
-            </div>
-          </div>
+                  <h1 className="text-xl font-medium">Khach san hoang bui</h1>
+                  <p>24/04/2024 -- 30/05/20</p>
+                  <p>300$</p>
+                  <p>khach san xin vcl</p>
+                  <p>loai 1 phong ngu </p>
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className=" w-full h-[30vh] flex flex-col items-center justify-center gap-4">
+                <MdOutlineRemoveShoppingCart className="opacity-50" size={100} spacing={1} />
+                <h1 className=" text-2xl text-gray-600">Don't have any order</h1>
+              </div>
+            </>
+          )}
 
         </div>
 
@@ -124,6 +140,7 @@ const ListOrder = () => {
           <p className=" font-medium underline underline-offset-2 ">All reservations(0)</p>
         </div>
       </div>
+    )}
     </>
   )
 }

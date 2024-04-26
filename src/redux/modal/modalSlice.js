@@ -4,6 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState ={
     login: false,
     register: false,
+    forgetPassword:false,
     notification: {message: '', notificationType:''}
 }
 
@@ -15,8 +16,13 @@ const modalSlice = createSlice({
             state.login = true; 
         } ,
         closeLogin: (state, action)=>{
-            state.login = false;
-           
+            state.login = false; 
+        },
+        openForgetPassword:(state, action)=>{
+            state.forgetPassword = true; 
+        } ,
+        closeFotgetPassword: (state, action)=>{
+            state.forgetPassword = false; 
         },
         openRegister: (state, action)=>{
             state.register = true;
@@ -36,5 +42,5 @@ const modalSlice = createSlice({
    
 });
 
-export const {openLogin, closeLogin,openRegister,closeRegister, openMessage,resetMessage} = modalSlice.actions
+export const {openLogin, closeLogin,openRegister,closeRegister, openMessage,resetMessage, closeFotgetPassword, openForgetPassword} = modalSlice.actions
 export default modalSlice.reducer

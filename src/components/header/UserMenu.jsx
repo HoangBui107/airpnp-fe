@@ -1,14 +1,12 @@
-import { useNavigate } from "react-router-dom";
-import MenuItem from "../common/MenuItem";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { openLogin, openRegister } from "../../redux/modal/modalSlice";
 import { AiOutlineMenu } from "react-icons/ai";
-import Avatar from "./Avatar";
 import { useDispatch, useSelector } from "react-redux";
-import LoginModal from "../modals/LoginModal";
-import RegisterModal from "../modals/RegisterModal";
-import { logOut } from "../../redux/auth/authSlice"
-import { Breadcrumb } from "antd";
+import { useNavigate } from "react-router-dom";
+import { openLogin, openRegister } from "../../redux/modal/modalSlice";
+import MenuItem from "../common/MenuItem";
+import Avatar from "./Avatar";
+
+import { logOut } from "../../redux/auth/authSlice";
 const UserMenu = ({ currentUser }) => {
   const dropdownRef = useRef(null);
   const navigate = useNavigate()
@@ -140,12 +138,12 @@ const UserMenu = ({ currentUser }) => {
                   label="Login"
                   onClick={() => { loginModal() }}
                 />
-                <LoginModal />
+
                 <MenuItem
                   label="Sign up"
                   onClick={() => { registerModal() }}
                 />
-                <RegisterModal />
+          
               </>
             )}
           </div>

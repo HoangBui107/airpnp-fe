@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getPreSignURL, uploadImageProductToS3 } from "./fileThunk";
+import { getMultiPreSignURL, getPreSignURL, uploadImageProductToS3 } from "./fileThunk";
 
 
 
@@ -29,6 +29,20 @@ const fileSlice = createSlice({
             state.error = ''
         })
         builder.addCase(getPreSignURL.rejected, (state,action) =>{
+            state.loading= false
+            state.error = action.payload
+        })
+
+        builder.addCase(getMultiPreSignURL.pending,(state,action)=>{
+            state.loading = true
+            state.error = ''
+        })
+        builder.addCase(getMultiPreSignURL.fulfilled, (state, action) =>{
+            state.loading=false
+            state.data = action.payload
+            state.error = ''
+        })
+        builder.addCase(getMultiPreSignURL.rejected, (state,action) =>{
             state.loading= false
             state.error = action.payload
         })
