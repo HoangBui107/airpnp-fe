@@ -122,12 +122,12 @@ const Details = () => {
                             <div className="aspect-square w-full ">
                                 <img
                                     className="aspect-square rounded-l-xl object-cover cursor-pointer "
-                                    src={img[0].url}
+                                    src= {details?.roomImages?.[0]?.url}
                                     alt=""
                                 />
                             </div>
                             <div className="grid grid-cols-2 gap-2 ">
-                                {img?.map((item, index) => {
+                                {details?.roomImages?.map((item, index) => {
                                     return (
                                         <div className="aspect-square cursor-pointer object-cover " key={item?.id}>
                                             <img
@@ -184,15 +184,13 @@ const Details = () => {
 
                             <div className="border border-gray-200 w-full"></div>
                             <div className="py-6">
-                                <h1 className="py-2 font-semibold text-2xl">What this place offers</h1>
+                                <h1 className="py-2 font-semibold text-2xl">Type of accommodation service</h1>
                                 <div className="grid grid-cols-2">
                                     <div className="flex flex-row items-center">
-                                        <MdOutlineSoupKitchen size={26} />
-                                        <h1 className="px-4"> Kitchen</h1>
+                                        <h1 className="px-4"> {details?.category?.name}</h1>
                                     </div>
                                     <div className="flex flex-row items-center">
-                                        <MdOutlineSoupKitchen size={26} />
-                                        <h1 className="px-4"> Kitchen</h1>
+                                        <h1 className="px-4">  {details?.category?.description}</h1>
                                     </div>
                                 </div>
                             </div>
@@ -200,7 +198,7 @@ const Details = () => {
                             <div className="border border-gray-200 w-full"></div>
                             <div className="flex flex-row py-5">
                                 <div className="w-16 h-16 rounded-full object-cover">
-                                    <img src="https://static.vecteezy.com/system/resources/previews/002/002/257/non_2x/beautiful-woman-avatar-character-icon-free-vector.jpg" alt="" />
+                                    <img src={details?.user?.profile?.avatarUrl} alt="" />
                                 </div>
                                 <div className="flex px-5 flex-col justify-center">
                                     <h1 className="text-2xl font-bold">Hoster By : {details?.user?.profile?.fullName}</h1>
@@ -210,26 +208,8 @@ const Details = () => {
                             <div className="flex flex-col-reverse lg:flex-row py-4">
                                 <div className="flex w-full lg:w-2/4 flex-col">
                                     <div className="py-2">
-                                        <h1 className="font-bold text-lg"> Introduction</h1>
-                                        <span>
-                                            Hi, my name is {details?.user?.profile?.fullName}, and welcome to Vietnam. I have been staying and working in hospitality in Da nang for over 3 years.
-                                            Da Nang is blessed with its spectacular nature and especially the sweet and friendly people, you will love this city.
-                                            I will do my best to ensure you will have a wonderful time, so feel free to ask me anything.
-                                        </span>
-                                    </div>
-
-                                    <div className="py-2">
-                                        <h1 className="font-bold text-lg"> During your stay</h1>
-                                        <span>
-                                            Feel free to text/call me if anything arise or you need any local recommendation
-                                        </span>
-                                    </div>
-
-                                    <div className="py-2">
-                                        <h1 className="font-bold text-lg"> {details?.user?.profile?.fullName} is a Superhost</h1>
-                                        <span>
-                                            Superhosts are experienced, highly rated hosts who are committed to providing great stays for guests.
-                                        </span>
+                                        <h1 className="font-bold text-lg"> Introduction</h1>    
+                                        <div dangerouslySetInnerHTML={{ __html: details?.user?.profile?.description }}></div>
                                     </div>
                                 </div>
                                 <div className="flex w-full lg:w-2/4 flex-col lg:ml-40">
@@ -253,9 +233,8 @@ const Details = () => {
                             <div className="border border-gray-200 w-full"></div>
                             <div className="hidden sm:flex justify-center flex-col py-4 w-full ">
                                 <div>
-                                    <h1 className=" text-3xl font-bold ">5 ddeem tai khach san nha long</h1>
+                                    <h4 className=" text-xl font-bold ">Please choose start date and end date:</h4>
                                 </div>
-                                {/* <h1 className="">Where you’ll be</h1> */}
                                 <DatePicker
                                     value={selectedDateRange}
                                     onChange={handleDateChange}

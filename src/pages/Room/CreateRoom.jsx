@@ -22,7 +22,7 @@ const validationSchema = yup.object({
 
 
 const CreateRoom = () => {
-    
+
     const dispatch = useDispatch();
 
     const formik = useFormik({
@@ -96,7 +96,7 @@ const CreateRoom = () => {
     const { categories } = useSelector((state) => state.category)
     const user = jwtDecode(localStorage.getItem('token'))
 
-   
+
 
 
     useEffect(() => {
@@ -208,7 +208,15 @@ const CreateRoom = () => {
                             </Box>
                             <Box class="sm:col-span-2">
                                 <label for="brand" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Street</label>
-                                <TextField fullWidth id="outlined-basic" variant="outlined" />
+                                <TextField fullWidth id="outlined-basic" variant="outlined" name="street"
+                                    value={formik.values.street}
+                                    onChange={formik.handleChange}
+                                    error={formik.touched.street && Boolean(formik.errors.street)}
+                                    helperText={formik.touched.street && formik.errors.street}
+                                    style={{
+                                        marginBottom: "10px",
+                                        display: "inline-grid",
+                                    }} />
                             </Box>
                             <Box class="sm:col-span-2">
                                 <label for="brand" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>

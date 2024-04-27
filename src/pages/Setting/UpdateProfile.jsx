@@ -1,14 +1,11 @@
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
-import { Upload, message } from 'antd';
-import axios from "axios";
+import { Upload } from 'antd';
 import { jwtDecode } from "jwt-decode";
 import { useEffect, useState } from "react";
-import { FaCheck, FaXmark } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
-import { getPreSignURL } from "../../redux/file/fileThunk";
-import { getProfileByToken, updateProfile } from "../../redux/profile/profileThunk";
+import { getProfileByToken, updateProfile, uploadAvatar } from "../../redux/profile/profileThunk";
 import BreadcrumbSetting from "./Breadcrumb";
-import { Autocomplete, Box, TextField, Button } from '@mui/material';
+import {Box, TextField, Button } from '@mui/material';
 import ReactQuill from 'react-quill';
 import * as yup from "yup";
 import { useFormik } from 'formik';
@@ -24,61 +21,56 @@ const UpdateProfile = () => {
     const [description, setDescription] = useState('');
     const handleEditorChange = (content) => {
         setDescription(content);
+        formik.setFieldValue('description', content);
     };
     const dispatch = useDispatch();
 
     const formik = useFormik({
         initialValues: {
-            name: '',
+            fullName: '',
+            avatarUrl: '',
             address: '',
             phone: '',
             description: ''
         },
         validationSchema: validationSchema,
-        onSubmit: async (values) => {
-            await dispatch(createRoom(values));
+        onSubmit: (values) => {
+            dispatch(updateProfile({id: user.UserId, profile: values}));
         },
     });
 
     const { profile } = useSelector((state) => state.profile)
     const user = jwtDecode(localStorage.getItem('token'))
-    const { data } = useSelector((state) => state.file)
-    const [imageUrl, setImageUrl] = useState('https://d1wuv3pBoxt0vy.cloudfront.net/avatar-users/5b383afb-771b-4729-847f-ad6e366795cd.jpg');
+    const [imageUrl, setImageUrl] = useState('https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436188.jpg?size=338&ext=jpg&ga=GA1.1.1224184972.1714176000&semt=sph');
 
     useEffect(() => {
-        dispatch(getProfileByToken()).then((res) => {
-            const updatedFields = fields.map(field => ({
-                ...field,
-                value: res.payload[fieldAttributeMap[field.name]]
+        if (profile) {
+            formik.setValues({
+                fullName: profile.fullName || "",
+                avatarUrl: profile.avatarUrl || "",
+                phone: profile.phone || "",
+                address: profile.address || "",
+                description: profile.description || "",
+            });
+            setDescription(profile.description);
+            setImageUrl(profile.avatarUrl);
+        }
+    }, [profile]);
 
-            }));
-            console.log(res)
-            setImageUrl(res?.payload?.avatarUrl)
-            setFields(updatedFields);
-        }).catch(error => {
-            console.error('Lỗi khi lấy dữ liệu hồ sơ:', error);
-        });
+
+    useEffect(() => {
+        dispatch(getProfileByToken());
     }, []);
 
     const [loading, setLoading] = useState(false);
 
-    const axiosClient = axios.create({
-        baseURL: "",
-    });
-
-    const handleChange = async (event) => {
-        // const file = event.fileList[0].originFileObj
-        // if (file) {
-        //     await dispatch(getPreSignURL()).unwrap().then(async (res) => {
-        //         const reponse = await axiosClient.put(res?.result?.preSignedUrl, file)
-        //         await dispatch(getProfileByToken()).unwrap().then((res) => {
-        //             setImageUrl(res?.avatarUrl)
-        //         })
-        //         return reponse
-        //     })
-        // }
-    };
-
+    const handleUploadAvatar = (event) => {
+        const file = event.fileList[0].originFileObj
+        if (file) {
+          dispatch(uploadAvatar(file));
+          dispatch(getProfileByToken());
+        }
+      };
     const uploadButton = (
         <button style={{ border: 0, background: 'none' }} type="button">
             {loading ? <LoadingOutlined /> : <PlusOutlined />}
@@ -99,21 +91,20 @@ const UpdateProfile = () => {
                                 listType="picture-circle"
                                 className="avatar-uploader"
                                 showUploadList={false}
-                                beforeUpload={beforeUpload}
-                                onChange={handleChange}
+                            onChange={handleUploadAvatar}
                             >
-                                {imageUrl ? <img loading='lazy' className=" rounded-full" src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
+                                {imageUrl ? <img loading='lazy' className="w-40 rounded-full" src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
                             </Upload>
                         </Box>
                         <Box class="w-full">
-                            <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
+                            <label for="fullName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
                             <TextField fullWidth id="outlined-basic" variant="outlined"
-                                name="name"
-                                value={formik.values.name}
+                                name="fullName"
+                                value={formik.values.fullName}
                                 onChange={formik.handleChange}
-                                error={formik.touched.name && Boolean(formik.errors.name)}
-                                helperText={formik.touched.name && formik.errors.name} 
-                                />
+                                error={formik.touched.fullName && Boolean(formik.errors.fullName)}
+                                helperText={formik.touched.fullName && formik.errors.fullName}
+                            />
                         </Box>
 
                         <Box class="w-full">
@@ -123,8 +114,8 @@ const UpdateProfile = () => {
                                 value={formik.values.phone}
                                 onChange={formik.handleChange}
                                 error={formik.touched.phone && Boolean(formik.errors.phone)}
-                                helperText={formik.touched.phone && formik.errors.phone}     
-                                />
+                                helperText={formik.touched.phone && formik.errors.phone}
+                            />
                         </Box>
 
                         <Box class="w-full">
@@ -134,8 +125,8 @@ const UpdateProfile = () => {
                                 value={formik.values.address}
                                 onChange={formik.handleChange}
                                 error={formik.touched.address && Boolean(formik.errors.address)}
-                                helperText={formik.touched.address && formik.errors.address} 
-                                />
+                                helperText={formik.touched.address && formik.errors.address}
+                            />
                         </Box>
                         <Box class="sm:col-span-2">
                             <label for="brand" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
@@ -150,7 +141,13 @@ const UpdateProfile = () => {
                             </Box>
                         </Box>
                         <Box className="flex justify-end mt-4">
-                            <button className="px-4 py-2 bg-white text-black border border-black hover:bg-black hover:text-white font-medium rounded-lg" onClick={() => { update() }}>Update profile</button>
+                            <Button
+                                type="submit"
+                                variant="outlined"
+                                onClick={formik.handleSubmit}
+                            >
+                                Save Change
+                            </Button>
                         </Box>
                     </Box>
                     <Box className="flex flex-col w-1/3">

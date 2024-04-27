@@ -6,7 +6,7 @@ import Details from './pages/Room/Details';
 import ListPage from './pages/List/ListPage';
 import { Suspense, useEffect, useState } from 'react';
 import AccountSetting from './pages/Setting/AccountSetting';
-import PersonalInfo from './pages/Setting/UpdateProfile';
+import UpdateProfile from './pages/Setting/UpdateProfile';
 import HomeAdmin from './pages/HomeAdmin/HomeAdmin';
 import OwnerPage from './pages/HomeOwner/OwnerPage';
 import DetailsOrder from './pages/Orders/DetailsOrder';
@@ -69,7 +69,7 @@ function App() {
 
             <Route path='account-setting' >
               <Route path='' element={<AccountSetting />} />
-              <Route path='personal-info' element={<PersonalInfo />} />
+              <Route path='personal-info' element={<UpdateProfile />} />
               <Route path='secutiry' element={<Security />} />
 
             </Route>
