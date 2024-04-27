@@ -4,7 +4,6 @@ import { combineReducers, configureStore  } from "@reduxjs/toolkit";
 import profileSlice from "./profile/profileSlice";
 import roomSlice from "./room/roomSlice";
 import categorySlice from "./category/categorySlice";
-import commonSlice from "./common/commonSlice";
 import { jwtDecode } from "jwt-decode";
 import fileSlice from"./file/fileSlice"
 import orderSlice from "./order/orderSlice";
@@ -26,7 +25,6 @@ const reducer = combineReducers({
     profile: profileSlice,
     room: roomSlice,
     category: categorySlice,
-    common: commonSlice,
     file: fileSlice,
     order: orderSlice
 })

@@ -109,25 +109,6 @@ const CreateRoom = () => {
                 </form>
             </div>
         </section>
-            <RichTextEditorProvider editor={editor}>
-                <RichTextField
-                    controls={
-                        <MenuControlsContainer>
-                            <MenuSelectHeading />
-                            <MenuDivider />
-                            <MenuButtonBold />
-                            <MenuButtonItalic />
-                            <MenuButtonCode />
-                            {/* <MenuSelectFontFamily options={[{ label: "Monospace", value: "monospace" }]} /> 
-             */}
-
-                            {/* Add more controls of your choosing here */}
-                        </MenuControlsContainer>
-                    }
-                />
-            </RichTextEditorProvider>
-
-
         </div>
     );
 }
