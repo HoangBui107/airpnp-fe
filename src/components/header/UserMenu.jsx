@@ -44,25 +44,8 @@ const UserMenu = ({ currentUser }) => {
   };
 
   return (
-    <div className="relative">
+    <div className="relative w-[30%]">
       <div className="flex flex-row items-center gap-2">
-        <div
-          //   onClick={onRent}
-          className="
-            hidden
-            md:block
-            text-sm 
-            font-semibold 
-            py-3 
-            px-4 
-            rounded-full 
-            hover:bg-neutral-100 
-            transition 
-            cursor-pointer
-          "
-        >
-          Airbnb your home
-        </div>
         <div
           onClick={toggleOpen}
           className="
@@ -122,11 +105,7 @@ const UserMenu = ({ currentUser }) => {
                   label="My Account"
                   onClick={() => navigate('/account-setting')}
                 />
-                <MenuItem
-                  label="Airbnb your home"
-                //   onClick={rentModal.onOpen}
-                />
-                <hr />
+               
                 <MenuItem
                   label="Logout"
                   onClick={() => { logout() }}

@@ -9,29 +9,52 @@ import { getAllCategory } from "../../redux/category/categoryThunk";
 import getCoordinatesFromAddress from "./GetCoordinatesFromAddress ";
 import { createRoom } from "../../redux/room/roomThunks";
 import { jwtDecode } from "jwt-decode";
-import { getMultiPreSignURL } from "../../redux/file/fileThunk";
-import axios from "axios";
 import * as yup from "yup";
 import { Autocomplete, Box, TextField, Button } from '@mui/material';
 import { Country, State } from 'country-state-city';
 
 const validationSchema = yup.object({
-    // name: yup.string().required("Name is required"),
-    // description: yup.string().required("description is required"),
-    // street: yup.string().required("street is required"),
-    // price: yup.number().required("price is required"),
-
+    name: yup.string().required("Name is required"),
+    description: yup.string().required("description is required"),
+    street: yup.string().required("street is required"),
+    price: yup.number().required("price is required"),
 });
 
 
 const CreateRoom = () => {
+    
     const dispatch = useDispatch();
+
+    const formik = useFormik({
+        initialValues: {
+            name: '',
+            street: '',
+            country: '',
+            codeCountry: '',
+            city: '',
+            codeCity: '',
+            description: '',
+            district: '',
+            email: user?.UserName,
+            latitude: '',
+            longitude: '',
+            userId: user?.UserId,
+            categoryId: '',
+            files: [],
+            price: 0,
+            latitude: "16.028102540830243",
+            longitude: "108.23789666115937"
+        },
+        validationSchema: validationSchema,
+        onSubmit: async (values) => {
+            await dispatch(createRoom(values));
+        },
+    });
+
     const [value2, setValue2] = useState('');
     const handleEditorChange = (content) => {
         setValue2(content);
         formik.setFieldValue('description', content); // Set country ISO code in Formik
-
-        console.log('Nội dung mới:', content);
     };
     const [selectedCountry, setSelectedCountry] = useState(Country.getAllCountries()[0] ? {
         label: `${Country.getAllCountries()[0].name} (${Country.getAllCountries()[0].isoCode})`,
@@ -73,53 +96,8 @@ const CreateRoom = () => {
     const { categories } = useSelector((state) => state.category)
     const user = jwtDecode(localStorage.getItem('token'))
 
-    const formik = useFormik({
-        initialValues: {
-            name: '',
-            street: '',
-            country: '',
-            codeCountry: '',
-            city: '',
-            codeCity: '',
-            description: '',
-            district: '',
-            email: user?.UserName,
-            latitude: '',
-            longitude: '',
-            userId: user?.UserId,
-            categoryId: '',
-            price: 0,
-            latitude: "16.028102540830243",
-            longitude: "108.23789666115937"
-        },
-        validationSchema: validationSchema,
-        onSubmit: async (values) => {
-            alert(values)
-            // await dispatch(createRoom(values));
-        },
-    });
+   
 
-    const axiosClient = axios.create({
-        baseURL: "",
-    });
-
-    const onSubmit = async (values, { setSubmitting, setFieldValue }) => {
-
-        console.log(values);
-        const { price, ...data } = values
-        await dispatch(createRoom(data)).unwrap().then(async (res) => {
-            await dispatch(getMultiPreSignURL({ id: res?.id, quantity: files.length })).unwrap().then(async (url) => {
-                console.log(url)
-                const promises = files.map(async (file) => {
-                    const response = await axiosClient.put(url?.[0]?.preSignedUrl, file).unwrap();
-                    return response;
-                });
-                await Promise.all(promises);
-
-            })
-        })
-        setSubmitting(false);
-    };
 
     useEffect(() => {
         dispatch(getAllCategory())
@@ -129,23 +107,29 @@ const CreateRoom = () => {
         const coordinates = await getCoordinatesFromAddress(address, cityId.name, selectedCountry.id);
         return coordinates
     }
+    const [imagesUpload, setImagesUpload] = useState([]);
 
-    const [files, setFile] = useState([]);
-    const handleFile = (e) => {
-        let file = e.target.files;
+    const handleFile = (event) => {
+        const file = event.target.files[0];
 
-        for (let i = 0; i < file.length; i++) {
-            const fileType = file[i]['type'];
-            const validImageTypes = ['image/gif', 'image/jpeg', 'image/png'];
-            if (validImageTypes.includes(fileType)) {
-                setFile([...files, file[i]]);
-            }
+        if (file) {
+            setImagesUpload([...imagesUpload, file]);
+            formik.setFieldValue("files", [...formik.values.files, file]);
         }
+
     };
     const removeImage = (i) => {
-        setFile(files.filter(x => x.name !== i));
-    }
-
+        formik.setFieldValue('files', formik.values.files.filter(x => x.name !== i)); // Xóa tệp khỏi danh sách files trong Formik
+        setImagesUpload(imagesUpload.filter(x => x.name !== i));
+        console.log(formik.values);
+    };
+    const handleCategoryChange = (event, newValue) => {
+        if (newValue) {
+            formik.setFieldValue('categoryId', newValue.id); // Lưu ID của Category vào trường categoryId của Formik
+        } else {
+            formik.setFieldValue('categoryId', ''); // Xóa ID của Category khi không có Category được chọn
+        }
+    };
     return (
         <>
             <Box> <section class="bg-white dark:bg-gray-900">
@@ -167,9 +151,19 @@ const CreateRoom = () => {
                                         display: "inline-grid",
                                     }} />
                             </Box>
-                            <Box class="w-full">
-                                <label for="brand" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Street</label>
-                                <TextField fullWidth id="outlined-basic" variant="outlined" />
+
+                            <Box>
+                                <label for="categoryId" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
+                                <Autocomplete
+                                    fullWidth
+                                    disablePortal
+                                    id="combo-box-demo"
+                                    options={categories}
+                                    getOptionLabel={(option) => option.name} // Chọn thuộc tính hiển thị là name của Category
+                                    getOptionSelected={(option, value) => option.id === value.id} // Chọn thuộc tính được chọn dựa trên id
+                                    onChange={handleCategoryChange} // Gọi hàm handleCategoryChange khi có sự kiện thay đổi Category
+                                    renderInput={(params) => <TextField {...params} variant="outlined" />} // Sử dụng TextField của Material-UI cho input
+                                />
                             </Box>
                             <Box class="w-full">
                                 <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
@@ -180,15 +174,7 @@ const CreateRoom = () => {
                                     error={formik.touched.price && Boolean(formik.errors.price)}
                                     helperText={formik.touched.price && formik.errors.price} />
                             </Box>
-                            <Box>
-                                <label for="categoryId" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
-                                <Autocomplete fullWidth
-                                    disablePortal
-                                    id="combo-box-demo"
-                                    options={top100Films}
-                                    renderInput={(params) => <TextField {...params} />}
-                                />
-                            </Box>
+
                             <Box>
                                 <label for="country" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Country</label>
                                 <Autocomplete
@@ -220,16 +206,13 @@ const CreateRoom = () => {
                                     renderInput={(params) => <TextField {...params} variant="outlined" />}
                                 />
                             </Box>
-                            <Box>
-                                <label for="district" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">District</label>
-                                <Autocomplete fullWidth
-                                    disablePortal
-                                    id="combo-box-demo"
-                                    options={top100Films}
-                                    renderInput={(params) => <TextField {...params} />}
-                                />
+                            <Box class="sm:col-span-2">
+                                <label for="brand" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Street</label>
+                                <TextField fullWidth id="outlined-basic" variant="outlined" />
                             </Box>
                             <Box class="sm:col-span-2">
+                                <label for="brand" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
+
                                 <Box className='editor'>
                                     <ReactQuill theme="snow"
                                         value={value2}
@@ -254,7 +237,7 @@ const CreateRoom = () => {
                                 </label>
                             </Box>
                             <Box className="flex flex-wrap gap-2 mt-2 relative">
-                                {files.map((file, key) => {
+                                {imagesUpload.map((file, key) => {
                                     return (
                                         <Box key={key} className="overflow-hidden relative">
                                             <i onClick={() => { removeImage(file.name) }} className="mdi mdi-close absolute right-1 hover:text-white cursor-pointer">X</i>
@@ -264,7 +247,7 @@ const CreateRoom = () => {
                                 })}
                             </Box>
 
-                            <Button type="submit" class="bg-blue-500 hover:bg-blue-700 w-[30%] rounded-lg py-2 text-white font-medium"   onClick={formik.handleSubmit}>
+                            <Button type="submit" class="bg-blue-500 hover:bg-blue-700 w-[30%] rounded-lg py-2 text-white font-medium" onClick={formik.handleSubmit}>
                                 Add product
                             </Button>
                         </Box>
@@ -272,134 +255,7 @@ const CreateRoom = () => {
                 </Box>
             </section>
             </Box>
-            {/* )} */}
         </>);
 }
 
 export default CreateRoom;
-const top100Films = [
-    { label: 'The Shawshank Redemption', year: 1994 },
-    { label: 'The Godfather', year: 1972 },
-    { label: 'The Godfather: Part II', year: 1974 },
-    { label: 'The Dark Knight', year: 2008 },
-    { label: '12 Angry Men', year: 1957 },
-    { label: "Schindler's List", year: 1993 },
-    { label: 'Pulp Fiction', year: 1994 },
-    {
-        label: 'The Lord of the Rings: The Return of the King',
-        year: 2003,
-    },
-    { label: 'The Good, the Bad and the Ugly', year: 1966 },
-    { label: 'Fight Club', year: 1999 },
-    {
-        label: 'The Lord of the Rings: The Fellowship of the Ring',
-        year: 2001,
-    },
-    {
-        label: 'Star Wars: Episode V - The Empire Strikes Back',
-        year: 1980,
-    },
-    { label: 'Forrest Gump', year: 1994 },
-    { label: 'Inception', year: 2010 },
-    {
-        label: 'The Lord of the Rings: The Two Towers',
-        year: 2002,
-    },
-    { label: "One Flew Over the Cuckoo's Nest", year: 1975 },
-    { label: 'Goodfellas', year: 1990 },
-    { label: 'The Matrix', year: 1999 },
-    { label: 'Seven Samurai', year: 1954 },
-    {
-        label: 'Star Wars: Episode IV - A New Hope',
-        year: 1977,
-    },
-    { label: 'City of God', year: 2002 },
-    { label: 'Se7en', year: 1995 },
-    { label: 'The Silence of the Lambs', year: 1991 },
-    { label: "It's a Wonderful Life", year: 1946 },
-    { label: 'Life Is Beautiful', year: 1997 },
-    { label: 'The Usual Suspects', year: 1995 },
-    { label: 'Léon: The Professional', year: 1994 },
-    { label: 'Spirited Away', year: 2001 },
-    { label: 'Saving Private Ryan', year: 1998 },
-    { label: 'Once Upon a Time in the West', year: 1968 },
-    { label: 'American History X', year: 1998 },
-    { label: 'Interstellar', year: 2014 },
-    { label: 'Casablanca', year: 1942 },
-    { label: 'City Lights', year: 1931 },
-    { label: 'Psycho', year: 1960 },
-    { label: 'The Green Mile', year: 1999 },
-    { label: 'The Intouchables', year: 2011 },
-    { label: 'Modern Times', year: 1936 },
-    { label: 'Raiders of the Lost Ark', year: 1981 },
-    { label: 'Rear Window', year: 1954 },
-    { label: 'The Pianist', year: 2002 },
-    { label: 'The Departed', year: 2006 },
-    { label: 'Terminator 2: Judgment Day', year: 1991 },
-    { label: 'Back to the Future', year: 1985 },
-    { label: 'Whiplash', year: 2014 },
-    { label: 'Gladiator', year: 2000 },
-    { label: 'Memento', year: 2000 },
-    { label: 'The Prestige', year: 2006 },
-    { label: 'The Lion King', year: 1994 },
-    { label: 'Apocalypse Now', year: 1979 },
-    { label: 'Alien', year: 1979 },
-    { label: 'Sunset Boulevard', year: 1950 },
-    {
-        label: 'Dr. Strangelove or: How I Learned to Stop Worrying and Love the Bomb',
-        year: 1964,
-    },
-    { label: 'The Great Dictator', year: 1940 },
-    { label: 'Cinema Paradiso', year: 1988 },
-    { label: 'The Lives of Others', year: 2006 },
-    { label: 'Grave of the Fireflies', year: 1988 },
-    { label: 'Paths of Glory', year: 1957 },
-    { label: 'Django Unchained', year: 2012 },
-    { label: 'The Shining', year: 1980 },
-    { label: 'WALL·E', year: 2008 },
-    { label: 'American Beauty', year: 1999 },
-    { label: 'The Dark Knight Rises', year: 2012 },
-    { label: 'Princess Mononoke', year: 1997 },
-    { label: 'Aliens', year: 1986 },
-    { label: 'Oldboy', year: 2003 },
-    { label: 'Once Upon a Time in America', year: 1984 },
-    { label: 'Witness for the Prosecution', year: 1957 },
-    { label: 'Das Boot', year: 1981 },
-    { label: 'Citizen Kane', year: 1941 },
-    { label: 'North by Northwest', year: 1959 },
-    { label: 'Vertigo', year: 1958 },
-    {
-        label: 'Star Wars: Episode VI - Return of the Jedi',
-        year: 1983,
-    },
-    { label: 'Reservoir Dogs', year: 1992 },
-    { label: 'Braveheart', year: 1995 },
-    { label: 'M', year: 1931 },
-    { label: 'Requiem for a Dream', year: 2000 },
-    { label: 'Amélie', year: 2001 },
-    { label: 'A Clockwork Orange', year: 1971 },
-    { label: 'Like Stars on Earth', year: 2007 },
-    { label: 'Taxi Driver', year: 1976 },
-    { label: 'Lawrence of Arabia', year: 1962 },
-    { label: 'Double Indemnity', year: 1944 },
-    {
-        label: 'Eternal Sunshine of the Spotless Mind',
-        year: 2004,
-    },
-    { label: 'Amadeus', year: 1984 },
-    { label: 'To Kill a Mockingbird', year: 1962 },
-    { label: 'Toy Story 3', year: 2010 },
-    { label: 'Logan', year: 2017 },
-    { label: 'Full Metal Jacket', year: 1987 },
-    { label: 'Dangal', year: 2016 },
-    { label: 'The Sting', year: 1973 },
-    { label: '2001: A Space Odyssey', year: 1968 },
-    { label: "Singin' in the Rain", year: 1952 },
-    { label: 'Toy Story', year: 1995 },
-    { label: 'Bicycle Thieves', year: 1948 },
-    { label: 'The Kid', year: 1921 },
-    { label: 'Inglourious Basterds', year: 2009 },
-    { label: 'Snatch', year: 2000 },
-    { label: '3 Idiots', year: 2009 },
-    { label: 'Monty Python and the Holy Grail', year: 1975 },
-];

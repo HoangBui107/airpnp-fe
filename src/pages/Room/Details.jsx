@@ -5,17 +5,19 @@ import { IoBedOutline } from "react-icons/io5";
 import { MdOutlineSoupKitchen } from "react-icons/md";
 import Map from "../../components/common/Map";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getRoomById, sendFeedback } from "../../redux/room/roomThunks";
 import { Link } from "react-router-dom";
 import DatePicker from "../../components/calendar/Calendar";
 import TextField from '@mui/material/TextField';
+import { openLogin } from "../../redux/modal/modalSlice";
 
 const Details = () => {
     const dispatch = useDispatch()
     const { id } = useParams()
     const { details } = useSelector((state) => state.room)
-    console.log(details)
+    const { isLogin } = useSelector((state) => state.auth)
+    const navigate = useNavigate()
     useEffect(() => {
         dispatch(getRoomById({ id: id }))
     }, [])
@@ -25,11 +27,11 @@ const Details = () => {
         const newFeedback = event.target.value;
         // Cập nhật state feedback
         setFeedback(newFeedback);
-      };
+    };
 
-      const handleSendFeedback = (event) => {
-       dispatch(sendFeedback({id: id, feedback: feedback}))
-      };
+    const handleSendFeedback = (event) => {
+        dispatch(sendFeedback({ id: id, feedback: feedback }))
+    };
     const [selectedDateRange, setSelectedDateRange] = useState({
         startDate: new Date(),
         endDate: new Date(),
@@ -105,6 +107,12 @@ const Details = () => {
         ]
     }
     const disabledDates = slotsString.map(dateString => new Date(dateString));
+    const handleSubmit = () => {
+        if (!isLogin) {
+            dispatch(openLogin())
+        }
+        navigate(`/order/${id}`)
+    }
     return (
         <>
             <div className="sm:container mx-auto">
@@ -171,8 +179,7 @@ const Details = () => {
                             <div className="border border-gray-200 w-full"></div>
                             <div className="py-5">
                                 <h1 className="font-semibold pb-2">Description</h1>
-                                <h6 className="pb-2">{details?.description}</h6>
-                                <h2 className="underline">More </h2>
+                                <div dangerouslySetInnerHTML={{ __html: details?.description }}></div>
                             </div>
 
                             <div className="border border-gray-200 w-full"></div>
@@ -227,8 +234,8 @@ const Details = () => {
                                 </div>
                                 <div className="flex w-full lg:w-2/4 flex-col lg:ml-40">
                                     <TextField id="outlined-multiline-static"
-                                     value={feedback}
-                                     onChange={handleChange}
+                                        value={feedback}
+                                        onChange={handleChange}
                                         label="Feedback"
                                         multiline
                                         rows={12}
@@ -267,11 +274,9 @@ const Details = () => {
 
                                 </div>
                                 <div className="flex items-center justify-center">
-                                    <Link className="flex items-center" to={`/order/${id}`}>
-                                        <button className="flex py-3 px-8 border border-none justify-center items-center w-full rounded-2xl bg-primary text-white">
-                                            Booking
-                                        </button><i className="fas fa-eye  ms-2"></i>
-                                    </Link>
+                                    <button className="flex py-3 px-8 border border-none justify-center items-center w-full rounded-2xl bg-primary text-white">
+                                        Booking
+                                    </button><i className="fas fa-eye  ms-2"></i>
                                 </div>
 
 
@@ -288,11 +293,11 @@ const Details = () => {
                                     <h1>/night</h1>
                                 </div>
                                 <span className="py-2">
-                                    <Link to={`/order/${id}`}>
-                                        <button className="flex py-2 border border-none justify-center items-center w-full rounded-lg bg-primary text-white">
-                                            Booking
-                                        </button><i className="fas fa-eye  ms-2"></i>
-                                    </Link>
+                                    {/* <Link to={`/order/${id}`}> */}
+                                    <button className="flex py-2 border border-none justify-center items-center w-full rounded-lg bg-primary text-white" onClick={() => { handleSubmit() }}>
+                                        Booking
+                                    </button><i className="fas fa-eye  ms-2"></i>
+                                    {/* </Link> */}
 
                                 </span>
 

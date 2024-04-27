@@ -1,9 +1,5 @@
-import { useEffect } from "react";
-import { MdOutlineMedicalInformation, MdPayments, MdOutlineSecurity } from "react-icons/md";
+import { MdOutlineMedicalInformation, MdOutlineSecurity, MdPayments } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-
-  
-
 
 const AccountSetting = () => {
     const navigate = useNavigate();
@@ -18,7 +14,8 @@ const AccountSetting = () => {
         {
             name: "Login & security",
             icon: MdOutlineSecurity ,
-            description: "Update your password and secure your account"
+            description: "Update your password and secure your account",
+            param: 'secutiry'
         },
         {
             name: "Payment & payouts",

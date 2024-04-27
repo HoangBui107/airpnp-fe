@@ -14,7 +14,7 @@ const Dashboard = () =>{
         <>
         <div className="w-full py-2 px-5 bg-[#222b3c] h-full overflow-y-auto  ">
                         <div className="grid grid-cols-1 mg:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                            <div className="  grid grid-col-1 grid-row-2 gap-4 col-start-1 w-1/4 " >
+                            <div className="  grid grid-col-1 grid-row-2 gap-4 col-start-1 " >
                                 <div className="p-5 rounded-10 border-2 border-solid border-[#384256]">
                                     <TopBox />
                                 </div>
@@ -23,7 +23,7 @@ const Dashboard = () =>{
                                 </div>
                             </div>
                             <div className="grid grid-cols-1 gap-5 col-span-1 lg:col-span-2 ">
-                                <div className="grid xl:grid-cols-2 grid-row-2 gap-4 grid-cols-subgrid" >
+                                <div className="grid xl:grid-cols-2 grid-row-2 gap-4" >
                                     <div className="p-5 rounded-10 border-2 border-solid border-[#384256] "  >
                                         <ChartBox {...chartBoxUser} />
                                     </div>
@@ -41,7 +41,7 @@ const Dashboard = () =>{
                                     <BigChartBox />
                                 </div>
                             </div>
-                            <div className="  grid grid-col-1 grid-row-2 gap-4 col-span-1 w-1/4  " >
+                            <div className="  grid grid-col-1 grid-row-2 gap-4 col-span-1  " >
                                 <div className="xl:p-5 rounded-10 border-2 border-solid border-[#384256]">
                                     <PieChartBox />
                                 </div>

@@ -1,5 +1,5 @@
 // import { useEffect, useState } from "react";
-// import { FaAirbnb } from "react-icons/fa6";
+// import { FaAirbnb your homebnb } from "react-icons/fa6";
 // import UserMenu from "../../components/UserMenu";
 // import { useNavigate } from "react-router-dom";
 // import { useDispatch, useSelector } from "react-redux";
@@ -168,7 +168,7 @@ export default function Navbar() {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
-    const navigate = useNavigate()
+  const navigate = useNavigate()
   const [type, setType] = useState('current')
   const dispatch = useDispatch();
   const handleChangeType = (currentType) => {
@@ -252,17 +252,17 @@ export default function Navbar() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-            <ThemeProvider theme={darkTheme}>
+      <ThemeProvider theme={darkTheme}>
 
-      <AppBar position="static">
-        <Toolbar>
-          <Box
-          className="flex flex-row items-center cursor-pointer"
-          onClick={() => { navigate('/') }}>
-          <FaAirbnb className="font-semibold transform rotate-180 cursor-pointer" color="#F5385D" size={40} />
-          <h1 className="text-primary text-lg font-semibold font-circular pl-3">Airpnp</h1>
-        </Box>
-          {/* <Search>
+        <AppBar position="static" sx={{ boxShadow: '0px 0px 0px rgba(0, 0, 0, 0.1)', borderBottom: '1px solid rgba(0, 0, 0, 0.1)' }} >
+          <Toolbar>
+            <Box
+              className="flex flex-row items-center cursor-pointer "
+              onClick={() => { navigate('/') }}>
+              <FaAirbnb className="font-semibold transform rotate-180 cursor-pointer" color="#F5385D" size={40} />
+              <h1 className="text-primary text-lg font-semibold font-circular pl-3">Airpnp</h1>
+            </Box>
+            {/* <Search>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
@@ -271,42 +271,42 @@ export default function Navbar() {
               inputProps={{ 'aria-label': 'search' }}
             />
           </Search> */}
-          <div className='flex items-center justify-center w-full'>
-            <SearchFilters/>
-          </div>
-          <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="error">
-                <MailIcon />
-              </Badge>
-            </IconButton>
-            <IconButton
-              size="large"
-              aria-label="show 17 new notifications"
-              color="inherit"
-            >
-              <Badge badgeContent={17} color="error">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-            <UserMenu currentUser={profile} />
-          </Box>
-          <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size="large"
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
-            >
-              <MoreIcon />
-            </IconButton>
-          </Box>
-        </Toolbar>
-      </AppBar>
-      {renderMobileMenu}
+            <div className='flex items-center justify-center w-full'>
+              <SearchFilters />
+            </div>
+            <Box sx={{ flexGrow: 1 }} />
+            <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+              <IconButton size="large" aria-label="show 4 new mails" color="inherit">
+                <Badge badgeContent={4} color="error">
+                  <MailIcon />
+                </Badge>
+              </IconButton>
+              <IconButton
+                size="large"
+                aria-label="show 17 new notifications"
+                color="inherit"
+              >
+                <Badge badgeContent={17} color="error">
+                  <NotificationsIcon />
+                </Badge>
+              </IconButton>
+              <UserMenu currentUser={profile} />
+            </Box>
+            <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+              <IconButton
+                size="large"
+                aria-label="show more"
+                aria-controls={mobileMenuId}
+                aria-haspopup="true"
+                onClick={handleMobileMenuOpen}
+                color="inherit"
+              >
+                <MoreIcon />
+              </IconButton>
+            </Box>
+          </Toolbar>
+        </AppBar>
+        {renderMobileMenu}
       </ThemeProvider>
 
     </Box>

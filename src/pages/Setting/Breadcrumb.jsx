@@ -1,6 +1,6 @@
 import { HomeOutlined, UserOutlined } from '@ant-design/icons';
 import { Breadcrumb } from 'antd';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 const BreadcrumbSetting = () => {
   const navigate = useNavigate()
   return (

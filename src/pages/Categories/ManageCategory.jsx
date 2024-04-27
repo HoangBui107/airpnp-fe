@@ -40,7 +40,7 @@ const ManageCategories = () => {
         validationSchema: validationSchema2,
         onSubmit: async (values) => {
             console.log(values)
-            await dispatch(updateCategory(values));
+            await dispatch(updateCategory(values)).unwarp();
             setSelectedCategoryIndex(null)
         },
     });

@@ -44,44 +44,8 @@ const Details = () => {
         },
 
     ]
-    // useEffect(())
-    const [center, setCenter] = useState({
-        lat: 16.042834,
-        lng: 108.169094,
-        address: "My Hotel",
-    });
 
-    const data =
-    {
-        id: 1,
-        category: {
-            id: 1,
-            name: 'studio'
-        },
-        name: 'Nha long',
-        streets: '91 phuoc ly 1',
-        district: 'Son tra',
-        city: 'Da nang',
-        country: 'Viet Nam',
-        email: 'hoangbui23@gmail.com',
-        longitude: '',
-        latitude: '',
-        price: '320',
-        description: 'There is a place filled with sunshine & sea breeze near My Khe beach called Astro House, where you can catch the vibe of Santorini in Danang. Nested on 3rd floor, city views appear through the big windows.',
-        feedbacks: [
-            {
-                userId: '',
-                hotelId: '',
-                content: 'phong dep vcl',
-            }
-        ],
-        roomImages: [
-            {
-                id: 1,
-                url: "",
-            }
-        ]
-    }
+
 
     return (
         <>

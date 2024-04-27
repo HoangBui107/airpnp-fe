@@ -6,7 +6,7 @@ import Details from './pages/Room/Details';
 import ListPage from './pages/List/ListPage';
 import { Suspense, useEffect, useState } from 'react';
 import AccountSetting from './pages/Setting/AccountSetting';
-import PersonalInfo from './pages/Setting/PersonalInfo';
+import PersonalInfo from './pages/Setting/UpdateProfile';
 import HomeAdmin from './pages/HomeAdmin/HomeAdmin';
 import OwnerPage from './pages/HomeOwner/OwnerPage';
 import DetailsOrder from './pages/Orders/DetailsOrder';
@@ -17,8 +17,11 @@ import Dashboard from './pages/HomeAdmin/Dashboard/Dashboard';
 import ForgetPassword from './components/modals/ForgetPassword';
 import LoginModal from './components/modals/LoginModal';
 import RegisterModal from './components/modals/RegisterModal';
-import Security from './pages/Setting/Security';
+import Security from './pages/Setting/ChangePassword';
 import ManageCategories from './pages/Categories/ManageCategory';
+import ManagerUser from './pages/HomeAdmin/User/User';
+import SpinLoading from './components/spin/Spin';
+import ToastNotification from './components/toast/ToastNotification'
 function App() {
   const currentPath = window.location.pathname.split('/');
   const [isSmallScreen, setIsSmallScreen] = useState(false);
@@ -32,45 +35,50 @@ function App() {
   }, [])
   return (
     <>
-    {currentPath[1] === "admin" ? (
-      <>
-      </>
-    ) : (
-      <div className={currentPath[1] === "admin" ? '' :'h-20 relative '}>
+      {currentPath[1] === "admin" ? (
+        <>
+        </>
+      ) : (
+        <div className={currentPath[1] === "admin" ? '' : ' max-md:h-14 md:h-16 relative '} style={{padding:'0px', margin:'0px'}}>
           <div className={currentPath[1] === "admin" ? '' : 'fixed top-0 w-full z-50'}>
             <Navbar />
           </div>
-      </div>
-    )}
+        </div>
+      )}
       <div className="">
 
-        <Suspense fallback={<div>Loading...</div>}>
-          <ForgetPassword/>
+        <Suspense fallback={
+          <>
+            <SpinLoading />
+          </>
+        }>
+          <ForgetPassword />
           <LoginModal />
           <RegisterModal />
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/owner' element={<OwnerPage />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='/details/:id' element={<Details />} />
-          <Route path='/list' element={<ListPage />} />
-          <Route path='/createRoom' element={<CreateRoom />} />
-          <Route path='/editRoom/:id' element={<CreateRoom />} />
-          <Route path='/order/:id' element={<DetailsOrder />} />
-          <Route path='/orders' element={<ListOrder />} />
-          <Route path='/categories' element={<ManageCategories />} />
-          
-          <Route path='account-setting' >
-            <Route path='' element={<AccountSetting />} />
-            <Route path='personal-info' element={<PersonalInfo />} />
-            <Route path='secutiry' element={<Security/>}/>
+          <ToastNotification/>
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='/owner' element={<OwnerPage />} />
+            <Route path='/login' element={<Login />} />
+            <Route path='/details/:id' element={<Details />} />
+            <Route path='/list' element={<ListPage />} />
+            <Route path='/createRoom' element={<CreateRoom />} />
+            <Route path='/editRoom/:id' element={<CreateRoom />} />
+            <Route path='/order/:id' element={<DetailsOrder />} />
+            <Route path='/orders' element={<ListOrder />} />
 
-          </Route>
-          <Route path='admin' element={<HomeAdmin />} >
-            <Route path='dashboard' element={<Dashboard/>}/>
+            <Route path='account-setting' >
+              <Route path='' element={<AccountSetting />} />
+              <Route path='personal-info' element={<PersonalInfo />} />
+              <Route path='secutiry' element={<Security />} />
 
-          </Route>
-        </Routes>
+            </Route>
+            <Route path='admin' element={<HomeAdmin />} >
+              <Route path='dashboard' element={<Dashboard />} />
+              <Route path='categories' element={<ManageCategories />} />
+              <Route path='users' element={<ManagerUser />} />
+            </Route>
+          </Routes>
         </Suspense>
       </div>
       <div className={isSmallScreen ? '' : 'hidden'}>

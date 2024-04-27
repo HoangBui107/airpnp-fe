@@ -18,9 +18,9 @@ const Home = () => {
 console.log(room)
     return (
         <>
-            <div className="relative h-24 z-10">
-                <Header />
-            </div>
+            {/* <div className="relative z-10"> */}
+            <Header />
+            {/* </div> */}
             <div className=" mx-12 sm:container  ">
                 <div className=" pt-3 h-screen grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-8 transition-all duration-500 ">
                     {room?.map((item) => {

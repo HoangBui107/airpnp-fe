@@ -1,19 +1,19 @@
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import { getRoomById } from "../../redux/room/roomThunks";
-import * as React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { Link } from "react-router-dom";
-import './ListOrder.css';
-import { getOrder } from "../../redux/order/orderThunk";
+import { format } from "date-fns";
+import * as React from 'react';
+import { useEffect, useState } from "react";
 import { MdOutlineRemoveShoppingCart } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useParams } from "react-router-dom";
 import SpinLoading from "../../components/spin/Spin";
+import { getOrder } from "../../redux/order/orderThunk";
+import './ListOrder.css';
 const ListOrder = () => {
   const dispatch = useDispatch()
   const { id } = useParams()
-  const { data, loading } = useSelector((state) => state.room)
+  
+  const { data, loading } = useSelector((state) => state.order)
   console.log(data)
   const handleCreateOrder = () => {
     // const orderId = dispatch(createOrderAction(totalPrice));
@@ -100,30 +100,31 @@ const ListOrder = () => {
           <h2 className="text-2xl font-medium">Your reservations</h2>
           <div className="flex flex-row gap-4">
             <button className="py-2 px-4 border-2 border-black rounded-3xl  ">
-              Check out (0)
+              Check out ({data.length})
             </button>
             <button className="py-2 px-4 border-2 border-black rounded-3xl ">
               Check out (0)
             </button>
           </div>
         </div>
-        <div className="bg-[#F7F7F7] flex ">
+        <div className="bg-[#F7F7F7] flex flex-col">
           {data ? (
             <>
-              <div className="flex flex-row py-4 px-2 gap-4">
-
-                <div className=" relative h-48 w-48">
-                  <img className=" object-cover max-w-48 max-h-48 rounded-xl" src="https://vcdn1-dulich.vnecdn.net/2021/07/16/1-1626437591.jpg?w=460&h=0&q=100&dpr=2&fit=crop&s=i2M2IgCcw574LT-bXFY92g" alt="" />
+            {data.map((item)=>(
+              <div className="flex flex-col sm:flex-row py-4 px-2 gap-4" key={item?.id}>
+                <div className=" relative w-full sm:h-48 sm:w-48">
+                  <img className=" object-cover sm:max-w-48 sm:max-h-48 rounded-xl" src="https://vcdn1-dulich.vnecdn.net/2021/07/16/1-1626437591.jpg?w=460&h=0&q=100&dpr=2&fit=crop&s=i2M2IgCcw574LT-bXFY92g" alt="" />
                 </div>
-                <div className="flex flex-col justify-center gap-3">
-
+                <div className="flex flex-col justify-center items-center sm:items-start gap-3">
                   <h1 className="text-xl font-medium">Khach san hoang bui</h1>
-                  <p>24/04/2024 -- 30/05/20</p>
-                  <p>300$</p>
-                  <p>khach san xin vcl</p>
-                  <p>loai 1 phong ngu </p>
+                  <p>{format(item?.startDate, "MM/dd/yyyy")} - {format(item?.endDate, "MM/dd/yyyy")}</p>
+                  <p>{item?.price}$</p>
+                  <p>{item?.note}</p>
+                  {/* <p>loai 1 phong ngu </p> */}
                 </div>
               </div>
+
+            ))}
             </>
           ) : (
             <>
@@ -137,7 +138,7 @@ const ListOrder = () => {
         </div>
 
         <div className="my-4">
-          <p className=" font-medium underline underline-offset-2 ">All reservations(0)</p>
+          {/* <p className=" font-medium underline underline-offset-2 ">All reservations(0)</p> */}
         </div>
       </div>
     )}
