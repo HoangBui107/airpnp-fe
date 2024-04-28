@@ -43,7 +43,7 @@ const Dashboard = () =>{
                             </div>
                             <div className="  grid grid-col-1 grid-row-2 gap-4 col-span-1  " >
                                 <div className="xl:p-5 rounded-10 border-2 border-solid border-[#384256]">
-                                    <PieChartBox />
+                                      <PieChartBox />
                                 </div>
                                 <div className="p-5 rounded-10 border-2 border-solid border-[#384256]">
                                     <BarChartBox {...barChartBoxRevenue} />

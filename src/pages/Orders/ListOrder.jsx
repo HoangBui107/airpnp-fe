@@ -26,63 +26,9 @@ const ListOrder = () => {
   useEffect(() => {
     dispatch(getOrder())
   }, [])
-  const img = [
-    {
-      id: 1,
-      url: "https://xaydunganthienphat.com.vn/upload/filemanager/mau%20nha/mau%20nha%20cap%204%20mai%20thai%203%20phong%20ngu/mau-nha-cap-4-mai-thai-3-phong-ngu-1-phong-tho-mau-so-2.jpg"
-    },
-    {
-      id: 2,
-      url: "https://sbshouse.vn/wp-content/uploads/2022/03/nha-3-tang-hien-dai-2-1.jpg"
-    },
-    {
-      id: 3,
-      url: "https://sbshouse.vn/wp-content/uploads/2022/03/nha-3-tang-hien-dai-2-1.jpg"
-    },
-    {
-      id: 4,
-      url: "https://sbshouse.vn/wp-content/uploads/2022/03/nha-3-tang-hien-dai-2-1.jpg"
-    },
 
-  ]
-  // useEffect(())
-  const [center, setCenter] = useState({
-    lat: 16.042834,
-    lng: 108.169094,
-    address: "My Hotel",
-  });
 
-  // const data =
-  // {
-  //   id: 1,
-  //   category: {
-  //     id: 1,
-  //     name: 'studio'
-  //   },
-  //   name: 'Nha long',
-  //   streets: '91 phuoc ly 1',
-  //   district: 'Son tra',
-  //   city: 'Da nang',
-  //   country: 'Viet Nam',
-  //   email: 'hoangbui23@gmail.com',
-  //   longitude: '',
-  //   latitude: '',
-  //   price: '320',
-  //   description: 'There is a place filled with sunshine & sea breeze near My Khe beach called Astro House, where you can catch the vibe of Santorini in Danang. Nested on 3rd floor, city views appear through the big windows.',
-  //   feedbacks: [
-  //     {
-  //       userId: '',
-  //       hotelId: '',
-  //       content: 'phong dep vcl',
-  //     }
-  //   ],
-  //   roomImages: [
-  //     {
-  //       id: 1,
-  //       url: "",
-  //     }
-  //   ]
-  // }
+
 
   return (
     <>

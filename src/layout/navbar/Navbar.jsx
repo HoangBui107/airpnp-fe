@@ -290,8 +290,11 @@ export default function Navbar() {
                   <NotificationsIcon />
                 </Badge>
               </IconButton>
-              <UserMenu currentUser={profile} />
             </Box>
+            {/* <div className='flex justify-center w-1/6'> */}
+
+              <UserMenu currentUser={profile} />
+            {/* </div> */}
             <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
               <IconButton
                 size="large"

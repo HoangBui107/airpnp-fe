@@ -1,27 +1,31 @@
 import { Routes, Route, useParams } from 'react-router-dom';
-import Home from './pages/Home';
-import Login from './pages/Login';
+import React, { Suspense, useEffect, useState, lazy } from 'react';
 import Navbar from './layout/navbar/Navbar';
-import Details from './pages/Room/Details';
-import ListPage from './pages/List/ListPage';
-import { Suspense, useEffect, useState } from 'react';
-import AccountSetting from './pages/Setting/AccountSetting';
-import UpdateProfile from './pages/Setting/UpdateProfile';
-import HomeAdmin from './pages/HomeAdmin/HomeAdmin';
-import OwnerPage from './pages/HomeOwner/OwnerPage';
-import DetailsOrder from './pages/Orders/DetailsOrder';
-import ListOrder from './pages/Orders/ListOrder';
-import CreateRoom from './pages/Room/CreateRoom';
 import './App.css';
-import Dashboard from './pages/HomeAdmin/Dashboard/Dashboard';
-import ForgetPassword from './components/modals/ForgetPassword';
-import LoginModal from './components/modals/LoginModal';
-import RegisterModal from './components/modals/RegisterModal';
-import Security from './pages/Setting/ChangePassword';
-import ManageCategories from './pages/Categories/ManageCategory';
-import ManagerUser from './pages/HomeAdmin/User/User';
 import SpinLoading from './components/spin/Spin';
-import ToastNotification from './components/toast/ToastNotification'
+import ToastNotification from './components/toast/ToastNotification';
+// import UpdateProfile from './pages/Setting/UpdateProfile';
+const Home = lazy(() => import('./pages/Home'));
+const Login = lazy(() => import('./pages/Login'));
+const Details = lazy(() => import('./pages/Room/Details'));
+const ListPage = lazy(() => import('./pages/List/ListPage'));
+const AccountSetting = lazy(() => import('./pages/Setting/AccountSetting'));
+const UpdateProfile = lazy(() => import('./pages/Setting/UpdateProfile'));
+const HomeAdmin = lazy(() => import('./pages/HomeAdmin/HomeAdmin'));
+const OwnerPage = lazy(() => import('./pages/HomeOwner/OwnerPage'));
+const DetailsOrder = lazy(() => import('./pages/Orders/DetailsOrder'));
+const ListOrder = lazy(() => import('./pages/Orders/ListOrder'));
+const CreateRoom = lazy(() => import('./pages/Room/CreateRoom'));
+const Dashboard = lazy(() => import('./pages/HomeAdmin/Dashboard/Dashboard'));
+const ForgetPassword = lazy(() => import('./components/modals/ForgetPassword'));
+const LoginModal = lazy(() => import('./components/modals/LoginModal'));
+const RegisterModal = lazy(() => import('./components/modals/RegisterModal'));
+const Security = lazy(() => import('./pages/Setting/ChangePassword'));
+const ManageCategories = lazy(() => import('./pages/Categories/ManageCategory'));
+const ManagerUser = lazy(() => import('./pages/HomeAdmin/User/User'));
+const ContractPage = lazy(() => import('./pages/Setting/ContractPage'));
+const ProfilePage = lazy(() => import('./pages/Setting/Profile'));
+
 function App() {
   const currentPath = window.location.pathname.split('/');
   const [isSmallScreen, setIsSmallScreen] = useState(false);
@@ -45,7 +49,7 @@ function App() {
           </div>
         </div>
       )}
-      <div className="">
+
 
         <Suspense fallback={
           <>
@@ -71,6 +75,8 @@ function App() {
               <Route path='' element={<AccountSetting />} />
               <Route path='personal-info' element={<UpdateProfile />} />
               <Route path='secutiry' element={<Security />} />
+              <Route path='contract' element={<ContractPage />} />
+              <Route path='profile' element={<ProfilePage />} />
 
             </Route>
             <Route path='admin' element={<HomeAdmin />} >
@@ -80,7 +86,7 @@ function App() {
             </Route>
           </Routes>
         </Suspense>
-      </div>
+      
       <div className={isSmallScreen ? '' : 'hidden'}>
         {/* <BottomNavigation /> */}
       </div>

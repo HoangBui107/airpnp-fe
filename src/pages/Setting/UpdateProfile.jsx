@@ -5,10 +5,11 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProfileByToken, updateProfile, uploadAvatar } from "../../redux/profile/profileThunk";
 import BreadcrumbSetting from "./Breadcrumb";
-import {Box, TextField, Button } from '@mui/material';
+import { Box, TextField, Button } from '@mui/material';
 import ReactQuill from 'react-quill';
 import * as yup from "yup";
 import { useFormik } from 'formik';
+import 'react-quill/dist/quill.snow.css';
 
 const validationSchema = yup.object({
     name: yup.string().required("Name is required"),
@@ -35,7 +36,7 @@ const UpdateProfile = () => {
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            dispatch(updateProfile({id: user.UserId, profile: values}));
+            dispatch(updateProfile({ id: user.UserId, profile: values }));
         },
     });
 
@@ -67,10 +68,10 @@ const UpdateProfile = () => {
     const handleUploadAvatar = (event) => {
         const file = event.fileList[0].originFileObj
         if (file) {
-          dispatch(uploadAvatar(file));
-          dispatch(getProfileByToken());
+            dispatch(uploadAvatar(file));
+            dispatch(getProfileByToken());
         }
-      };
+    };
     const uploadButton = (
         <button style={{ border: 0, background: 'none' }} type="button">
             {loading ? <LoadingOutlined /> : <PlusOutlined />}
@@ -79,19 +80,19 @@ const UpdateProfile = () => {
     );
     return (
         <>
-            <Box className="flex flex-col px-6 sm:container sm:mx-atuo">
+            <Box className="flex flex-col px-6 ">
                 <Box className="flex flex-col w-full sm:px-12 md:px-24 py-14 gap-4">
                     <BreadcrumbSetting />
                 </Box>
-                <Box className="flex flex-row sm:px-12 md:px-24 gap-4 ">
-                    <Box className="flex flex-col gap-4 w-2/3">
+                <Box className="flex flex-col md:flex-row sm:px-12 md:px-24 gap-4 ">
+                    <Box className="flex flex-col gap-4 md:w-2/3">
                         <Box className="flex justify-center items-center">
                             <Upload
                                 name="avatar"
                                 listType="picture-circle"
                                 className="avatar-uploader"
                                 showUploadList={false}
-                            onChange={handleUploadAvatar}
+                                onChange={handleUploadAvatar}
                             >
                                 {imageUrl ? <img loading='lazy' className="w-40 rounded-full" src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
                             </Upload>
@@ -128,31 +129,32 @@ const UpdateProfile = () => {
                                 helperText={formik.touched.address && formik.errors.address}
                             />
                         </Box>
-                        <Box class="sm:col-span-2">
+
+
+                    </Box>
+                    <Box className="flex flex-col md:w-1/2">
+                        <Box class="sm:col-span-2 h-full">
                             <label for="brand" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
 
                             <Box className='editor'>
                                 <ReactQuill theme="snow"
                                     value={description}
                                     onChange={handleEditorChange}
-                                    className="editor-input"
-                                    style={{ height: "200px", marginBottom: "50px" }}
+                                    className="editor-input h-full"
+                                // style={{ height: "600px", marginBottom: "50px" }}
                                 />
                             </Box>
                         </Box>
-                        <Box className="flex justify-end mt-4">
-                            <Button
-                                type="submit"
-                                variant="outlined"
-                                onClick={formik.handleSubmit}
-                            >
-                                Save Change
-                            </Button>
-                        </Box>
                     </Box>
-                    <Box className="flex flex-col w-1/3">
-
-                    </Box>
+                </Box>
+                <Box className="flex justify-end mt-4">
+                    <Button
+                        type="submit"
+                        variant="outlined"
+                        onClick={formik.handleSubmit}
+                    >
+                        Save Change
+                    </Button>
                 </Box>
 
             </Box>

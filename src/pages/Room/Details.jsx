@@ -1,16 +1,12 @@
 import { useEffect, useState } from "react";
-import { CiMenuKebab } from "react-icons/ci";
 import { FaStar } from "react-icons/fa6";
-import { IoBedOutline } from "react-icons/io5";
-import { MdOutlineSoupKitchen } from "react-icons/md";
-import Map from "../../components/common/Map";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { getRoomById, sendFeedback } from "../../redux/room/roomThunks";
-import { Link } from "react-router-dom";
-import DatePicker from "../../components/calendar/Calendar";
 import TextField from '@mui/material/TextField';
+import DatePicker from "../../components/calendar/Calendar";
 import { openLogin } from "../../redux/modal/modalSlice";
+import useTotalPrice, { calculateNumberOfDays } from './useTotalPrice';
 
 const Details = () => {
     const dispatch = useDispatch()
@@ -23,9 +19,7 @@ const Details = () => {
     }, [])
     const [feedback, setFeedback] = useState('')
     const handleChange = (event) => {
-        // Lấy giá trị người dùng nhập vào từ input
         const newFeedback = event.target.value;
-        // Cập nhật state feedback
         setFeedback(newFeedback);
     };
 
@@ -34,9 +28,12 @@ const Details = () => {
     };
     const [selectedDateRange, setSelectedDateRange] = useState({
         startDate: new Date(),
-        endDate: new Date(),
+        endDate: new Date(new Date().getTime() + 24 * 60 * 60 * 1000),
         key: 'selection',
     });
+
+    const totalPrice = useTotalPrice(selectedDateRange, details?.price);
+const diffDay = calculateNumberOfDays(selectedDateRange?.startDate, selectedDateRange?.endDate)
     const slotsString = [
         "2024-04-25",
         "2024-04-26",
@@ -49,69 +46,14 @@ const Details = () => {
     const handleDateChange = (selected) => {
         setSelectedDateRange(selected.selection);
     };
-    const img = [
-        {
-            id: 1,
-            url: "https://xaydunganthienphat.com.vn/upload/filemanager/mau%20nha/mau%20nha%20cap%204%20mai%20thai%203%20phong%20ngu/mau-nha-cap-4-mai-thai-3-phong-ngu-1-phong-tho-mau-so-2.jpg"
-        },
-        {
-            id: 2,
-            url: "https://sbshouse.vn/wp-content/uploads/2022/03/nha-3-tang-hien-dai-2-1.jpg"
-        },
-        {
-            id: 3,
-            url: "https://sbshouse.vn/wp-content/uploads/2022/03/nha-3-tang-hien-dai-2-1.jpg"
-        },
-        {
-            id: 4,
-            url: "https://sbshouse.vn/wp-content/uploads/2022/03/nha-3-tang-hien-dai-2-1.jpg"
-        },
 
-    ]
-    // useEffect(())
-    const [center, setCenter] = useState({
-        lat: 16.042834,
-        lng: 108.169094,
-        address: "My Hotel",
-    });
-
-    const data =
-    {
-        id: 1,
-        category: {
-            id: 1,
-            name: 'studio'
-        },
-        name: 'Nha long',
-        streets: '91 phuoc ly 1',
-        district: 'Son tra',
-        city: 'Da nang',
-        country: 'Viet Nam',
-        email: 'hoangbui23@gmail.com',
-        longitude: '',
-        latitude: '',
-        price: '320',
-        description: 'There is a place filled with sunshine & sea breeze near My Khe beach called Astro House, where you can catch the vibe of Santorini in Danang. Nested on 3rd floor, city views appear through the big windows.',
-        feedbacks: [
-            {
-                userId: '',
-                hotelId: '',
-                content: 'phong dep vcl',
-            }
-        ],
-        roomImages: [
-            {
-                id: 1,
-                url: "",
-            }
-        ]
-    }
+   
     const disabledDates = slotsString.map(dateString => new Date(dateString));
     const handleSubmit = () => {
         if (!isLogin) {
             dispatch(openLogin())
         }
-        navigate(`/order/${id}`)
+        navigate(`/order/${id}`,  { state: { date: selectedDateRange, totalPrice: totalPrice, diffDay: diffDay } })
     }
     return (
         <>
@@ -122,7 +64,7 @@ const Details = () => {
                             <div className="aspect-square w-full ">
                                 <img
                                     className="aspect-square rounded-l-xl object-cover cursor-pointer "
-                                    src= {details?.roomImages?.[0]?.url}
+                                    src={details?.roomImages?.[0]?.url}
                                     alt=""
                                 />
                             </div>
@@ -208,7 +150,7 @@ const Details = () => {
                             <div className="flex flex-col-reverse lg:flex-row py-4">
                                 <div className="flex w-full lg:w-2/4 flex-col">
                                     <div className="py-2">
-                                        <h1 className="font-bold text-lg"> Introduction</h1>    
+                                        <h1 className="font-bold text-lg"> Introduction</h1>
                                         <div dangerouslySetInnerHTML={{ __html: details?.user?.profile?.description }}></div>
                                     </div>
                                 </div>
@@ -265,7 +207,7 @@ const Details = () => {
                         <div className="hidden lg:flex  lg:w-1/3  lg:justify-end  ">
                             <div
                                 className=
-                                "hidden lg:flex flex-col border border-black py-4 px-4 rounded-lg shadow-2xl sm:max-h-[70vh]  lg:max-h-[60vh] sm:sticky sm:top-20 lg:top-44 object-cover"
+                                "hidden w-[80%] lg:flex flex-col border border-black py-4 px-4 rounded-lg shadow-2xl sm:max-h-[70vh]  lg:max-h-[60vh] sm:sticky sm:top-20 lg:top-44 object-cover"
                             >
                                 <div className="flex flex-row items-center">
                                     <h1 className="font-bold text-2xl">{details?.price}</h1>
@@ -281,8 +223,8 @@ const Details = () => {
                                 </span>
 
                                 <div className="flex py-2 justify-between">
-                                    <h1 className="underline">$72 x 5 đêm Hiển thị chi tiết giá</h1>
-                                    <h1>$360</h1>
+                                    <h1 className="underline">${details?.price} x {diffDay} day</h1>
+                                    <h1>{totalPrice}</h1>
                                 </div>
 
                                 <div className="flex py-2 justify-between">
@@ -293,12 +235,61 @@ const Details = () => {
 
                                 <div className="flex py-2 justify-between">
                                     <h1 className="font-bold text-xl">Total before taxes</h1>
-                                    <h1 className="font-blod text-xl">${details?.price}</h1>
+                                    <h1 className="font-blod text-xl">${totalPrice}</h1>
                                 </div>
                             </div>
 
                         </div>
                     </div>
+                    <div className="border border-gray-200 w-full"></div>
+                    <div className="py-10">
+                        <div className="flex items-center justify-center border-r border-gray-400">
+                            <img className="object-cover h-40" loading="lazy" src="https://a0.muscache.com/im/pictures/airbnb-platform-assets/AirbnbPlatformAssets-GuestFavorite/original/78b7687c-5acf-4ef8-a5ea-eda732ae3b2f.png" />
+
+                            <h1 className="text-center text-6xl font-bold"> 5.0</h1>
+                            <img className="object-cover h-40" loading="lazy" src="https://a0.muscache.com/im/pictures/airbnb-platform-assets/AirbnbPlatformAssets-GuestFavorite/original/b4005b30-79ff-4287-860c-67829ecd7412.png" />
+                        </div>
+                        <div className="flex flex-col items-center justify-center gap-4">
+                            <h1 className="text-3xl font-bold text-center">Guest Is Like</h1>
+                            <p className="text-xl text-gray-400 text-center">One of the most popular homes on Airbnb based on ratings, reviews, and trust</p>
+                        </div>
+                    </div>
+                    <div className="border border-gray-200 w-full"></div>
+                    <div className="grid grid-cols-2 gap-12">
+                        <div className="flex flex-col px-4 py-4 gap-4 w-4/5">
+                            <div className="flex flex-row gap-4 ">
+                                <div className="max-h-24 max-w-24">
+                                    <img className="object-cover h-12 w-12 rounded-full" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqKRdNTUVE6P28Z1Gjw-fwnfsE6icmFmf4eiXXEpmc4A&s" alt="" />
+                                </div>
+                                <div className="flex flex-col">
+                                    <h2 className="text-lg font-medium">Hoàng bùi nè</h2>
+                                    <p className="text-gray-400">Active two year ago</p>
+                                </div>
+                            </div>
+                            <div>
+                                <p className="">We had the pleasure of staying at this exquisite Airbnb, and it truly exceeded our expectations. From the moment we arrived,</p>
+                            </div>
+
+                        </div>
+
+                        <div className="flex flex-col px-4 py-4 gap-4 w-4/5">
+                            <div className="flex flex-row gap-4 ">
+                                <div className="max-h-24 max-w-24">
+                                    <img className="object-cover h-12 w-12 rounded-full" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqKRdNTUVE6P28Z1Gjw-fwnfsE6icmFmf4eiXXEpmc4A&s" alt="" />
+                                </div>
+                                <div className="flex flex-col">
+                                    <h2 className="text-lg font-medium">Hoàng bùi nè</h2>
+                                    <p className="text-gray-400">Active two year ago</p>
+                                </div>
+                            </div>
+                            <div>
+                                <p className="">We had the pleasure of staying at this exquisite Airbnb, and it truly exceeded our expectations. From the moment we arrived,</p>
+                            </div>
+
+                        </div>
+
+                    </div>
+
                     <div className="border border-gray-200 w-full"></div>
 
                     <div className="py-8 px-5">

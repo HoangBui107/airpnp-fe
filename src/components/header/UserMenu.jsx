@@ -44,7 +44,7 @@ const UserMenu = ({ currentUser }) => {
   };
 
   return (
-    <div className="relative w-[30%]">
+    <div className="relative flex items-center justify-center w-[20%]">
       <div className="flex flex-row items-center gap-2">
         <div
           onClick={toggleOpen}
@@ -57,6 +57,7 @@ const UserMenu = ({ currentUser }) => {
           flex 
           flex-row 
           items-center 
+          justify-center
           gap-3 
           rounded-full 
           cursor-pointer 
@@ -77,7 +78,7 @@ const UserMenu = ({ currentUser }) => {
             absolute 
             rounded-xl 
             shadow-md
-            w-[40vw]
+            w-[100vw]
             md:w-3/4 
             bg-white 
             overflow-hidden 

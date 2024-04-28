@@ -1,26 +1,25 @@
 import { useEffect, useState } from "react";
-import { CiMenuKebab } from "react-icons/ci";
-import { FaStar } from "react-icons/fa6";
-import { IoBedOutline } from "react-icons/io5";
-import { MdOutlineSoupKitchen } from "react-icons/md";
-import Map from "../../components/common/Map";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { getRoomById } from "../../redux/room/roomThunks";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import { createOrderPaypal, onApprove } from "../../redux/order/orderThunk";
+import moment from "moment";
 
 const Details = () => {
     const dispatch = useDispatch()
+    const location = useLocation()
     const { id } = useParams()
     const { details } = useSelector((state) => state.room)
-    console.log(details)
-    const handleCreateOrder = () => {
-        // const orderId = dispatch(createOrderAction(totalPrice));
-        // return orderId;
-    };
-    const handleOnApprove = (data) => {
-        // dispatch(onApproveOrderAction(data, orders));
-    };
+    const [totalPrice, setTotalPrice] = useState(10);
+
+    const handleCreateOrder = async () => {
+        const orderId = await dispatch(createOrderPaypal(totalPrice)).unwrap();
+        return orderId.payload;
+      };
+      const handleOnApprove = (data) => {
+        dispatch(onApprove({dataPaypal: data,  price: parseInt(location?.state?.totalPrice), note: "", startDate: moment(location?.state?.startDate).toISOString(), endDate: moment(location?.state?.endDate).toISOString(), roomId: id}));
+      };
 
     useEffect(() => {
         dispatch(getRoomById({ id: id }))
@@ -74,18 +73,14 @@ const Details = () => {
                                     )
                                 })}
                             </div>
-                            <button className="flex items-center justify-center absolute bottom-3 right-3 py-2 px-4 border border-black rounded-xl bg-white">
-                                <CiMenuKebab size={16} />
-                                More
-                            </button>
                         </div>
                     </div>
 
                     <div className="flex py-5 px-5 sm:px-0 flex-col sm:flex-row ">
                         <div className="flex sm:w-2/3 flex-col">
                             <div className="mb-6">
-                                <h1 className="font-semibold text-xl mb-4">Euro Villa Hoa Xuan Da Nang</h1>
-                                <h2>Euro Villa Hoa Xuan Da Nang</h2>
+                                <h1 className="font-semibold text-xl mb-4">{details?.name}</h1>
+                                <h2>{details?.street}</h2>
                             </div>
 
                             <div className="flex flex-row py-5">
@@ -93,23 +88,22 @@ const Details = () => {
                                     <img src="https://static.vecteezy.com/system/resources/previews/002/002/257/non_2x/beautiful-woman-avatar-character-icon-free-vector.jpg" alt="" />
                                 </div>
                                 <div className="flex px-5 flex-col justify-center">
-                                    <h1 className="font-semibold">Owner home/Person create: Hoang</h1>
-                                    <h2> Super host 4 years of experience welcoming guests</h2>
+                                <h1 className="text-2xl font-bold">Hoster By : {details?.user?.profile?.fullName}</h1>
+                                <h2> Joined in November {details?.user?.profile?.createdAt}</h2>
                                 </div>
                             </div>
                             <div className="border border-gray-200 w-full"></div>
                             <div className="py-5">
                                 <h1 className="font-semibold pb-2">Description</h1>
-                                <h6 className="pb-2">{details?.description}</h6>
-                                <h2 className="underline">More </h2>
+                                <div dangerouslySetInnerHTML={{ __html: details?.user?.profile?.description }}></div>
                             </div>                           
                         </div>
                         <div className="flex sm:w-1/3 flex-col">
                             <div className="mb-6">
                                 <h1 className="font-semibold text-xl mb-4">Euro Villa Hoa Xuan Da Nang</h1>
-                                <h2>Start Date: 19/12/2020</h2>
-                                <h2>End Date: 19/12/2022</h2>
-                                <h2>Total Price: 120 $</h2>
+                                <h2>Start Date: {moment(location?.state?.startDate).format('DD/MM/YYYY')}</h2>
+                                <h2>End Date: {moment(location?.state?.endDate).format('DD/MM/YYYY')}</h2>
+                                <h2>Total Price: {location?.state?.totalPrice} $</h2>
                             </div>
                             <PayPalScriptProvider
                   options={{
@@ -117,8 +111,8 @@ const Details = () => {
                   }}
                 >
                   <PayPalButtons
-                    createOrder={createOrder}
-                    onApprove={onApprove}
+                    createOrder={handleCreateOrder}
+                    onApprove={handleOnApprove}
                   />
                 </PayPalScriptProvider>
                         </div>
@@ -156,44 +150,3 @@ const Details = () => {
     )
 }
 export default Details;
-
-function createOrder() {
-    // replace this url with your server
-    return fetch("https://react-paypal-js-storybook.fly.dev/api/paypal/create-order", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        // use the "body" param to optionally pass additional order information
-        // like product ids and quantities
-        body: JSON.stringify({
-            cart: [
-                {
-                    sku: "1blwyeo8",
-                    quantity: 2,
-                },
-            ],
-        }),
-    })
-        .then((response) => response.json())
-        .then((order) => {
-            // Your code here after create the order
-            return order.id;
-        });
-}
-function onApprove(data) {
-    // replace this url with your server
-    return fetch("https://react-paypal-js-storybook.fly.dev/api/paypal/capture-order", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            orderID: data.orderID,
-        }),
-    })
-        .then((response) => response.json())
-        .then((orderData) => {
-            // Your code here after capture the order
-        });
-}

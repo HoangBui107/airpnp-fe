@@ -5,6 +5,7 @@ const initialState ={
     login: false,
     register: false,
     forgetPassword:false,
+    details: false,
     notification: {message: '', notificationType:''}
 }
 
@@ -17,6 +18,12 @@ const modalSlice = createSlice({
         } ,
         closeLogin: (state, action)=>{
             state.login = false; 
+        },
+        openDetails:(state, action)=>{
+            state.details = true; 
+        } ,
+        closeDetails: (state, action)=>{
+            state.details = false; 
         },
         openForgetPassword:(state, action)=>{
             state.forgetPassword = true; 
@@ -42,5 +49,5 @@ const modalSlice = createSlice({
    
 });
 
-export const {openLogin, closeLogin,openRegister,closeRegister, openMessage,resetMessage, closeFotgetPassword, openForgetPassword} = modalSlice.actions
+export const {openLogin, closeLogin,openRegister,closeRegister, openMessage,resetMessage, closeFotgetPassword, openForgetPassword, openDetails, closeDetails} = modalSlice.actions
 export default modalSlice.reducer

@@ -4,6 +4,7 @@ import { login } from "../../redux/auth/authThunks";
 import { closeLogin, openForgetPassword, openRegister } from "../../redux/modal/modalSlice";
 import Heading from "../common/Heading";
 import Modal from "./Modal";
+import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 
 const LoginModal = () =>{
     const dispatch = useDispatch()
@@ -79,7 +80,16 @@ const LoginModal = () =>{
       dispatch(closeLogin())
       dispatch(openForgetPassword())
     }
+
+    const handleSuccessLogin = async (response) => {
+      const token = await response.credential;
+      // dispatch(loginByGoogle({ token: token }));
+    };
   
+    const handleErrorLogin = (error) => {
+      // console.log(error);
+    };
+
     const bodyContent = (
         <div className="flex flex-col gap-4">
           <Heading title="Welcome to Airpnp" subtitle="Welcome back!" />
@@ -107,7 +117,7 @@ const LoginModal = () =>{
       const footerContent = (
         <div className="flex flex-col gap-4 mt-3">
           <hr />
-          {/* <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
+          <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
           <div className="flex justify-center">
             <GoogleLogin
               onSuccess={handleSuccessLogin}
@@ -117,7 +127,7 @@ const LoginModal = () =>{
               isSignedIn={true}
             />
             </div>
-          </GoogleOAuthProvider> */}
+          </GoogleOAuthProvider>
           {errors.login && <p className="text-red-500">{errors.login}</p>}
           <div className="text-neutral-500 text-center mt-4 font-light">
             <p>

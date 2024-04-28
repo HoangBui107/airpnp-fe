@@ -1,0 +1,14 @@
+.scrollable-div::-webkit-scrollbar {
+    width: 1px;
+    height: 1px;
+}
+
+.scrollable-div::-webkit-scrollbar-track {
+    background: #f3f4f6; /* Tailwind gray-100 */
+}
+
+.scrollable-div::-webkit-scrollbar-thumb {
+    background-color: #6b7280 ; /* Tailwind gray-500 */
+    border-radius: 2px;
+    height: 1px;
+}

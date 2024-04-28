@@ -2,7 +2,7 @@ import HeaderItem from "../../components/header/HeaderItem";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllCategory } from "../../redux/category/categoryThunk";
-
+import "./Header.scss"
 
 const Header = () => {
     const dispatch = useDispatch()
@@ -36,8 +36,8 @@ const Header = () => {
 
     return (
         <>
-            <div className={`fixed h-20  w-full z-10 bg-white ${!isAtTop ? '' : 'border-b border-b-gray-200 '} `}>
-                <div className="flex flex-row mx-2 px-4 py-2  sm:px-8 gap-8 lg:gap-8">
+            <div className={`fixed h-20 w-full z-10 bg-white ${!isAtTop ? '' : 'border-b border-b-gray-200 '} `}>
+                <div className="flex overflow-hidden overflow-x-auto py-4 flex-row items-center md:items-start md:justify-start justify-center mx-2 px-4  sm:py-2  sm:px-8 gap-0 lg:gap-8 scrollable-div " >
 
                     {categories?.map((item) => {
                         return (

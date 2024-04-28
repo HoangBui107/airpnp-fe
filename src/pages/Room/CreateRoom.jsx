@@ -22,9 +22,8 @@ const validationSchema = yup.object({
 
 
 const CreateRoom = () => {
-
     const dispatch = useDispatch();
-
+    const user = jwtDecode(localStorage.getItem('token'))
     const formik = useFormik({
         initialValues: {
             name: '',
@@ -94,7 +93,7 @@ const CreateRoom = () => {
     };
     const [address, setAddress] = useState('')
     const { categories } = useSelector((state) => state.category)
-    const user = jwtDecode(localStorage.getItem('token'))
+
 
 
 

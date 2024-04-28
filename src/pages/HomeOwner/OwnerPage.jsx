@@ -1,15 +1,17 @@
 import { Link, useNavigate, Await, useLoaderData } from "react-router-dom";
-import { Suspense, useContext, useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import List from "../../components/list/List";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllRooms, getRoomStatus } from "../../redux/room/roomThunks";
 import SpinLoading from "../../components/spin/Spin";
+import BigChartBox from "../../components/chart/BigChartBox";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 function OwnerPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { loading, room, status } = useSelector((state) => state.room)
+  const {  room, status } = useSelector((state) => state.room)
   // console.log(status[0].yearlyOrders._2024)
   useEffect(() => {
     dispatch(getAllRooms())
@@ -24,14 +26,30 @@ function OwnerPage() {
   //         console.log(err);
   //     }
   // };
+
+  const dataset = [
+    { month: 'January', revenue: 50000 },
+    { month: 'February', revenue: 40000 },
+    { month: 'March', revenue: 45000 },
+    { month: 'April', revenue: 60000 },
+    { month: 'May', revenue: 70000 },
+    { month: 'June', revenue: 65000 },
+    { month: 'July', revenue: 70000 },
+    { month: 'August', revenue: 75000 },
+    { month: 'September', revenue: 80000 },
+    { month: 'October', revenue: 85000 },
+    { month: 'November', revenue: 90000 },
+    { month: 'December', revenue: 95000 }
+  ];
+  const valueFormatter = (value) => `$${value.toLocaleString()}`;
+  const chartSetting = {
+    // Example setting, replace with actual settings
+    colors: ['blue', 'red', 'green', 'yellow']
+  };
   return (
 
     <>
-      {loading ? (
-        <>
-          <SpinLoading />
-        </>
-      ) : (
+
         <>
           <div className=" sm:container sm:mx-auto py-8 ">
             <div className="details flex-[3_3_0%] pb-50">
@@ -43,81 +61,42 @@ function OwnerPage() {
                     <button className="w-25 bg-yellow-500 text-black py-2.5 px-5 rounded cursor-pointer">Update Profile</button>
                   </Link> */}
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-4 gap-4 md:gap-2">
-
-                  <div className="flex justify-between flex-1 px-4 py-2 mx-2 rounded-lg " style={{ boxShadow: 'rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px' }}>
-                    <div className="flex flex-col justify-between ">
-                      <span className=" font-bold text-lg ">Total In Month</span>
-                      <span className="text-xl font-light">
-                        {status.monthlyOrders}
-                      </span>
-                      <span className="w-max text-sm border-spacing-1 border-b-black">123</span>
-                    </div>
-                    <div className="right">
-                      <div className="percentage positive">
-                        123
-                        {/* <KeyboardArrowUpIcon /> */}
-                        {/* {form.diff.toFixed(1)} % */}
-                      </div>
-                      123
-                      {/* {form.icon} */}
-                    </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-2">
+                  <div className="flex flex-col justify-center">
+                    <BigChartBox />
+                    <h1 className="text-center">Total Revenue In Year</h1>
                   </div>
-                  <div className="flex justify-between flex-1 px-4 py-2 mx-2 rounded-lg " style={{ boxShadow: 'rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px' }}>
-                    <div className="flex flex-col justify-between ">
-                      <span className=" font-bold text-lg ">Total In Month</span>
-                      <span className="text-xl font-light">
-                        123
-                      </span>
-                      <span className="w-max text-sm border-spacing-1 border-b-black">123</span>
-                    </div>
-                    <div className="right">
-                      <div className="percentage positive">
-                        123
-                        {/* <KeyboardArrowUpIcon /> */}
-                        {/* {form.diff.toFixed(1)} % */}
-                      </div>
-                      123
-                      {/* {form.icon} */}
-                    </div>
+                  <div className="flex flex-col items-center justify-center w-full">
+                    <ResponsiveContainer width="100%" height={400}>
+                      <BarChart data={dataset}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="month" />
+                        <YAxis />
+                        <Tooltip formatter={(value) => `$${value.toLocaleString()}`} />
+                        <Legend />
+                        <Bar dataKey="revenue" fill="#8884d8" />
+                      </BarChart>
+                    </ResponsiveContainer>
+                    <h1 className="text-center mt-4">Total Revenue In Year</h1>
                   </div>
-                  <div className="flex justify-between flex-1 px-4 py-2 mx-2 rounded-lg " style={{ boxShadow: 'rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px' }}>
-                    <div className="flex flex-col justify-between ">
-                      <span className=" font-bold text-lg ">Total Room</span>
-                      <span className="text-xl font-light">
-                        123
-                      </span>
-                      <span className="w-max text-sm border-spacing-1 border-b-black">123</span>
-                    </div>
-                    <div className="right">
-                      <div className="percentage positive">
-                        123
-                        {/* <KeyboardArrowUpIcon /> */}
-                        {/* {form.diff.toFixed(1)} % */}
-                      </div>
-                      123
-                      {/* {form.icon} */}
-                    </div>
-                  </div>
-
                 </div>
 
 
                 <div className="title flex items-center justify-between">
-                  <h1 className="font-[100] text-3xl">My List</h1>
+                  <h1 className="font-[100] text-3xl">My List Room</h1>
                   <Link to="/add">
-                    <button className="w-25 bg-yellow-500 text-black py-2.5 px-5 rounded cursor-pointer">Create New Rom</button>
+                    <button className="max-w-[20] bg-yellow-500 text-black py-2.5 px-5 rounded cursor-pointer">Create New Room</button>
                   </Link>
                 </div>
                 <Suspense fallback={
                   <>
-                  <SpinLoading/>
+                    <SpinLoading />
                   </>
                 }>
                   <Await
                     resolve={room}
                     errorElement={<p>Error loading posts!</p>}
-                    
+
                   >
                     <List posts={room} />
                   </Await>
@@ -128,11 +107,9 @@ function OwnerPage() {
                 </div> */}
               </div>
             </div>
-            {/* Phần chat container */}
             <div className="chatContainer flex-[2_2_0%] bg-fcf5f3 h-full"></div>
           </div>
         </>
-      )}
     </>
   );
 
