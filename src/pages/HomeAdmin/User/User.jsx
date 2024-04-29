@@ -11,7 +11,7 @@ const { Column, ColumnGroup } = Table;
 const ManagerUser = () => {
     const dispatch = useDispatch()
     const {data} = useSelector((state) => state.auth)
-
+    console.log(data)
     const activeUserButton = (id, active) =>{
         if(active === true){
             return dispatch(activeUser(id))
