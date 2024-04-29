@@ -17,16 +17,7 @@ function OwnerPage() {
     dispatch(getAllRooms())
     dispatch(getRoomOrdersStats())
   }, [])
-  // const handleLogout = async () => {
-  //     try {
-  //         await apiRequest.post("/auth/logout");
-  //         updateUser(null);
-  //         navigate("/");
-  //     } catch (err) {
-  //         console.log(err);
-  //     }
-  // };
-  console.log(dataChart.slice(0, 6))
+
   const chart = dataChart.slice(0, 6)
   return (
 
@@ -39,7 +30,8 @@ function OwnerPage() {
 
               <div className="title flex items-center justify-between">
                 <h1 className="text-3xl font-semibold">User Information</h1>
-              </div> <div className="flex flex-col items-center justify-center w-full border border-gray-200 shadow-xl px-6 pb-4 pt-8 rounded-2xl ">
+              </div> 
+              <div className="flex flex-col items-center justify-center w-full border border-gray-200 shadow-xl px-6 pb-4 pt-8 rounded-2xl ">
                   <ResponsiveContainer width="100%" height={400}>
                     <BarChart data={chart}>
                       <CartesianGrid strokeDasharray="3 3" />
@@ -57,7 +49,7 @@ function OwnerPage() {
 
               <div className="title flex items-center justify-between">
                 <h1 className="font-[100] text-3xl">My List Room</h1>
-                <Link to="/add">
+                <Link to="/createRoom">
                   <button className="max-w-[20] bg-[#008982] hover:opacity-90 text-white py-2.5 px-5 rounded cursor-pointer">Create New Room</button>
                 </Link>
               </div>

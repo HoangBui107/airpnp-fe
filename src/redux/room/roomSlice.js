@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createRoom, deleteRoom, getAllRooms, getRoomById, updateRoom, getRoomOrdersStats } from "./roomThunks";
+import { createRoom, deleteRoom, getAllRooms, getRoomById, updateRoom, getRoomOrdersStats, getRoomOrdersStatsById } from "./roomThunks";
 
 
 
@@ -9,7 +9,8 @@ const initialState ={
     room: [],
     details:{},
     status: [],
-    dataChart: []
+    dataChart: [],
+    dataRoom: {}
 }
 
 
@@ -48,6 +49,19 @@ const roomSlice = createSlice({
             state.error = ''
         })
         builder.addCase(getRoomOrdersStats.rejected, (state,action) =>{
+            state.loading= false
+            state.error = action.payload
+        })
+        builder.addCase(getRoomOrdersStatsById.pending,(state,action)=>{
+            state.loading = true
+            state.error = ''
+        })
+        builder.addCase(getRoomOrdersStatsById.fulfilled, (state, action) =>{
+            state.loading=false
+            state.dataRoom = action.payload
+            state.error = ''
+        })
+        builder.addCase(getRoomOrdersStatsById.rejected, (state,action) =>{
             state.loading= false
             state.error = action.payload
         })

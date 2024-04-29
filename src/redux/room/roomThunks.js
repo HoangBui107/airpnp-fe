@@ -59,6 +59,17 @@ export const getRoomOrdersStats = createAsyncThunk('room/RoomOrdersStats', async
     }
 })
 
+export const getRoomOrdersStatsById = createAsyncThunk('room/getRoomOrdersStatsById', async(id, thunkApi)=>{
+    try {
+        const reponse = await http.get(`api/Rooms/getRoomOrdersStatsById/${id}`)
+        return reponse
+    } catch (error) {
+        thunkApi.dispatch(openMessage({message:"Call Api Failed!", notificationType: 'error'}))
+
+
+        return thunkApi.rejectWithValue(error)
+    }
+})
 
 export const createRoom = createAsyncThunk('room/createRoom', async(data, thunkApi)=>{
     try {

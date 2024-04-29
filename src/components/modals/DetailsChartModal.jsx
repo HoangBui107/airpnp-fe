@@ -1,16 +1,15 @@
 import { useDispatch, useSelector } from "react-redux";
-import { closeDetails, closeDetailsChart, openDetails, openDetailsChart } from "../../redux/modal/modalSlice";
-import { Button, Modal } from 'antd';
+import { closeDetailsChart, openDetailsChart } from "../../redux/modal/modalSlice";
+import { Modal } from 'antd';
 import { useEffect } from "react";
-import { getRoomById } from "../../redux/room/roomThunks";
-import PieChartBox from "../chart/PieChartBox";
-import BarChartBox from "../chart/BarChartBox";
-import { barChartBoxRevenue } from "../../data";
+import { getRoomOrdersStatsById } from "../../redux/room/roomThunks";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 const DetailsChartModal = ({ id }) => {
     const dispatch = useDispatch()
     const { isLoading } = useSelector((state) => state.auth)
     const open = useSelector((state) => state.modal.detailsChart)
+    const dataRoom = useSelector((state) => state.room.dataRoom)
 
     const onClose = () => {
         dispatch(closeDetailsChart())
@@ -20,9 +19,9 @@ const DetailsChartModal = ({ id }) => {
         dispatch(openDetailsChart())
     }
 
-    // useEffect(()=>{
-    //     dispatch(getRoomById({id:id}))
-    // },[id])
+    useEffect(() => {
+        dispatch(getRoomOrdersStatsById(id))
+    }, [id])
 
 
 
@@ -42,18 +41,49 @@ const DetailsChartModal = ({ id }) => {
                             <h1 className="text-3xl font-bold ">Chart </h1>
 
                         </div>
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 ">
                             <div className="flex flex-col border border-gray-200 shadow-sm justify-center rounded-xl ">
-                                <PieChartBox />
+                                <h1 className="text-lg sm:text-xl md:text-xl mb-5 font-semibold">Quantity Order By Weekly</h1>
+
+                                <ResponsiveContainer width="100%" height={400}>
+                                    <BarChart data={dataRoom.weeklyOrders}>
+                                        <CartesianGrid strokeDasharray="3 3" />
+                                        <XAxis dataKey="name" />
+                                        <YAxis />
+                                        <Tooltip formatter={(value) => `${value.toLocaleString()}`} />
+                                        <Legend />
+                                        <Bar dataKey="quantity" fill="#8884d8" />
+                                    </BarChart>
+                                </ResponsiveContainer>
                             </div>
-                            <div className="grid grid-col-1 gap-4">
-                                <div className="flex flex-col border border-gray-200 shadow-sm justify-center rounded-xl ">  '
-                                    <BarChartBox {...barChartBoxRevenue} />
-                              
-                                </div>
-                                <div className="flex flex-col border border-gray-200 shadow-sm justify-center rounded-xl ">   
-                                    <BarChartBox {...barChartBoxRevenue} />
-                                </div>
+                            <div className="flex flex-col border border-gray-200 shadow-sm justify-center rounded-xl ">
+                                <h1 className="text-lg sm:text-xl md:text-xl mb-5 font-semibold">Quantity Order By Monthly</h1>
+
+                                <ResponsiveContainer width="100%" height={400}>
+                                    <BarChart data={dataRoom.monthlyOrders}>
+                                        <CartesianGrid strokeDasharray="3 3" />
+                                        <XAxis dataKey="name" />
+                                        <YAxis />
+                                        <Tooltip formatter={(value) => `${value.toLocaleString()}`} />
+                                        <Legend />
+                                        <Bar dataKey="quantity" fill="#8884d8" />
+                                    </BarChart>
+                                </ResponsiveContainer>
+                            </div>
+
+                            <div className="flex flex-col border border-gray-200 shadow-sm justify-center rounded-xl ">
+                                <h1 className="text-lg sm:text-xl md:text-xl mb-5 font-semibold">Quantity Order By Quarterly</h1>
+
+                                <ResponsiveContainer width="100%" height={400}>
+                                    <BarChart data={dataRoom.quarterlyOrders}>
+                                        <CartesianGrid strokeDasharray="3 3" />
+                                        <XAxis dataKey="name" />
+                                        <YAxis />
+                                        <Tooltip formatter={(value) => `${value.toLocaleString()}`} />
+                                        <Legend />
+                                        <Bar dataKey="quantity" fill="#8884d8" />
+                                    </BarChart>
+                                </ResponsiveContainer>
                             </div>
                         </div>
                     </div>

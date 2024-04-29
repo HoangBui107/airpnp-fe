@@ -85,6 +85,7 @@ const UpdateRoom = () => {
                 userId: user?.UserId,
             });
             setDescription(details.description);
+            setImagesUpload(details.roomImages);
         }
     }, [details]);
 
@@ -126,10 +127,6 @@ const UpdateRoom = () => {
     };
     const [address, setAddress] = useState('')
     const { categories } = useSelector((state) => state.category)
-
-
-
-
 
     useEffect(() => {
         dispatch(getAllCategory())
@@ -277,17 +274,17 @@ const UpdateRoom = () => {
                                 </label>
                             </div>
                             <div className="flex flex-wrap gap-2 mt-2 relative">
-                                {imagesUpload.map((file, key) => {
+                                {imagesUpload?.map((file, key) => {
                                     return (
                                         <div key={key} className="overflow-hidden relative">
-                                            <i onClick={() => { removeImage(file.name) }} className="mdi mdi-close absolute right-1 hover:text-white cursor-pointer">X</i>
-                                            <img className="h-20 w-20 rounded-md" src={URL.createObjectURL(file)} />
+                                            <i onClick={() => { removeImage(file.url) }} className="mdi mdi-close absolute right-1 hover:text-white cursor-pointer">X</i>
+                                            <img className="h-40 w-40 rounded-md" src={file.url} />
                                         </div>
                                     )
                                 })}
                             </div>
-
-                            <button type="submit" class="bg-blue-500 hover:bg-blue-700 w-[30%] rounded-lg py-2 text-white font-medium" onClick={formik.handleSubmit}>
+                        
+                            <button type="submit" class="bg-blue-500 mt-2 hover:bg-blue-700 w-[30%] rounded-lg py-2 text-white font-medium" onClick={formik.handleSubmit}>
                                 Update product
                             </button>
                         </div>

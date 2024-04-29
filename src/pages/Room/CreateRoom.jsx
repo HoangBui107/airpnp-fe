@@ -258,13 +258,13 @@ const CreateRoom = () => {
                                     return (
                                         <div key={key} className="overflow-hidden relative">
                                             <i onClick={() => { removeImage(file.name) }} className="mdi mdi-close absolute right-1 hover:text-white cursor-pointer">X</i>
-                                            <img className="h-20 w-20 rounded-md" src={URL.createObjectURL(file)} />
+                                            <img className="h-40 w-40 rounded-md" src={URL.createObjectURL(file)} />
                                         </div>
                                     )
                                 })}
                             </div>
 
-                            <Button type="submit" class="bg-blue-500 hover:bg-blue-700 w-[30%] rounded-lg py-2 text-white font-medium" onClick={formik.handleSubmit}>
+                            <Button type="submit" class="bg-blue-500 hover:bg-blue-700  mt-2 w-[30%] rounded-lg py-2 text-white font-medium" onClick={formik.handleSubmit}>
                                 Add product
                             </Button>
                         </div>
