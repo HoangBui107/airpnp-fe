@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom";
 import Menu from "../../layout/menu/Menu";
 import AdminNavbar from "../../layout/navbar/AdminNavbar"
 
+
 const HomeAdmin = () => {
     return (
         <>

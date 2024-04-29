@@ -13,7 +13,6 @@ const DetailsModal = ({id}) => {
         dispatch(closeDetails())
     }
     const {details} = useSelector((state)=> state.room)
-    console.log(details)
     const onOpen = () => {
         dispatch(openDetails())
     }
@@ -35,7 +34,7 @@ const DetailsModal = ({id}) => {
                 footer={null}
             >
                 <>
-                <div className="flex flex-col px-4 ">
+                <div className="flex flex-col px-4 max-h-[70vh] overflow-hidden overflow-y-auto">
                     <div className="max-h-[96]">
                         <img className="h-96 w-full object-cover" loading="lazy" src={details?.roomImages?.[0]?.url} alt=""/>
                     </div>

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { changePassword, login, register, resetPassword } from "./authThunks";
+import { changePassword, getAllStore, getAllUser, getTopDeals, login, register, resetPassword } from "./authThunks";
 import { jwtDecode } from "jwt-decode";
 
 
@@ -9,6 +9,9 @@ const initialState ={
     error: '',
     token: [],
     user:[],
+    data:[],
+    store:[],
+    topDeals:[]
 }
 
 
@@ -84,6 +87,48 @@ const authSlice = createSlice({
             state.error = ''
         })
         builder.addCase(changePassword.rejected, (state,action) =>{
+            state.loading= false
+            state.error = action.payload
+        })
+
+        builder.addCase(getAllUser.pending,(state,action)=>{
+            state.loading = true
+            state.error = ''
+        })
+        builder.addCase(getAllUser.fulfilled, (state, action) =>{
+            state.loading=false
+            state.data = action.payload
+            state.error = ''
+        })
+        builder.addCase(getAllUser.rejected, (state,action) =>{
+            state.loading= false
+            state.error = action.payload
+        })
+
+        builder.addCase(getAllStore.pending,(state,action)=>{
+            state.loading = true
+            state.error = ''
+        })
+        builder.addCase(getAllStore.fulfilled, (state, action) =>{
+            state.loading=false
+            state.store = action.payload
+            state.error = ''
+        })
+        builder.addCase(getAllStore.rejected, (state,action) =>{
+            state.loading= false
+            state.error = action.payload
+        })
+
+        builder.addCase(getTopDeals.pending,(state,action)=>{
+            state.loading = true
+            state.error = ''
+        })
+        builder.addCase(getTopDeals.fulfilled, (state, action) =>{
+            state.loading=false
+            state.topDeals = action.payload
+            state.error = ''
+        })
+        builder.addCase(getTopDeals.rejected, (state,action) =>{
             state.loading= false
             state.error = action.payload
         })

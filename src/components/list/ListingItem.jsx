@@ -9,8 +9,8 @@ const ListingItem = ({data, isFavorite, btn}) => {
     }
     return (
         <>
-            <div className="col-span-1 cursor-pointer group ">
-                <div className="flex flex-col gap-0 w-full">
+            <div className="col-span-1 p-0 cursor-pointer group ">
+                <div className="flex flex-col w-full my-2">
                     <div 
                     className="aspect-square w-full relative overflow-hidden rounded-xl bg-black"
                     onClick={()=>{navigateDetails()}}

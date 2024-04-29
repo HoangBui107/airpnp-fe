@@ -38,6 +38,38 @@ export const register = createAsyncThunk('auth/register', async(data, thunkApi)=
 //     }
 // })
 
+
+export const getAllUser = createAsyncThunk('auth/getAllUser', async(_, thunkApi)=>{
+    try {
+        const reponse = await http.get('GetAllUser')
+        return reponse
+    } catch (error) {
+        thunkApi.dispatch(openMessage({message:"Call Failed!", notificationType: 'error'}))
+        return thunkApi.rejectWithValue(error)
+    }
+})
+
+
+export const getTopDeals = createAsyncThunk('auth/getTopDeals', async(_, thunkApi)=>{
+    try {
+        const reponse = await http.get('GetTopDeals')
+        return reponse
+    } catch (error) {
+        thunkApi.dispatch(openMessage({message:"Call Failed!", notificationType: 'error'}))
+        return thunkApi.rejectWithValue(error)
+    }
+})
+
+export const getAllStore = createAsyncThunk('auth/getAllStore', async(_, thunkApi)=>{
+    try {
+        const reponse = await http.get('GetAllStore')
+        return reponse
+    } catch (error) {
+        thunkApi.dispatch(openMessage({message:"Call Failed!", notificationType: 'error'}))
+        return thunkApi.rejectWithValue(error)
+    }
+})
+
 export const changePassword = createAsyncThunk('auth/changePassword', async(data, thunkApi)=>{
     try {
         const reponse = await http.post('ChangePassword', data)
@@ -59,3 +91,4 @@ export const resetPassword = createAsyncThunk('auth/resetPassword', async(data, 
         return thunkApi.rejectWithValue(error)
     }
 })
+

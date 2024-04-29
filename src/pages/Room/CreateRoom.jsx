@@ -45,15 +45,16 @@ const CreateRoom = () => {
             longitude: "108.23789666115937"
         },
         validationSchema: validationSchema,
-        onSubmit:  (values) => {
-             dispatch(createRoom(values));
+        onSubmit:  async (values) => {
+            const coordinates = await getCoordinatesFromAddress(values.street, values.city, values.country);
+             dispatch(createRoom({...values, latitude: coordinates.latitude, longitude: coordinates.longitude}));
         },
     });
 
     const [description, setDescription] = useState('');
     const handleEditorChange = (content) => {
         setDescription(content);
-        formik.setFieldValue('description', content); // Set country ISO code in Formik
+        formik.setFieldValue('description', content); 
     };
     const [selectedCountry, setSelectedCountry] = useState(Country.getAllCountries()[0] ? {
         label: `${Country.getAllCountries()[0].name} (${Country.getAllCountries()[0].isoCode})`,
@@ -68,21 +69,21 @@ const CreateRoom = () => {
 
     const handleCountryChange = (event, newCountry) => {
         if (newCountry) {
-            setSelectedCountry(newCountry); // Update the selected country state
-            formik.setFieldValue('country', newCountry.name); // Set country name in Formik
-            formik.setFieldValue('codeCountry', newCountry.isoCode); // Set country ISO code in Formik
+            setSelectedCountry(newCountry);
+            formik.setFieldValue('country', newCountry.name);
+            formik.setFieldValue('codeCountry', newCountry.isoCode); 
         } else {
-            setSelectedCountry(null); // Clear the selected country state
-            formik.setFieldValue('country', ''); // Clear country name in Formik
-            formik.setFieldValue('codeCountry', ''); // Clear country ISO code in Formik
+            setSelectedCountry(null); 
+            formik.setFieldValue('country', '');
+            formik.setFieldValue('codeCountry', ''); 
         }
     };
 
     const handleStateChange = (event, newState) => {
         if (newState) {
-            setSelectedState(newState); // Update the selected city state
-            formik.setFieldValue('city', newState.name); // Set city name in Formik
-            formik.setFieldValue('codeCity', newState.isoCode); // Set city state code in Formik
+            setSelectedState(newState); 
+            formik.setFieldValue('city', newState.name); 
+            formik.setFieldValue('codeCity', newState.isoCode); 
             console.log(formik.initialValues)
 
         } else {
@@ -97,15 +98,15 @@ const CreateRoom = () => {
 
 
 
-    useEffect(()=>{
-        const handleGetCoordinates = async () => {
-          if(formik.initialValues.address && initialValues.city && initialValues.country){
-          const coordinates = await getCoordinatesFromAddress("91 phuoc ly 1", "da nang", "viet nam");
-            console.log(coordinates)
-          }
-        };
-          handleGetCoordinates()
-      },[])
+    // useEffect(()=>{
+    //     const handleGetCoordinates = async () => {
+    //       if(formik.initialValues.address && initialValues.city && initialValues.country){
+    //       const coordinates = await getCoordinatesFromAddress("91 phuoc ly 1", "da nang", "viet nam");
+    //         console.log(coordinates)
+    //       }
+    //     };
+    //       handleGetCoordinates()
+    //   },[])
 
     useEffect(() => {
         dispatch(getAllCategory())
@@ -127,15 +128,15 @@ const CreateRoom = () => {
 
     };
     const removeImage = (i) => {
-        formik.setFieldValue('files', formik.values.files.filter(x => x.name !== i)); // Xóa tệp khỏi danh sách files trong Formik
+        formik.setFieldValue('files', formik.values.files.filter(x => x.name !== i)); 
         setImagesUpload(imagesUpload.filter(x => x.name !== i));
         console.log(formik.values);
     };
     const handleCategoryChange = (event, newValue) => {
         if (newValue) {
-            formik.setFieldValue('categoryId', newValue.id); // Lưu ID của Category vào trường categoryId của Formik
+            formik.setFieldValue('categoryId', newValue.id); 
         } else {
-            formik.setFieldValue('categoryId', ''); // Xóa ID của Category khi không có Category được chọn
+            formik.setFieldValue('categoryId', ''); 
         }
     };
     return (

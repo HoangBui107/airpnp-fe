@@ -1,15 +1,15 @@
 import { Link } from "react-router-dom";
 import { Line, LineChart, ResponsiveContainer, Tooltip } from "recharts";
 
-const ChartBox = (props) => {
+const ChartBox = ({props, data}) => {
   return (
     <div className="flex flex-col sm:flex-row h-full max-h-[100%]">
       <div className="flex flex-[3_3_0%] flex-col justify-between gap-5 sm:gap-0">
         <div className="flex items-center gap-[10px]">
           <img src={props.icon} alt="" />
-          <span className="font-medium sm:font-bold text-sm sm:text-lg " style={{ color: 'white' }}>{props.title}</span>
+          <span className="font-medium sm:font-bold text-sm sm:text-lg " style={{ color: 'white' }}>{data?.title}</span>
         </div>
-        <h1 className=" text-base sm:text-lg md:text-xl lg:text-2xl font-bold" style={{ color: 'white' }}>{props.number}</h1>
+        <h1 className=" text-base sm:text-lg md:text-xl lg:text-2xl font-bold" style={{ color: 'white' }}>{data?.number}</h1>
         <Link to="/" style={{ color: props.color }}>
           View all
         </Link>

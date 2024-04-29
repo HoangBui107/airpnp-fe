@@ -14,20 +14,30 @@ import { createFeedback } from "../../redux/feedback/feedbackThunks";
 const ListOrder = () => {
   const dispatch = useDispatch()
   const { data, loading } = useSelector((state) => state.order)
+  const [selectedFeedbackIndex, setSelectedFeedbackIndex] = useState(null);
+  const [feedbacks, setFeedbacks] = useState(Array(data.length).fill(''));
 
+  const handleChange = (index, event) => {
+    const newFeedbacks = [...feedbacks];
+    newFeedbacks[index] = event.target.value;
+    setFeedbacks(newFeedbacks);
+  };
+
+  const handleSelectFeedback = (index) => {
+    setSelectedFeedbackIndex(index);
+  };
   useEffect(() => {
     dispatch(getOrder())
   }, [])
 
-  const [feedback, setFeedback] = useState()
 
-  const handleChange = (event) => {
-    setFeedback(event.target.value || '');
-  };
+  // const handleChange = (event) => {
+  //   setFeedback(event.target.value || '');
+  // };
   const user = jwtDecode(localStorage.getItem('token'))
 
-  const handleSendFeedback = (roomId) => {
-    dispatch(createFeedback({ userId: user.UserId, roomId: roomId, content: feedback }))
+  const handleSendFeedback = (roomId, index) => {
+    dispatch(createFeedback({ userId: user.UserId, roomId: roomId, content: feedbacks[index] }))
   };
   return (
     <>
@@ -41,7 +51,7 @@ const ListOrder = () => {
           <div className="bg-[#F7F7F7] flex flex-col">
             {data ? (
               <>
-                {data.map((item) => (
+                {data.map((item, index) => (
                   <div>
                     <div className="flex flex-col sm:flex-row py-4 px-2 gap-4" key={item?.id}>
                       <div className=" flex items-center relative w-full sm:h-48 sm:w-48">
@@ -68,10 +78,12 @@ const ListOrder = () => {
                         </div>
                         <div className='flex flex-col md:flex-row justify-center items-center w-full relative'>
                           <div className='flex flex-row w-full sm:gap-6 sm:px-6'>
-                            <TextField id="outlined-multiline-static"
-                              className=' shadow-2xl'
-                              value={feedback}
-                              onChange={handleChange}
+                            <TextField
+                              id={`feedback-${index}`}
+                              className='shadow-2xl'
+                              value={selectedFeedbackIndex === index ? feedbacks[index] : ''}
+                              onChange={(event) => handleChange(index, event)}
+                              onFocus={() => handleSelectFeedback(index)}
                               variant="standard"
                               InputProps={{
                                 disableUnderline: true,
@@ -89,8 +101,8 @@ const ListOrder = () => {
                             />
 
                           </div>
-                          <button className='border border-black px-4 py-1 rounded-lg absolute bottom-2' onClick={() => handleSendFeedback(item?.roomId)}>
-                          Submit</button>
+                          <button className='border border-black px-4 py-1 rounded-lg absolute bottom-2' onClick={() => handleSendFeedback(item?.roomId,index)}>
+                            Submit</button>
                         </div>
                       </div>
                     </div>

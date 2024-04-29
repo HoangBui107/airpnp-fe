@@ -14,6 +14,7 @@ const Details = () => {
     const { id } = useParams()
     const { details } = useSelector((state) => state.room)
     const { isLogin } = useSelector((state) => state.auth)
+    console.log(details)
     const navigate = useNavigate()
     useEffect(() => {
         dispatch(getRoomById({ id: id }))
@@ -47,6 +48,7 @@ const diffDay = calculateNumberOfDays(selectedDateRange?.startDate, selectedDate
         }
         navigate(`/order/${id}`,  { state: { date: selectedDateRange, totalPrice: totalPrice,price: details?.price, diffDay: diffDay } })
     }
+    const disabledDatesArray = details?.busyDates?.map(busyDate => new Date(busyDate));
     return (
         <>
             <div className="sm:container mx-auto">
@@ -174,7 +176,7 @@ const diffDay = calculateNumberOfDays(selectedDateRange?.startDate, selectedDate
                                 <DatePicker
                                     value={selectedDateRange}
                                     onChange={handleDateChange}
-                                    disabledDates={details?.busyDates}
+                                    disabledDates={disabledDatesArray}
                                 />
                             </div>
 

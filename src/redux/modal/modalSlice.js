@@ -6,6 +6,7 @@ const initialState ={
     register: false,
     forgetPassword:false,
     details: false,
+    detailsChart: false,
     notification: {message: '', notificationType:''}
 }
 
@@ -24,6 +25,12 @@ const modalSlice = createSlice({
         } ,
         closeDetails: (state, action)=>{
             state.details = false; 
+        },
+        openDetailsChart:(state, action)=>{
+            state.detailsChart = true; 
+        } ,
+        closeDetailsChart: (state, action)=>{
+            state.detailsChart = false; 
         },
         openForgetPassword:(state, action)=>{
             state.forgetPassword = true; 
@@ -49,5 +56,5 @@ const modalSlice = createSlice({
    
 });
 
-export const {openLogin, closeLogin,openRegister,closeRegister, openMessage,resetMessage, closeFotgetPassword, openForgetPassword, openDetails, closeDetails} = modalSlice.actions
+export const {openDetailsChart,closeDetailsChart,openLogin, closeLogin,openRegister,closeRegister, openMessage,resetMessage, closeFotgetPassword, openForgetPassword, openDetails, closeDetails} = modalSlice.actions
 export default modalSlice.reducer

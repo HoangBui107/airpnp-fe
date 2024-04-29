@@ -28,10 +28,6 @@ export const getAllRooms = createAsyncThunk('room/getAllRooms', async(data, thun
             const reponse = await http.get(`api/Rooms${categoryId ? `?id=${categoryId}` : '?'} ${name? `&name=${name}` : `&`}`)
             return reponse
         
-
-        // const reponse = await http.get('api/Rooms')
-        
-        // return reponse
     } catch (error) {
         thunkApi.dispatch(openMessage({message:"Call Api Failed!", notificationType: 'error'}))
         return thunkApi.rejectWithValue(error)
@@ -50,7 +46,8 @@ export const getRoomById = createAsyncThunk('room/getRoomById', async(data, thun
     }
 })
 
-export const getRoomStatus = createAsyncThunk('room/getRoomStatus', async(_, thunkApi)=>{
+
+export const getRoomOrdersStats = createAsyncThunk('room/RoomOrdersStats', async(_, thunkApi)=>{
     try {
         const reponse = await http.get(`api/Rooms/GetRoomOrdersStats`)
         return reponse

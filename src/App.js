@@ -5,6 +5,7 @@ import './App.css';
 import SpinLoading from './components/spin/Spin';
 import ToastNotification from './components/toast/ToastNotification';
 import UpdateRoom from './pages/Room/UpdateRoom';
+import ManagerOwner from './pages/HomeAdmin/Owner/Owner';
 const Home = lazy(() => import('./pages/Home'));
 const Login = lazy(() => import('./pages/Login'));
 const Details = lazy(() => import('./pages/Room/Details'));
@@ -72,7 +73,7 @@ function App() {
             <Route path='/orders' element={<ListOrder />} />
 
             <Route path='account-setting' >
-              <Route path='' element={<AccountSetting />} />
+              <Route index path='' element={<AccountSetting />} />
               <Route path='personal-info' element={<UpdateProfile />} />
               <Route path='secutiry' element={<Security />} />
               <Route path='contract' element={<ContractPage />} />
@@ -80,9 +81,10 @@ function App() {
 
             </Route>
             <Route path='admin' element={<HomeAdmin />} >
-              <Route path='dashboard' element={<Dashboard />} />
+              <Route index path='' element={<Dashboard />} />
               <Route path='categories' element={<ManageCategories />} />
               <Route path='users' element={<ManagerUser />} />
+              <Route path='owner' element={<ManagerOwner />} />
             </Route>
           </Routes>
         </Suspense>

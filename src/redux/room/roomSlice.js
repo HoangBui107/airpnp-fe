@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createRoom, deleteRoom, getAllRooms, getRoomStatus, getRoomById, getMultiPreSignURL, uploadImageProductToS3, updateRoom } from "./roomThunks";
+import { createRoom, deleteRoom, getAllRooms, getRoomById, updateRoom, getRoomOrdersStats } from "./roomThunks";
 
 
 
@@ -8,7 +8,8 @@ const initialState ={
     error: '',
     room: [],
     details:{},
-    status: []
+    status: [],
+    dataChart: []
 }
 
 
@@ -29,6 +30,7 @@ const roomSlice = createSlice({
         })
         builder.addCase(getAllRooms.fulfilled, (state, action) =>{
             state.loading=false
+            console.log(action.payload)
             state.room = action.payload
             state.error = ''
         })
@@ -36,17 +38,16 @@ const roomSlice = createSlice({
             state.loading= false
             state.error = action.payload
         })
-
-        builder.addCase(getRoomStatus.pending,(state,action)=>{
+        builder.addCase(getRoomOrdersStats.pending,(state,action)=>{
             state.loading = true
             state.error = ''
         })
-        builder.addCase(getRoomStatus.fulfilled, (state, action) =>{
+        builder.addCase(getRoomOrdersStats.fulfilled, (state, action) =>{
             state.loading=false
-            state.status = action.payload
+            state.dataChart = action.payload
             state.error = ''
         })
-        builder.addCase(getRoomStatus.rejected, (state,action) =>{
+        builder.addCase(getRoomOrdersStats.rejected, (state,action) =>{
             state.loading= false
             state.error = action.payload
         })

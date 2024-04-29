@@ -113,7 +113,7 @@ export default function Navbar() {
         <AppBar position="static" sx={{ divShadow: '0px 0px 0px rgba(0, 0, 0, 0.1)', borderBottom: '1px solid rgba(0, 0, 0, 0.1)' }} >
           <Toolbar>
             <div
-              className="flex flex-row items-center cursor-pointer sm:ml-4 md:ml-6 lg:ml-8 "
+              className="flex flex-row items-center cursor-pointer sm:ml-4 md:ml-6 lg:ml-16 "
               onClick={() => { navigate('/') }}>
               <FaAirbnb className="font-semibold transform rotate-180 cursor-pointer" color="#F5385D" size={40} />
               <h1 className="text-primary text-lg font-semibold font-circular pl-3">EarthPnP</h1>

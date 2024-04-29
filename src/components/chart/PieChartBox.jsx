@@ -9,10 +9,10 @@ const data = [
   { name: "Tablet", value: 200, color: "#FF8042" },
 ];
 
-const PieChartBox = () => {
+const PieChartBox = ({props}) => {
   return (
     <div className="h-full flex flex-col justify-between">
-      <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-white">Leads by Source</h1>
+      <h1 className={`text-lg sm:text-xl md:text-2xl font-bold text-center text-black`}>Leads by Source</h1>
       <div className="flex items-center justify-center w-full h-full ">
         <ResponsiveContainer width="99%" height={300}>
           <PieChart>

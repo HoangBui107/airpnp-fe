@@ -13,6 +13,25 @@ export const getOrder = createAsyncThunk('order/getProfileByToken', async (_, th
     }
 })
 
+export const getOrderByAdmin = createAsyncThunk('order/getOrderByAdmin', async (_, thunkApi) => {
+    try {
+        const reponse = await http.get('/Orders/GetOrdersForAdmin')
+        return reponse
+    } catch (error) {
+        thunkApi.dispatch(openMessage({ message: "Get Order Failed!", notificationType: 'error' }))
+        return thunkApi.rejectWithValue(error)
+    }
+})
+
+export const getCountByMonth = createAsyncThunk('order/getCountByMonth', async (_, thunkApi) => {
+    try {
+        const reponse = await http.get('/Orders/GetOrderCountByMonth')
+        return reponse
+    } catch (error) {
+        thunkApi.dispatch(openMessage({ message: "Get Order Failed!", notificationType: 'error' }))
+        return thunkApi.rejectWithValue(error)
+    }
+})
 
 export const getOrderById = createAsyncThunk('order/getOrderById', async (data, thunkApi) => {
     const { id } = data
