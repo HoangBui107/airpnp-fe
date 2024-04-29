@@ -8,7 +8,7 @@ const DetailsModal = ({id}) => {
     const dispatch = useDispatch()
     const { isLoading } = useSelector((state) => state.auth)
     const open = useSelector((state) => state.modal.details)
-    console.log(open)
+
     const onClose = () => {
         dispatch(closeDetails())
     }

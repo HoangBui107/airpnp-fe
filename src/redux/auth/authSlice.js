@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { changePassword, getAllStore, getAllUser, getTopDeals, login, register, resetPassword } from "./authThunks";
+import { activeUser, bandUser, changePassword, getAllStore, getAllUser, getTopDeals, login, register, resetPassword } from "./authThunks";
 import { jwtDecode } from "jwt-decode";
 
 
@@ -129,6 +129,34 @@ const authSlice = createSlice({
             state.error = ''
         })
         builder.addCase(getTopDeals.rejected, (state,action) =>{
+            state.loading= false
+            state.error = action.payload
+        })
+
+        builder.addCase(bandUser.pending,(state,action)=>{
+            state.loading = true
+            state.error = ''
+        })
+        builder.addCase(bandUser.fulfilled, (state, action) =>{
+            state.loading=false
+            state.details = action.payload
+            state.error = ''
+        })
+        builder.addCase(bandUser.rejected, (state,action) =>{
+            state.loading= false
+            state.error = action.payload
+        })
+
+        builder.addCase(activeUser.pending,(state,action)=>{
+            state.loading = true
+            state.error = ''
+        })
+        builder.addCase(activeUser.fulfilled, (state, action) =>{
+            state.loading=false
+            state.details = action.payload
+            state.error = ''
+        })
+        builder.addCase(activeUser.rejected, (state,action) =>{
             state.loading= false
             state.error = action.payload
         })

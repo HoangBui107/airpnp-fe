@@ -12,7 +12,7 @@ import { useFormik } from 'formik';
 import 'react-quill/dist/quill.snow.css';
 import './UpdateProfile.scss';
 const validationSchema = yup.object({
-    name: yup.string().required("Name is required"),
+    fullName: yup.string().required("Name is required"),
     description: yup.string().required("description is required"),
     address: yup.string().required("address is required"),
     phone: yup.string().required("phone is required"),
@@ -36,6 +36,7 @@ const UpdateProfile = () => {
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
+
             dispatch(updateProfile({ id: user.UserId, profile: values }));
         },
     });

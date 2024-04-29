@@ -9,7 +9,7 @@ import moment from "moment";
 const Details = () => {
     const dispatch = useDispatch()
     const location = useLocation()
-    console.log(location.state.date.endDate)
+
     const { id } = useParams()
     const { details } = useSelector((state) => state.room)
     const [totalPrice, setTotalPrice] = useState(parseInt(location?.state?.totalPrice));

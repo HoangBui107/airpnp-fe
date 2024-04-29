@@ -16,7 +16,7 @@ const Home = () => {
     useEffect(() => {
         dispatch(getAllRooms())
     }, [])
-    console.log(room)
+
     return (
         <>
             <div className="relative h-24 sm:h-20 z-10">

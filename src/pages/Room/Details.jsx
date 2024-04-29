@@ -14,7 +14,7 @@ const Details = () => {
     const { id } = useParams()
     const { details } = useSelector((state) => state.room)
     const { isLogin } = useSelector((state) => state.auth)
-    console.log(details)
+
     const navigate = useNavigate()
     useEffect(() => {
         dispatch(getRoomById({ id: id }))

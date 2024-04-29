@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 const ListingItem = ({data, isFavorite, btn}) => {
     const navigate = useNavigate()
-    console.log(data?.roomImages?.[0]?.url)
+
     const navigateDetails = () =>{
         navigate(`/details/${data?.id}`)
     }

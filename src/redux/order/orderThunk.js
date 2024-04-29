@@ -112,21 +112,17 @@ export const createOrderPaypal = createAsyncThunk('order/createOrderPaypal', asy
         );
 
         const order = response;
-        console.log(order.data.id)
         return order.data.id;
     } catch (error) {
-        console.log(error);
     }
 });
 
 export const onApprove = createAsyncThunk('order/onApprove', async (data, thunkApi) => {
     const accessToken = await generateAccessToken();
-    console.log(data)
 
     try {
 
         const {dataPaypal, price, note, startDate, endDate, roomId } = data
-        console.log(dataPaypal)
         const responsePaypal = await axios.post(
             `https://api-m.sandbox.paypal.com/v2/checkout/orders/${dataPaypal.orderID}/capture`,
             {
@@ -147,10 +143,9 @@ export const onApprove = createAsyncThunk('order/onApprove', async (data, thunkA
             endDate: endDate,
             roomId: roomId,
         })
-        thunkApi.dispatch(openMessage({ message: "Create order success!", notificationType: 'success' }))
+        thunkApi.dispatch(openMessage({ message: "Booking success!", notificationType: 'success' }))
 
         return
     } catch (error) {
-        console.log(error);
     }
 });

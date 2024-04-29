@@ -25,7 +25,6 @@ const profileSlice = createSlice({
         })
         builder.addCase(getOrderById.fulfilled, (state, action) =>{
             state.loading=false
-            // console.log(action.payload)
             state.details = action.payload
             state.error = ''
         })
@@ -40,7 +39,6 @@ const profileSlice = createSlice({
         })
         builder.addCase(getOrder.fulfilled, (state, action) =>{
             state.loading=false
-            // console.log(action.payload)
             state.data = action.payload
             state.error = ''
         })

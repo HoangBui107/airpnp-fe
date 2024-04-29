@@ -68,7 +68,7 @@ const ForgetPassword = () =>{
   
     const bodyContent = (
         <div className="flex flex-col gap-4">
-          <Heading title="Welcome to Airpnp" subtitle="Welcome back!" />
+          <Heading title="Welcome to EarthPnP" subtitle="Welcome back!" />
           <input
             className="w-full text-center mx-0 my-2.5 px-0 py-[7px] border rounded-[10px] border-solid border-black"
             name="email"
@@ -115,7 +115,7 @@ const ForgetPassword = () =>{
         <Modal
           disabled={isLoading}
           isOpen={open}
-          title="Login"
+          title="Forget Password"
           actionLabel="Log In"
           onClose={onClose}
           onSubmit={onSubmit}

@@ -60,6 +60,7 @@ export const getAllStore = createAsyncThunk('auth/getAllStore', async(_, thunkAp
 export const changePassword = createAsyncThunk('auth/changePassword', async(data, thunkApi)=>{
     try {
         const reponse = await http.post('ChangePassword', data)
+        thunkApi.dispatch(openMessage({message:"Change Password Success!", notificationType: 'success'}))
         return reponse
     } catch (error) {
         thunkApi.dispatch(openMessage({message:"Change Password Failed!", notificationType: 'error'}))
@@ -75,6 +76,33 @@ export const resetPassword = createAsyncThunk('auth/resetPassword', async(data, 
         return reponse
     } catch (error) {
         thunkApi.dispatch(openMessage({message:"Reset Password Failed!", notificationType: 'error'}))
+        return thunkApi.rejectWithValue(error)
+    }
+})
+
+
+
+export const activeUser = createAsyncThunk('auth/activeUser', async(data, thunkApi)=>{
+    const {email} = data
+    try {
+        const reponse = await http.post(`/BanUser/${data}?isBanned=false`)
+        thunkApi.dispatch(openMessage({message:"Active User Success!", notificationType: 'success'}))
+        return reponse
+    } catch (error) {
+        thunkApi.dispatch(openMessage({message:"Active User Failed!", notificationType: 'error'}))
+        return thunkApi.rejectWithValue(error)
+    }
+})
+
+
+export const bandUser = createAsyncThunk('auth/bandUser', async(data, thunkApi)=>{
+    const {email} = data
+    try {
+        const reponse = await http.post(`/BanUser/${data}?isBanned=true`)
+        thunkApi.dispatch(openMessage({message:"Band User Success!", notificationType: 'success'}))
+        return reponse
+    } catch (error) {
+        thunkApi.dispatch(openMessage({message:"Band User Failed!", notificationType: 'error'}))
         return thunkApi.rejectWithValue(error)
     }
 })

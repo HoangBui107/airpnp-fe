@@ -22,7 +22,6 @@ export const getPreSignURL = createAsyncThunk('file/getPreSignURL', async (_, th
 
 export const getAllRooms = createAsyncThunk('room/getAllRooms', async(data, thunkApi)=>{
     const{categoryId, name} = data
-    console.log(categoryId)
     try {
 
             const reponse = await http.get(`api/Rooms${categoryId ? `?id=${categoryId}` : '?'} ${name? `&name=${name}` : `&`}`)

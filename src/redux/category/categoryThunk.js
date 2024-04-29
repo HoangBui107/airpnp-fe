@@ -5,7 +5,7 @@ import { openMessage } from "../modal/modalSlice"
 export const getAllCategory = createAsyncThunk('category/getAllCategory', async(_, thunkApi)=>{
     try {
         const reponse = await http.get('Categories')
-        console.log(reponse)
+
         return reponse
     } catch (error) {
         if(error.statusCode ===403){
@@ -19,7 +19,7 @@ export const getAllCategory = createAsyncThunk('category/getAllCategory', async(
 export const getAllCategoryForAdmin = createAsyncThunk('category/getAllCategoryForAdmin', async(_, thunkApi)=>{
     try {
         const reponse = await http.get('Categories/GetCategoriesForAdmin')
-        console.log(reponse)
+
         return reponse
     } catch (error) {
         if(error.statusCode ===403){

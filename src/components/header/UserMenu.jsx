@@ -12,7 +12,7 @@ const UserMenu = ({ currentUser }) => {
   const navigate = useNavigate()
   const dispatch = useDispatch();
   const { isLogin } = useSelector((state) => state.auth)
-  console.log(isLogin)
+
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {

@@ -2,7 +2,7 @@
 import { Button, Space, Table, Tag } from 'antd';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllUser } from '../../../redux/auth/authThunks';
+import { activeUser, bandUser, getAllUser } from '../../../redux/auth/authThunks';
 import './User.scss';
 const { Column, ColumnGroup } = Table;
 
@@ -11,7 +11,14 @@ const { Column, ColumnGroup } = Table;
 const ManagerUser = () => {
     const dispatch = useDispatch()
     const {data} = useSelector((state) => state.auth)
-    // console.log(data)
+
+    const activeUserButton = (id, active) =>{
+        if(active === true){
+            return dispatch(activeUser(id))
+        }
+        dispatch(bandUser(id))
+    }
+    
     useEffect(()=>{
         dispatch(getAllUser())
     },[])
@@ -42,7 +49,7 @@ const ManagerUser = () => {
                         key="action"
                         render={(_, record) => (
                             <Space size="middle">
-                                <Button>Ban User </Button>
+                                <Button onClick={()=>{activeUserButton(record?.id, record?.isBanned)}}>{record.isBanned? 'Active User' : 'Ban User'} </Button>
                             </Space>
                         )}
                     />

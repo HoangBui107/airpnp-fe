@@ -11,7 +11,7 @@ const { Column, ColumnGroup } = Table;
 const ManagerOwner = () => {
     const dispatch = useDispatch()
     const data = useSelector((state) => state.auth.store)
-    // console.log(data)
+
     useEffect(()=>{
         dispatch(getAllStore())
     },[])

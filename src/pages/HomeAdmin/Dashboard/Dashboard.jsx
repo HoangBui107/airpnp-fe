@@ -15,7 +15,7 @@ const Dashboard = () => {
     const orders = useSelector((state) => state.order.data)
     const countByMonth = useSelector((state) => state.order.countByMonth)
     const categoriesChart = useSelector((state) => state.category.categoriesChart)
-    console.log(categoriesChart)
+
     useEffect(() => {
         dispatch(getAllUser())
         dispatch(getAllStore())

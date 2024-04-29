@@ -22,7 +22,7 @@ const profileSlice = createSlice({
         })
         builder.addCase(getProfileByToken.fulfilled, (state, action) =>{
             state.loading=false
-            // console.log(action.payload)
+
             state.profile = action.payload
             state.error = ''
         })
@@ -36,7 +36,7 @@ const profileSlice = createSlice({
         })
         builder.addCase(getProfileByUserID.fulfilled, (state, action) =>{
             state.loading=false
-            // console.log(action.payload)
+
             state.profile = action.payload
             state.error = ''
         })
@@ -50,7 +50,6 @@ const profileSlice = createSlice({
         })
         builder.addCase(updateProfile.fulfilled, (state, action) =>{
             state.loading=false
-            // console.log(action.payload)
             state.profile = action.payload
             state.error = ''
         })
@@ -65,7 +64,6 @@ const profileSlice = createSlice({
         })
         builder.addCase(uploadAvatar.fulfilled, (state, action) =>{
             state.loading=false
-            // console.log(action.payload)
             state.profile = action.payload
             state.error = ''
         })

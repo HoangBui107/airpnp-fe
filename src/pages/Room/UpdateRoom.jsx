@@ -117,8 +117,8 @@ const UpdateRoom = () => {
             setSelectedState(newState); 
             formik.setFieldValue('city', newState.name); 
             formik.setFieldValue('codeCity', newState.isoCode); 
-            console.log(formik.initialValues)
 
+            
         } else {
             setSelectedState(null); 
             formik.setFieldValue('city', ''); 
@@ -132,10 +132,6 @@ const UpdateRoom = () => {
         dispatch(getAllCategory())
     }, [])
 
-    const handleGetCoordinates = async () => {
-        const coordinates = await getCoordinatesFromAddress(address, cityId.name, selectedCountry.id);
-        return coordinates
-    }
     const [imagesUpload, setImagesUpload] = useState([]);
 
     const handleFile = (event) => {
@@ -150,7 +146,7 @@ const UpdateRoom = () => {
     const removeImage = (i) => {
         formik.setFieldValue('files', formik.values.files.filter(x => x.name !== i)); 
         setImagesUpload(imagesUpload.filter(x => x.name !== i));
-        console.log(formik.values);
+
     };
     const handleCategoryChange = (event, newValue) => {
         if (newValue) {
