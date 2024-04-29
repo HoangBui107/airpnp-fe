@@ -4,12 +4,14 @@ import { useEffect } from "react";
 import { getProfileByToken } from "../../redux/profile/profileThunk";
 import { Link } from 'react-router-dom';
 import BreadcrumbSetting from './Breadcrumb';
+import { jwtDecode } from "jwt-decode";
 
 
 const ProfilePage = () => {
     const dispatch = useDispatch();
 
     const { profile } = useSelector((state) => state.profile)
+    const user = jwtDecode(localStorage.getItem('token'))
 
     useEffect(() => {
         dispatch(getProfileByToken());
@@ -27,7 +29,7 @@ const ProfilePage = () => {
                         <div className=" flex flex-col justify-center items-center  w-full">
                             <img className="object-cover h-40 w-40 rounded-full" loading="lazy" src={profile.avatarUrl} alt="" />
                             <h1 className="text-2xl font-semibold">{profile.fullName}</h1>
-                            <h3 className="text-l font-medium" >Guest</h3>
+                            <h3 className="text-l font-medium" >{user.Roles }</h3>
                         </div>
 
                     </div>

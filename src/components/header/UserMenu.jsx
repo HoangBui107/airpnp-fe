@@ -95,14 +95,6 @@ const UserMenu = ({ currentUser }) => {
                   onClick={() => navigate('/orders')}
                 />
                 <MenuItem
-                  label="My favorites"
-                  onClick={() => navigate('/favorites')}
-                />
-                <MenuItem
-                  label="My reservations"
-                  onClick={() => navigate('/reservations')}
-                />
-                <MenuItem
                   label="My Account"
                   onClick={() => navigate('/account-setting')}
                 />

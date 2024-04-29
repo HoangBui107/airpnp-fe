@@ -5,6 +5,7 @@ import BreadcrumbSetting from './Breadcrumb';
 import { jwtDecode } from "jwt-decode";
 import { getProfileByUserID } from '../../redux/profile/profileThunk';
 import { useDispatch, useSelector } from "react-redux";
+import { upgrateToOwnerStore } from '../../redux/userRole/userRoleThunk';
 
 function ContractPage() {
     const sigPadRef = useRef(null);
@@ -14,7 +15,15 @@ function ContractPage() {
     const dispatch = useDispatch()
     const { profile } = useSelector((state) => state.profile)
 
-    const clear = () => {
+    const handleSubmit = () => {
+        if (sigPadRef.current != null) {
+            sigPadRef.current.clear();
+            setIsSigned(false);
+            dispatch(upgrateToOwnerStore())
+        }
+    };
+
+    const handleClear = () => {
         if (sigPadRef.current) {
             sigPadRef.current.clear();
             setIsSigned(false);
@@ -117,13 +126,13 @@ useEffect(() => {
                                 onBegin={()=>{onBegin()}}
                             />
                             <div className='absolute bottom-2 right-6'>
-                             <button className='mt-4' onClick={clear}>Clear</button>
+                             <button className='mt-4' onClick={handleClear}>Clear</button>
 
                             </div>
                         </div>
                         <div className='flex flex-row w-full justify-center'>
 
-                        <button className='mt-4 bg-primary hover:bg-primary hover:opacity-85 py-1 rounded-lg text-white w-1/5' onClick={clear}>Submit</button>
+                        <button className='mt-4 bg-primary hover:bg-primary hover:opacity-85 py-1 rounded-lg text-white w-1/5' onClick={handleSubmit}>Submit</button>
                         </div>
 
                     </div>

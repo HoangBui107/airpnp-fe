@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { changePassword } from "../../redux/auth/authThunks";
 import { Switch } from 'antd';
 import BreadcrumbSetting from "./Breadcrumb";
+import { disableOwnerStore } from "../../redux/userRole/userRoleThunk";
 const Security = () => {
     const dispatch = useDispatch()
     const [isChangePassword, setIsChangePassword] = useState(false);
@@ -17,6 +18,10 @@ const Security = () => {
             dispatch(changePassword(data))
         }
     }
+    const handleSubmit = () => {
+        dispatch(disableOwnerStore())
+    };
+
     return (
         <>
             <div className="sm:container px-6 lg:mx-auto">
@@ -97,7 +102,7 @@ const Security = () => {
                             </div>
                             <div className="my-4 flex flex-row justify-between">
                                 <p className=" text-gray-700"> Disable owner store</p>
-                                <button className=" font-normal text-[#D93900]" >Disable</button>
+                                <button className='font-normal text-[#D93900]' onClick={handleSubmit}>Disable</button>
                             </div>
                         </div>
                     </div>
