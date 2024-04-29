@@ -32,6 +32,7 @@ const DetailsModal = ({id}) => {
                 open={open}
                 onCancel={() => onClose()}
                 width={1000}
+                footer={null}
             >
                 <>
                 <div className="flex flex-col px-4 ">
@@ -40,7 +41,7 @@ const DetailsModal = ({id}) => {
                     </div>
                     <div className="flex flex-col gap-4">
                         <h1 className="text-xl font-medium">Address: {details?.street} - {details?.city} - {details?.country}</h1>
-                        <h1 className="text-xl font-medium"> Price: {details?.price}</h1>
+                        <h1 className="text-xl font-medium"> Price:$ {details?.price}</h1>
                     </div>
                     <div>
                     <div dangerouslySetInnerHTML={{ __html: details?.description}}></div>

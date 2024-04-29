@@ -5,12 +5,12 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProfileByToken, updateProfile, uploadAvatar } from "../../redux/profile/profileThunk";
 import BreadcrumbSetting from "./Breadcrumb";
-import { Box, TextField, Button } from '@mui/material';
+import { div, TextField, Button } from '@mui/material';
 import ReactQuill from 'react-quill';
 import * as yup from "yup";
 import { useFormik } from 'formik';
 import 'react-quill/dist/quill.snow.css';
-
+import './UpdateProfile.scss';
 const validationSchema = yup.object({
     name: yup.string().required("Name is required"),
     description: yup.string().required("description is required"),
@@ -75,18 +75,18 @@ const UpdateProfile = () => {
     const uploadButton = (
         <button style={{ border: 0, background: 'none' }} type="button">
             {loading ? <LoadingOutlined /> : <PlusOutlined />}
-            <Box style={{ marginTop: 8 }}>Upload</Box>
+            <div style={{ marginTop: 8 }}>Upload</div>
         </button>
     );
     return (
         <>
-            <Box className="flex flex-col px-6 ">
-                <Box className="flex flex-col w-full sm:px-12 md:px-24 py-14 gap-4">
+            <div className="flex flex-col px-6 sm:px-12 md:px-24 lg:px-48 ">
+                <div className="flex flex-col w-full py-14 gap-4">
                     <BreadcrumbSetting />
-                </Box>
-                <Box className="flex flex-col md:flex-row sm:px-12 md:px-24 gap-4 ">
-                    <Box className="flex flex-col gap-4 md:w-2/3">
-                        <Box className="flex justify-center items-center">
+                </div>
+                <div className="flex flex-col lg:flex-row px-4 sm:px-12 lg:px-24 gap-20 border border-gray-200 shadow-2xl rounded-2xl py-8 ">
+                    <div className="flex flex-col gap-2 lg:gap-4 lg:w-1/3">
+                        <div className="flex justify-center items-center">
                             <Upload
                                 name="avatar"
                                 listType="picture-circle"
@@ -94,70 +94,94 @@ const UpdateProfile = () => {
                                 showUploadList={false}
                                 onChange={handleUploadAvatar}
                             >
-                                {imageUrl ? <img loading='lazy' className="w-40 rounded-full" src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
+                                {imageUrl ? <img loading='lazy' className=" object-cover w-[100px] h-[100px] rounded-full" src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
                             </Upload>
-                        </Box>
-                        <Box class="w-full">
-                            <label for="fullName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
-                            <TextField fullWidth id="outlined-basic" variant="outlined"
-                                name="fullName"
-                                value={formik.values.fullName}
-                                onChange={formik.handleChange}
-                                error={formik.touched.fullName && Boolean(formik.errors.fullName)}
-                                helperText={formik.touched.fullName && formik.errors.fullName}
-                            />
-                        </Box>
+                        </div>
+                        <div className='flex flex-col gap-8'>
+                            <div class="w-full">
+                                <label for="fullName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
+                                <TextField fullWidth id="outlined-basic" variant="outlined"
+                                    name="fullName"
+                                    value={formik.values.fullName}
+                                    onChange={formik.handleChange}
+                                    error={formik.touched.fullName && Boolean(formik.errors.fullName)}
+                                    helperText={formik.touched.fullName && formik.errors.fullName}
+                                    InputProps={{ sx: { borderRadius: 3 } }}
+                                />
+                            </div>
 
-                        <Box class="w-full">
-                            <label for="phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone</label>
-                            <TextField fullWidth id="outlined-basic" variant="outlined"
-                                name="phone"
-                                value={formik.values.phone}
-                                onChange={formik.handleChange}
-                                error={formik.touched.phone && Boolean(formik.errors.phone)}
-                                helperText={formik.touched.phone && formik.errors.phone}
-                            />
-                        </Box>
+                            <div class="w-full">
+                                <label for="phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone</label>
+                                <TextField fullWidth id="outlined-basic" variant="outlined"
+                                    name="phone"
+                                    value={formik.values.phone}
+                                    onChange={formik.handleChange}
+                                    error={formik.touched.phone && Boolean(formik.errors.phone)}
+                                    helperText={formik.touched.phone && formik.errors.phone}
+                                    InputProps={{ sx: { borderRadius: 3 } }}
+                                />
+                            </div>
 
-                        <Box class="w-full">
-                            <label for="address" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address</label>
-                            <TextField fullWidth id="outlined-basic" variant="outlined"
-                                name="address"
-                                value={formik.values.address}
-                                onChange={formik.handleChange}
-                                error={formik.touched.address && Boolean(formik.errors.address)}
-                                helperText={formik.touched.address && formik.errors.address}
-                            />
-                        </Box>
+                            <div class="w-full">
+                                <label for="address" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address</label>
+                                <TextField fullWidth id="outlined-basic" variant="outlined"
+                                    name="address"
+                                    value={formik.values.address}
+                                    onChange={formik.handleChange}
+                                    error={formik.touched.address && Boolean(formik.errors.address)}
+                                    helperText={formik.touched.address && formik.errors.address}
+                                    InputProps={{ sx: { borderRadius: 3 } }}
+                                />
+                            </div>
+
+                        </div>
 
 
-                    </Box>
-                    <Box className="flex flex-col md:w-1/2">
-                        <Box class="sm:col-span-2 h-full">
+
+                    </div>
+                    <div className="flex flex-col lg:w-2/3">
+                        <div class="sm:col-span-2 h-full lg:pt-3">
                             <label for="brand" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
 
-                            <Box className='editor'>
+                            <div className='editor'>
                                 <ReactQuill theme="snow"
                                     value={description}
                                     onChange={handleEditorChange}
-                                    className="editor-input h-full"
+                                    className="editor-input h-full editor-quill"
+                                    style={{ borderRadius: 5 }}
                                 // style={{ height: "600px", marginBottom: "50px" }}
                                 />
-                            </Box>
-                        </Box>
-                    </Box>
-                </Box>
-                <Box className="flex justify-end mt-4">
+                            </div>
+
+                        </div>
+                        {/* <div className="flex justify-end mt-4">
+                            <Button
+                                type="submit"
+                                variant="outlined"
+                                onClick={formik.handleSubmit}
+                            >
+                                Save Change
+                            </Button>
+                        </div> */}
+
+                    </div>
+                </div>
+                <div className="flex justify-center mt-12">
                     <Button
                         type="submit"
                         variant="outlined"
                         onClick={formik.handleSubmit}
+                        style={{
+                            border: 'none',
+                            backgroundColor: '#079a9f',
+                            color: 'white',
+                            height: '70%'
+                        }}
                     >
                         Save Change
                     </Button>
-                </Box>
-
-            </Box>
+                </div>
+            </div>
 
 
         </>
@@ -165,3 +189,4 @@ const UpdateProfile = () => {
 }
 
 export default UpdateProfile;
+

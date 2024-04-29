@@ -39,7 +39,7 @@ useEffect(() => {
                 <BreadcrumbSetting />
                 <div className='flex mx-28'>
 
-                    <div className="flex flex-col w-full  px-4 py-4 rounded-lg contract-page" >
+                    <div className="flex flex-col w-full  px-4 py-4 rounded-lg border border-gray-300 contract-page" >
                         <h1 className='text-xl font-bold text-center'>HỢP ĐỒNG NÂNG CẤP VAI TRÒ CHỦ KHÁCH SẠN</h1>
                         <div className="contract-details">
                             <h2>1. Thông tin về các bên:</h2>

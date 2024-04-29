@@ -4,7 +4,7 @@ import Navbar from './layout/navbar/Navbar';
 import './App.css';
 import SpinLoading from './components/spin/Spin';
 import ToastNotification from './components/toast/ToastNotification';
-// import UpdateProfile from './pages/Setting/UpdateProfile';
+import UpdateRoom from './pages/Room/UpdateRoom';
 const Home = lazy(() => import('./pages/Home'));
 const Login = lazy(() => import('./pages/Login'));
 const Details = lazy(() => import('./pages/Room/Details'));
@@ -67,7 +67,7 @@ function App() {
             <Route path='/details/:id' element={<Details />} />
             <Route path='/list' element={<ListPage />} />
             <Route path='/createRoom' element={<CreateRoom />} />
-            <Route path='/editRoom/:id' element={<CreateRoom />} />
+            <Route path='/editRoom/:id' element={<UpdateRoom />} />
             <Route path='/order/:id' element={<DetailsOrder />} />
             <Route path='/orders' element={<ListOrder />} />
 

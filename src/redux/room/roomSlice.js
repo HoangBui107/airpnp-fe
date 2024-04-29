@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createRoom, deleteRoom, getAllRooms, getRoomStatus, getRoomById, getMultiPreSignURL, uploadImageProductToS3 } from "./roomThunks";
+import { createRoom, deleteRoom, getAllRooms, getRoomStatus, getRoomById, getMultiPreSignURL, uploadImageProductToS3, updateRoom } from "./roomThunks";
 
 
 
@@ -88,6 +88,20 @@ const roomSlice = createSlice({
             state.error = ''
         })
         builder.addCase(deleteRoom.rejected, (state,action) =>{
+            state.loading= false
+            state.error = action.payload
+        })
+        
+        builder.addCase(updateRoom.pending,(state,action)=>{
+            state.loading = true
+            state.error = ''
+        })
+        builder.addCase(updateRoom.fulfilled, (state, action) =>{
+            state.loading=false
+            state.details = action.payload
+            state.error = ''
+        })
+        builder.addCase(updateRoom.rejected, (state,action) =>{
             state.loading= false
             state.error = action.payload
         })

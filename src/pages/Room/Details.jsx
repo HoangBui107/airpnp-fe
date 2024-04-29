@@ -7,6 +7,7 @@ import TextField from '@mui/material/TextField';
 import DatePicker from "../../components/calendar/Calendar";
 import { openLogin } from "../../redux/modal/modalSlice";
 import useTotalPrice, { calculateNumberOfDays } from './useTotalPrice';
+import moment from "moment";
 
 const Details = () => {
     const dispatch = useDispatch()
@@ -53,7 +54,7 @@ const diffDay = calculateNumberOfDays(selectedDateRange?.startDate, selectedDate
         if (!isLogin) {
             dispatch(openLogin())
         }
-        navigate(`/order/${id}`,  { state: { date: selectedDateRange, totalPrice: totalPrice, diffDay: diffDay } })
+        navigate(`/order/${id}`,  { state: { date: selectedDateRange, totalPrice: totalPrice,price: details?.price, diffDay: diffDay } })
     }
     return (
         <>
@@ -114,7 +115,7 @@ const diffDay = calculateNumberOfDays(selectedDateRange?.startDate, selectedDate
                                     <img src="https://static.vecteezy.com/system/resources/previews/002/002/257/non_2x/beautiful-woman-avatar-character-icon-free-vector.jpg" alt="" />
                                 </div>
                                 <div className="flex px-5 flex-col justify-center">
-                                    <h1 className="font-semibold">Owner home/Person create: Hoang</h1>
+                                    <h1 className="font-semibold">Owner home/Person create: {details?.user?.profile?.fullName}</h1>
                                     <h2> Super host 4 years of experience welcoming guests</h2>
                                 </div>
                             </div>
@@ -144,7 +145,8 @@ const diffDay = calculateNumberOfDays(selectedDateRange?.startDate, selectedDate
                                 </div>
                                 <div className="flex px-5 flex-col justify-center">
                                     <h1 className="text-2xl font-bold">Hoster By : {details?.user?.profile?.fullName}</h1>
-                                    <h2> Joined in November {details?.user?.profile?.createdAt}</h2>
+                                    <h2> Joined in November: {moment(details?.user?.profile?.createdAt).format('DD/MM/YYYY')}</h2>
+                                    
                                 </div>
                             </div>
                             <div className="flex flex-col-reverse lg:flex-row py-4">
@@ -155,13 +157,14 @@ const diffDay = calculateNumberOfDays(selectedDateRange?.startDate, selectedDate
                                     </div>
                                 </div>
                                 <div className="flex w-full lg:w-2/4 flex-col lg:ml-40">
+                                <h1 className="font-bold text-lg"> Feedback: </h1>
+
                                     <TextField id="outlined-multiline-static"
                                         value={feedback}
                                         onChange={handleChange}
-                                        label="Feedback"
                                         multiline
                                         rows={12}
-                                        placeholder="Feedback"
+                                        placeholder="If you have any problems, please enter here and the system will send an email to the store owner"
                                     />
 
 
@@ -207,7 +210,7 @@ const diffDay = calculateNumberOfDays(selectedDateRange?.startDate, selectedDate
                         <div className="hidden lg:flex  lg:w-1/3  lg:justify-end  ">
                             <div
                                 className=
-                                "hidden w-[80%] lg:flex flex-col border border-black py-4 px-4 rounded-lg shadow-2xl sm:max-h-[70vh]  lg:max-h-[60vh] sm:sticky sm:top-20 lg:top-44 object-cover"
+                                "hidden w-[80%] lg:flex flex-col border border-gray-200 py-4 px-4 rounded-lg shadow-2xl sm:max-h-[40vh]  lg:max-h-[30vh] sm:sticky sm:top-20 lg:top-44 object-cover"
                             >
                                 <div className="flex flex-row items-center">
                                     <h1 className="font-bold text-2xl">{details?.price}</h1>

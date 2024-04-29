@@ -16,6 +16,18 @@ export const getAllCategory = createAsyncThunk('category/getAllCategory', async(
     }
 })
 
+export const getCategoryId = createAsyncThunk('category/getCategoryId', async(data, thunkApi)=>{
+    try {
+        const reponse = await http.get(`Categories/${data}`)
+        return reponse
+    } catch (error) {
+        if(error.statusCode ===403){
+            // thunkApi.dispatch(a({message:"Your account is block! Please contact Admin", notificationType: 'error'}))
+
+        }
+        return thunkApi.rejectWithValue(error)
+    }
+})
 
 export const createCategory = createAsyncThunk('category/createCategory', async(data, thunkApi)=>{
     try {

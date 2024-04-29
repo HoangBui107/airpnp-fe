@@ -12,8 +12,10 @@ const Home = () => {
         setFavorite(!favorite)
     }
     const { room } = useSelector((state) => state.room)
+
     useEffect(() => {
-        dispatch(getAllRooms())
+        console.log("first")
+        dispatch(getAllRooms({categoryId: undefined}))
     }, [])
     console.log(room)
     return (

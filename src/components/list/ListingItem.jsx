@@ -20,9 +20,6 @@ const ListingItem = ({data, isFavorite, btn}) => {
                             src={data?.roomImages?.[0]?.url}
                             alt=""
                         />
-                        <div className="absolute top-2 left-2 border border-white rounded-3xl p-1 bg-white">
-                            <h1 className="">Guest favorite</h1>
-                        </div>
                         <div className="absolute top-3 right-3">
                             <div className=" relative hover:opacity-80 transition cursor-pointer" onClick={btn}>
                                 <AiOutlineHeart
@@ -41,7 +38,7 @@ const ListingItem = ({data, isFavorite, btn}) => {
                     <div className="font-semibold text-lg">
                         {data?.name} 
                     </div>
-                    <div className="font-semibold text-lg">
+                    <div className="font-semi text">
                         {data?.country} , {data?.city}
                     </div>
                     <div className="font-light text-neutral-500">
@@ -49,7 +46,7 @@ const ListingItem = ({data, isFavorite, btn}) => {
                     </div>
                     <div className="flex flex-row">
                         <div className="font-semibold">
-                            $ {data?.price}
+                            ${data?.price}
                         </div>
                         <div className="font-light">/night</div>
                     </div>

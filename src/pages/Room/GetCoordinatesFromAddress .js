@@ -1,17 +1,23 @@
-import axios from "axios";
+import axios from 'axios';
 
 const getCoordinatesFromAddress = async (address, city, country) => {
-    try {
-        const accessToken = 'pk.eyJ1IjoiaG9hbmdidWkiLCJhIjoiY2x1cG9xN2FoMjQ4cDJqbjIyZ2M0YWxmdiJ9.Ns8PaFWgIggbP5Kyw30T5w';
-        let url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(address)}%20${encodeURIComponent(city)}${country ? ',' + encodeURIComponent(country) : ''}.json`;
-        url += `?access_token=${accessToken}`;
-
-        const response = await axios.get(url);
-
-        return response.data.features;
-    } catch (error) {
-        console.error("There was an error while fetching places:", error);
+  try {
+    const response = await axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
+      params: {
+        address: `${address}, ${city}, ${country}`,
+        key: process.env.REACT_APP_GOOGLE_MAP_KEY, 
+      },
+    });
+    const { results } = response.data;
+    if (results.length > 0) {
+      const { lat, lng } = results[0].geometry.location;
+      return { latitude: lat, longitude: lng };
     }
+    return null;
+  } catch (error) {
+    console.error('Error getting coordinates:', error);
+    return null;
+  }
 };
 
 export default getCoordinatesFromAddress;

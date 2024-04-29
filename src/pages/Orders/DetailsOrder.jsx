@@ -9,40 +9,22 @@ import moment from "moment";
 const Details = () => {
     const dispatch = useDispatch()
     const location = useLocation()
+    console.log(location.state.date.endDate)
     const { id } = useParams()
     const { details } = useSelector((state) => state.room)
-    const [totalPrice, setTotalPrice] = useState(10);
+    const [totalPrice, setTotalPrice] = useState(parseInt(location?.state?.totalPrice));
 
     const handleCreateOrder = async () => {
-        const orderId = await dispatch(createOrderPaypal(totalPrice)).unwrap();
+        const orderId = await dispatch(createOrderPaypal(totalPrice));
         return orderId.payload;
-      };
-      const handleOnApprove = (data) => {
-        dispatch(onApprove({dataPaypal: data,  price: parseInt(location?.state?.totalPrice), note: "", startDate: moment(location?.state?.startDate).toISOString(), endDate: moment(location?.state?.endDate).toISOString(), roomId: id}));
-      };
+    };
+    const handleOnApprove = (data) => {
+        dispatch(onApprove({ dataPaypal: data, price: parseInt(location?.state?.totalPrice), note: "", startDate: moment(location?.state?.date?.startDate).toISOString(), endDate: moment(location?.state?.date?.endDate).toISOString(), roomId: id }));
+    };
 
     useEffect(() => {
         dispatch(getRoomById({ id: id }))
     }, [])
-    const img = [
-        {
-            id: 1,
-            url: "https://xaydunganthienphat.com.vn/upload/filemanager/mau%20nha/mau%20nha%20cap%204%20mai%20thai%203%20phong%20ngu/mau-nha-cap-4-mai-thai-3-phong-ngu-1-phong-tho-mau-so-2.jpg"
-        },
-        {
-            id: 2,
-            url: "https://sbshouse.vn/wp-content/uploads/2022/03/nha-3-tang-hien-dai-2-1.jpg"
-        },
-        {
-            id: 3,
-            url: "https://sbshouse.vn/wp-content/uploads/2022/03/nha-3-tang-hien-dai-2-1.jpg"
-        },
-        {
-            id: 4,
-            url: "https://sbshouse.vn/wp-content/uploads/2022/03/nha-3-tang-hien-dai-2-1.jpg"
-        },
-
-    ]
 
 
 
@@ -55,12 +37,12 @@ const Details = () => {
                             <div className="aspect-square w-full ">
                                 <img
                                     className="aspect-square rounded-l-xl object-cover cursor-pointer "
-                                    src={img[0].url}
+                                    src={details?.roomImages?.[0]?.url}
                                     alt=""
                                 />
                             </div>
                             <div className="grid grid-cols-2 gap-2 ">
-                                {img?.map((item, index) => {
+                                {details?.roomImages?.map((item, index) => {
                                     return (
                                         <div className="aspect-square cursor-pointer object-cover " key={item?.id}>
                                             <img
@@ -88,34 +70,67 @@ const Details = () => {
                                     <img src="https://static.vecteezy.com/system/resources/previews/002/002/257/non_2x/beautiful-woman-avatar-character-icon-free-vector.jpg" alt="" />
                                 </div>
                                 <div className="flex px-5 flex-col justify-center">
-                                <h1 className="text-2xl font-bold">Hoster By : {details?.user?.profile?.fullName}</h1>
-                                <h2> Joined in November {details?.user?.profile?.createdAt}</h2>
+                                    <h1 className="text-2xl font-bold">Hoster By : {details?.user?.profile?.fullName}</h1>
+                                    <h2> Joined in November: {moment(details?.user?.profile?.createdAt).format('MM/DD/YYYY')}</h2>
                                 </div>
                             </div>
                             <div className="border border-gray-200 w-full"></div>
                             <div className="py-5">
                                 <h1 className="font-semibold pb-2">Description</h1>
                                 <div dangerouslySetInnerHTML={{ __html: details?.user?.profile?.description }}></div>
-                            </div>                           
-                        </div>
-                        <div className="flex sm:w-1/3 flex-col">
-                            <div className="mb-6">
-                                <h1 className="font-semibold text-xl mb-4">Euro Villa Hoa Xuan Da Nang</h1>
-                                <h2>Start Date: {moment(location?.state?.startDate).format('DD/MM/YYYY')}</h2>
-                                <h2>End Date: {moment(location?.state?.endDate).format('DD/MM/YYYY')}</h2>
-                                <h2>Total Price: {location?.state?.totalPrice} $</h2>
                             </div>
-                            <PayPalScriptProvider
-                  options={{
-                    clientId: "AVUFZ--HoO4trdrJGthrRsviaWOTpJBKuFzvGGP2I8lxw9JpgpFTdGou-2Ou7sO3177PY4u-zx33LdiC",
-                  }}
-                >
-                  <PayPalButtons
-                    createOrder={handleCreateOrder}
-                    onApprove={handleOnApprove}
-                  />
-                </PayPalScriptProvider>
                         </div>
+
+                        <div className="hidden lg:flex  lg:w-1/3  lg:justify-end  ">
+                            <div
+                                className=
+                                "hidden w-[80%] overflow-hidden overflow-y-auto lg:flex flex-col border border-gray-200  py-4 px-4 rounded-lg shadow-2xl sm:max-h-[30vh]  lg:max-h-[60vh] object-cover"
+                            >
+                                <div className="flex flex-row gap-1">
+                                    <p className="font-semibold text-xl mb-4 ">{location?.state?.price}$/ </p>
+                                    <p className=" underline underline-offset-1 "> night</p>
+                                </div>
+                                <div className="flex flex-row justify-around items-center">
+                                    <h2 className="font-semibold">Start Date </h2>
+                                    <h2 className="font-semibold">End Date </h2>
+
+                                </div>
+                                <div className="flex py-2 justify-around ">
+                                    <p className="underline underline-offset-2 text-lg">{moment(location?.state?.date?.startDate).format('MM/DD/YYYY')}</p>
+                                    <p className="underline underline-offset-2 text-lg">{moment(location?.state?.date?.endDate).format('MM/DD/YYYY')}</p>
+
+                                </div>
+                                <div className="mt-2 border border-gray-200 w-full"></div>
+                                <div className="flex py-2 justify-between">
+                                    <h1 className="underline underline-offset-2 text-lg">{location?.state?.price} $ x {location?.state?.diffDay} night</h1>
+                                    <h2 className=" text-lg">${location?.state?.totalPrice} </h2>
+                                
+                                </div>
+                                <div className="flex py-2 justify-between">
+                                    <h1 className="underline underline-offset-2 text-lg">Tax 10%</h1>
+                                    <h2 className=" text-lg">${location?.state?.totalPrice  / 10} </h2>
+                                
+                                </div>
+                                <div className="border border-gray-200 w-full"></div>
+                                <div className="flex py-2 justify-between mb-10">
+                                    <h1 className="font-bold text-xl">Total after tax </h1>
+                                    <h2 className="font-bold text-xl">{location?.state?.totalPrice - (location?.state?.totalPrice  / 10)} $</h2>
+                                </div>
+                                <PayPalScriptProvider
+                                    options={{
+                                        clientId: "AVUFZ--HoO4trdrJGthrRsviaWOTpJBKuFzvGGP2I8lxw9JpgpFTdGou-2Ou7sO3177PY4u-zx33LdiC",
+                                    }}
+                                >
+                                    <PayPalButtons
+                                        createOrder={handleCreateOrder}
+                                        onApprove={handleOnApprove}
+                                    />
+                                </PayPalScriptProvider>
+
+                            </div>
+                        </div>
+
+
                     </div>
 
                     <div className="border border-gray-200 w-full"></div>
@@ -144,7 +159,6 @@ const Details = () => {
                         </div>
                     </div>
                 </div>
-
             </div>
         </>
     )

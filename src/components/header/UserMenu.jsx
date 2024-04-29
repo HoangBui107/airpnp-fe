@@ -44,13 +44,13 @@ const UserMenu = ({ currentUser }) => {
   };
 
   return (
-    <div className="relative flex items-center justify-center w-[20%]">
-      <div className="flex flex-row items-center gap-2">
+    <div className="relative flex items-center justify-center h-6 w-[20%]">
+      <div className="flex flex-row items-center  h-full gap-2 ">
         <div
           onClick={toggleOpen}
           className="
           p-4
-          md:py-1
+          md:py-3
           md:px-2
           border-[1px] 
           border-neutral-200 
@@ -67,7 +67,7 @@ const UserMenu = ({ currentUser }) => {
         >
           <AiOutlineMenu />
           <div className="hidden md:block">
-            <Avatar src={currentUser?.image || 'https://www.w3schools.com/howto/img_avatar.png'} />
+            <Avatar src={currentUser?.avatarUrl || 'https://www.w3schools.com/howto/img_avatar.png'} />
           </div>
         </div>
       </div>

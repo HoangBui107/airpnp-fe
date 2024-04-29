@@ -20,11 +20,18 @@ export const getPreSignURL = createAsyncThunk('file/getPreSignURL', async (_, th
     }
 })
 
-export const getAllRooms = createAsyncThunk('room/getAllRooms', async(_, thunkApi)=>{
+export const getAllRooms = createAsyncThunk('room/getAllRooms', async(data, thunkApi)=>{
+    const{categoryId, name} = data
+    console.log(categoryId)
     try {
-        const reponse = await http.get('api/Rooms')
+
+            const reponse = await http.get(`api/Rooms${categoryId ? `?id=${categoryId}` : '?'} ${name? `&name=${name}` : `&`}`)
+            return reponse
         
-        return reponse
+
+        // const reponse = await http.get('api/Rooms')
+        
+        // return reponse
     } catch (error) {
         thunkApi.dispatch(openMessage({message:"Call Api Failed!", notificationType: 'error'}))
         return thunkApi.rejectWithValue(error)
@@ -74,6 +81,17 @@ export const createRoom = createAsyncThunk('room/createRoom', async(data, thunkA
     }
 })
 
+export const updateRoom = createAsyncThunk('room/updateRoom', async(data, thunkApi)=>{
+    try {    const {id} = data
+
+        const response1 = await http.put(`api/Rooms/${id}`,data)
+        return 
+    } catch (error) {
+        thunkApi.dispatch(openMessage({message:"Call Api Failed!", notificationType: 'error'}))
+
+        return thunkApi.rejectWithValue(error)
+    }
+})
 
 export const deleteRoom = createAsyncThunk('room/deleteRoom', async(data, thunkApi)=>{
     try {

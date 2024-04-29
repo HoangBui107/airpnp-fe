@@ -29,8 +29,8 @@ const ListPage = () => {
             {!loading && room.length > 0 ?
                 (
                     <>
-                        <div className="flex gap-6 h-auto ">
-                            <div className=" pt-3 w-1/2 pl-10 grid grid-cols-3   gap-8">
+                        <div className="lg:flex gap-6 h-auto grid grid-col-1 md:grid-cols-2 px-10 md:pl-10 md:pr-0   ">
+                            <div className="mt-5 lg:pt-3 w-full lg:w-1/2  grid grid-col-1 md:grid-col-2 lg:grid-cols-3  lg:ml-0   gap-8">
                                 <Suspense fallback={<div>Loading...</div>}>
                                     {room?.map((item) => {
                                         return (
@@ -39,7 +39,7 @@ const ListPage = () => {
                                     })}
                                 </Suspense>
                             </div>
-                            <div className="relative w-1/2 h-[80vh]">
+                            <div className="hidden lg:block lg:relative w-full lg:w-1/2 h-[80vh]">
                                 <div className="fixed w-full h-[80vh]">
                                     <Suspense fallback={<div>Loading...</div>}>
                                         <Map
