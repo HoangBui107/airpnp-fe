@@ -6,6 +6,7 @@ import roomSlice from "./room/roomSlice";
 import categorySlice from "./category/categorySlice";
 import { jwtDecode } from "jwt-decode";
 import orderSlice from "./order/orderSlice";
+import feedbackSlice from "./feedback/feedbackSlice";
 const checkTokenExpiration = (store) => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -24,7 +25,8 @@ const reducer = combineReducers({
     profile: profileSlice,
     room: roomSlice,
     category: categorySlice,
-    order: orderSlice
+    order: orderSlice,
+    feedback: feedbackSlice
 })
 
 const store = configureStore({

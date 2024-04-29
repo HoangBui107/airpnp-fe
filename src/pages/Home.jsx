@@ -14,8 +14,7 @@ const Home = () => {
     const { room } = useSelector((state) => state.room)
 
     useEffect(() => {
-        console.log("first")
-        dispatch(getAllRooms({categoryId: undefined}))
+        dispatch(getAllRooms())
     }, [])
     console.log(room)
     return (

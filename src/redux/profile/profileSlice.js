@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getProfileByToken, updateProfile, uploadAvatar } from "./profileThunk";
+import { getProfileByToken, updateProfile, uploadAvatar, getProfileByUserID } from "./profileThunk";
 
 
 const initialState ={
@@ -30,7 +30,20 @@ const profileSlice = createSlice({
             state.loading= false
             state.error = action.payload
         })
-
+        builder.addCase(getProfileByUserID.pending,(state,action)=>{
+            state.loading = true
+            state.error = ''
+        })
+        builder.addCase(getProfileByUserID.fulfilled, (state, action) =>{
+            state.loading=false
+            // console.log(action.payload)
+            state.profile = action.payload
+            state.error = ''
+        })
+        builder.addCase(getProfileByUserID.rejected, (state,action) =>{
+            state.loading= false
+            state.error = action.payload
+        })
         builder.addCase(updateProfile.pending,(state,action)=>{
             state.loading = true
             state.error = ''

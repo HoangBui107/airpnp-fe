@@ -2,11 +2,17 @@ import React, { useEffect, useRef, useState } from 'react';
 import './ContractPage.css';
 import SignaturePad from 'react-signature-pad-wrapper'
 import BreadcrumbSetting from './Breadcrumb';
+import { jwtDecode } from "jwt-decode";
+import { getProfileByUserID } from '../../redux/profile/profileThunk';
+import { useDispatch, useSelector } from "react-redux";
 
 function ContractPage() {
     const sigPadRef = useRef(null);
     const [isSigned, setIsSigned] = useState(false);
     const [signatureData, setSignatureData] = useState('');
+    const user = jwtDecode(localStorage.getItem('token'))
+    const dispatch = useDispatch()
+    const { profile } = useSelector((state) => state.profile)
 
     const clear = () => {
         if (sigPadRef.current) {
@@ -14,6 +20,11 @@ function ContractPage() {
             setIsSigned(false);
         }
     };
+
+    useEffect(() => {
+        dispatch(getProfileByUserID(user?.UserId));
+    }, []);
+
 
 useEffect(() => {
     const interval = setInterval(() => {
@@ -24,13 +35,12 @@ useEffect(() => {
           setIsSigned(true);
         }
       }
-    }, 500); // Check every 500 ms
+    }, 500);
 
     return () => clearInterval(interval); 
   }, [signatureData]);
 
     const onBegin = () => {
-        console.log('as')
         setIsSigned(true);
     };
     return (
@@ -44,18 +54,16 @@ useEffect(() => {
                         <div className="contract-details">
                             <h2>1. Thông tin về các bên:</h2>
                             <div className="party">
-                                <h3>Bên A (Chủ Khách Sạn):</h3>
-                                <p>Tên: [Tên của Chủ Khách Sạn]</p>
-                                <p>Địa chỉ: [Địa chỉ của Chủ Khách Sạn]</p>
-                                <p>Số điện thoại: [Số điện thoại của Chủ Khách Sạn]</p>
-                                <p>Đại diện pháp luật: [Tên của đại diện pháp luật nếu có]</p>
+                                <h3>Bên A ({profile?.fullName}):</h3>
+                                <p>Tên: {profile?.fullName}</p>
+                                <p>Địa chỉ: {profile?.address}</p>
+                                <p>Số điện thoại: {profile?.phone}</p>
                             </div>
                             <div className="party">
-                                <h3>Bên B (Nền tảng hoặc Công ty cung cấp dịch vụ):</h3>
-                                <p>Tên: [Tên của Nền tảng hoặc Công ty cung cấp dịch vụ]</p>
-                                <p>Địa chỉ: [Địa chỉ của Nền tảng hoặc Công ty cung cấp dịch vụ]</p>
-                                <p>Số điện thoại: [Số điện thoại của Nền tảng hoặc Công ty cung cấp dịch vụ]</p>
-                                <p>Đại diện pháp luật: [Tên của đại diện pháp luật nếu có]</p>
+                                <h3>Bên B:</h3>
+                                <p>Tên:  EarthBNB</p>
+                                <p>Địa chỉ: Hải châu, Đà Nẵng, Việt nam</p>
+                                <p>Số điện thoại: 09999999999</p>
                             </div>
                         </div>
                         <div className="contract-details">
@@ -86,9 +94,7 @@ useEffect(() => {
                         </div>
                         <div className="signatures">
                             <p>Bên A: [Chữ ký của Chủ Khách Sạn]</p>
-                            {/* <p>Bên B: [Chữ ký của Nền tảng hoặc Công ty cung cấp dịch vụ]</p> */}
                         </div>
-                        {/* <div className="border border-gray-200 w-full"></div> */}
                        
                         <div className='border border-gray-500 border-dashed mt-8 relative w-full h-[200px] overflow-hidden ' style={{ borderRadius: "20px" }}>
                             {!isSigned && <div style={{

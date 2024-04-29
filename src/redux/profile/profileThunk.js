@@ -16,6 +16,15 @@ export const getProfileByToken = createAsyncThunk('profile/getProfileByToken', a
     }
 })
 
+export const getProfileByUserID = createAsyncThunk('profile/getProfileByUserID', async(data, thunkApi)=>{
+    try {
+        const reponse = await http.get(`api/Profiles/${data}`)
+        return reponse
+    } catch (error) {
+        thunkApi.dispatch(openMessage({message:"Get Profile Failed!", notificationType: 'error'}))
+        return thunkApi.rejectWithValue(error)
+    }
+})
 
 export const updateProfile = createAsyncThunk('profile/updateProfile', async(data, thunkApi)=>{
     const {id , profile} = data

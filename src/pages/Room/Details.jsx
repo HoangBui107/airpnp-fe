@@ -35,21 +35,12 @@ const Details = () => {
 
     const totalPrice = useTotalPrice(selectedDateRange, details?.price);
 const diffDay = calculateNumberOfDays(selectedDateRange?.startDate, selectedDateRange?.endDate)
-    const slotsString = [
-        "2024-04-25",
-        "2024-04-26",
-        "2024-04-27",
-        "2024-04-28",
-        "2024-05-08",
-        "2024-09-09",
-        "2024-09-10",
-    ];
+
     const handleDateChange = (selected) => {
         setSelectedDateRange(selected.selection);
     };
 
    
-    const disabledDates = slotsString.map(dateString => new Date(dateString));
     const handleSubmit = () => {
         if (!isLogin) {
             dispatch(openLogin())
@@ -183,7 +174,7 @@ const diffDay = calculateNumberOfDays(selectedDateRange?.startDate, selectedDate
                                 <DatePicker
                                     value={selectedDateRange}
                                     onChange={handleDateChange}
-                                    disabledDates={disabledDates}
+                                    disabledDates={details?.busyDates}
                                 />
                             </div>
 
@@ -259,21 +250,7 @@ const diffDay = calculateNumberOfDays(selectedDateRange?.startDate, selectedDate
                     </div>
                     <div className="border border-gray-200 w-full"></div>
                     <div className="grid grid-cols-2 gap-12">
-                        <div className="flex flex-col px-4 py-4 gap-4 w-4/5">
-                            <div className="flex flex-row gap-4 ">
-                                <div className="max-h-24 max-w-24">
-                                    <img className="object-cover h-12 w-12 rounded-full" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqKRdNTUVE6P28Z1Gjw-fwnfsE6icmFmf4eiXXEpmc4A&s" alt="" />
-                                </div>
-                                <div className="flex flex-col">
-                                    <h2 className="text-lg font-medium">Hoàng bùi nè</h2>
-                                    <p className="text-gray-400">Active two year ago</p>
-                                </div>
-                            </div>
-                            <div>
-                                <p className="">We had the pleasure of staying at this exquisite Airbnb, and it truly exceeded our expectations. From the moment we arrived,</p>
-                            </div>
-
-                        </div>
+                    {details?.feedbacks?.map((item) => (
 
                         <div className="flex flex-col px-4 py-4 gap-4 w-4/5">
                             <div className="flex flex-row gap-4 ">
@@ -281,15 +258,16 @@ const diffDay = calculateNumberOfDays(selectedDateRange?.startDate, selectedDate
                                     <img className="object-cover h-12 w-12 rounded-full" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqKRdNTUVE6P28Z1Gjw-fwnfsE6icmFmf4eiXXEpmc4A&s" alt="" />
                                 </div>
                                 <div className="flex flex-col">
-                                    <h2 className="text-lg font-medium">Hoàng bùi nè</h2>
+                                    <h2 className="text-lg font-medium">{item.userName}</h2>
                                     <p className="text-gray-400">Active two year ago</p>
                                 </div>
                             </div>
                             <div>
-                                <p className="">We had the pleasure of staying at this exquisite Airbnb, and it truly exceeded our expectations. From the moment we arrived,</p>
+                                <p className="">{item.content}</p>
                             </div>
 
                         </div>
+                    ))}
 
                     </div>
 
