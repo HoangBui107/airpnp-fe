@@ -1,4 +1,4 @@
-import { Routes, Route, useParams } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import React, { Suspense, useEffect, useState, lazy } from 'react';
 import Navbar from './layout/navbar/Navbar';
 import './App.css';
@@ -7,7 +7,6 @@ import ToastNotification from './components/toast/ToastNotification';
 import UpdateRoom from './pages/Room/UpdateRoom';
 import ManagerOwner from './pages/HomeAdmin/Owner/Owner';
 const Home = lazy(() => import('./pages/Home'));
-const Login = lazy(() => import('./pages/Login'));
 const Details = lazy(() => import('./pages/Room/Details'));
 const ListPage = lazy(() => import('./pages/List/ListPage'));
 const AccountSetting = lazy(() => import('./pages/Setting/AccountSetting'));
@@ -64,7 +63,6 @@ function App() {
           <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/owner' element={<OwnerPage />} />
-            <Route path='/login' element={<Login />} />
             <Route path='/details/:id' element={<Details />} />
             <Route path='/list' element={<ListPage />} />
             <Route path='/createRoom' element={<CreateRoom />} />
@@ -88,10 +86,6 @@ function App() {
             </Route>
           </Routes>
         </Suspense>
-      
-      <div className={isSmallScreen ? '' : 'hidden'}>
-        {/* <BottomNavigation /> */}
-      </div>
     </>
   );
 }

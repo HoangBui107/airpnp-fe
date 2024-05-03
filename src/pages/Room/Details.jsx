@@ -35,18 +35,18 @@ const Details = () => {
     });
 
     const totalPrice = useTotalPrice(selectedDateRange, details?.price);
-const diffDay = calculateNumberOfDays(selectedDateRange?.startDate, selectedDateRange?.endDate)
+    const diffDay = calculateNumberOfDays(selectedDateRange?.startDate, selectedDateRange?.endDate)
 
     const handleDateChange = (selected) => {
         setSelectedDateRange(selected.selection);
     };
 
-   
+
     const handleSubmit = () => {
         if (!isLogin) {
             dispatch(openLogin())
         }
-        navigate(`/order/${id}`,  { state: { date: selectedDateRange, totalPrice: totalPrice,price: details?.price, diffDay: diffDay } })
+        navigate(`/order/${id}`, { state: { date: selectedDateRange, totalPrice: totalPrice, price: details?.price, diffDay: diffDay } })
     }
     const disabledDatesArray = details?.busyDates?.map(busyDate => new Date(busyDate));
     return (
@@ -139,7 +139,7 @@ const diffDay = calculateNumberOfDays(selectedDateRange?.startDate, selectedDate
                                 <div className="flex px-5 flex-col justify-center">
                                     <h1 className="text-2xl font-bold">Hoster By : {details?.user?.profile?.fullName}</h1>
                                     <h2> Joined in November: {moment(details?.user?.profile?.createdAt).format('DD/MM/YYYY')}</h2>
-                                    
+
                                 </div>
                             </div>
                             <div className="flex flex-col-reverse lg:flex-row py-4">
@@ -150,7 +150,7 @@ const diffDay = calculateNumberOfDays(selectedDateRange?.startDate, selectedDate
                                     </div>
                                 </div>
                                 <div className="flex w-full lg:w-2/4 flex-col lg:ml-40">
-                                <h1 className="font-bold text-lg"> Feedback: </h1>
+                                    <h1 className="font-bold text-lg"> Feedback: </h1>
 
                                     <TextField id="outlined-multiline-static"
                                         value={feedback}
@@ -252,24 +252,24 @@ const diffDay = calculateNumberOfDays(selectedDateRange?.startDate, selectedDate
                     </div>
                     <div className="border border-gray-200 w-full"></div>
                     <div className="grid grid-cols-2 gap-12">
-                    {details?.feedbacks?.map((item) => (
+                        {details?.feedbacks?.map((item) => (
 
-                        <div className="flex flex-col px-4 py-4 gap-4 w-4/5">
-                            <div className="flex flex-row gap-4 ">
-                                <div className="max-h-24 max-w-24">
-                                    <img className="object-cover h-12 w-12 rounded-full" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqKRdNTUVE6P28Z1Gjw-fwnfsE6icmFmf4eiXXEpmc4A&s" alt="" />
+                            <div className="flex flex-col px-4 py-4 gap-4 w-4/5">
+                                <div className="flex flex-row gap-4 ">
+                                    <div className="max-h-24 max-w-24">
+                                        <img className="object-cover h-12 w-12 rounded-full" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqKRdNTUVE6P28Z1Gjw-fwnfsE6icmFmf4eiXXEpmc4A&s" alt="" />
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <h2 className="text-lg font-medium">{item.userName}</h2>
+                                        <p className="text-gray-400">Active two year ago</p>
+                                    </div>
                                 </div>
-                                <div className="flex flex-col">
-                                    <h2 className="text-lg font-medium">{item.userName}</h2>
-                                    <p className="text-gray-400">Active two year ago</p>
+                                <div>
+                                    <p className="">{item.content}</p>
                                 </div>
-                            </div>
-                            <div>
-                                <p className="">{item.content}</p>
-                            </div>
 
-                        </div>
-                    ))}
+                            </div>
+                        ))}
 
                     </div>
 

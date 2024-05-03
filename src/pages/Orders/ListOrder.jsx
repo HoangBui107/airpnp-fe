@@ -30,10 +30,6 @@ const ListOrder = () => {
     dispatch(getOrder())
   }, [])
 
-
-  // const handleChange = (event) => {
-  //   setFeedback(event.target.value || '');
-  // };
   const user = jwtDecode(localStorage.getItem('token'))
 
   const handleSendFeedback = (roomId, index) => {

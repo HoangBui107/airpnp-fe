@@ -14,7 +14,6 @@ const initialState ={
     topDeals:[]
 }
 
-
 const authSlice = createSlice({
     name: "auth",
     initialState,

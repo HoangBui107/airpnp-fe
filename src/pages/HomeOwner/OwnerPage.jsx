@@ -10,7 +10,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsive
 function OwnerPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { room, status } = useSelector((state) => state.room)
+  const { room } = useSelector((state) => state.room)
   const { dataChart } = useSelector((state) => state.room)
 
   useEffect(() => {

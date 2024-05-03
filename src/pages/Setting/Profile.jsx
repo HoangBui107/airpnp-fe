@@ -1,8 +1,6 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getProfileByToken } from "../../redux/profile/profileThunk";
-import { Link } from 'react-router-dom';
 import BreadcrumbSetting from './Breadcrumb';
 import { jwtDecode } from "jwt-decode";
 
@@ -20,7 +18,6 @@ const ProfilePage = () => {
     return (
         <>  
         <div className="flex flex-col w-full pt-8 px-12 gap-4">
-
             <BreadcrumbSetting />
         </div>
             <div className="flex flex-col lg:flex-row container mx-auto gap-8 mb-8 max-h-[80vh]   ">

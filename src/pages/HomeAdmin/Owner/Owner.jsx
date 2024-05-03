@@ -1,12 +1,9 @@
-
 import { Button, Space, Table, Tag } from 'antd';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllStore, getAllUser } from '../../../redux/auth/authThunks';
 import '../User/User.scss';
 const { Column, ColumnGroup } = Table;
-
-
 
 const ManagerOwner = () => {
     const dispatch = useDispatch()

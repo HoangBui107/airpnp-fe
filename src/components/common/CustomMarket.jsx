@@ -31,7 +31,7 @@ const CustomMarker = (props) => {
                         }} 
                         className="mb-4 " latitude={latitude} longitude={longitude}>
                             <div class="max-w-sm rounded overflow-hidden shadow-lg">
-                                <img class="w-full" src={data?.url} alt="Sunset in the mountains" />
+                                <img class="w-full" src={data?.roomImages?.[0]?.url} alt="Sunset in the mountains" />
                                 <div class="px-6 py-4">
                                     <div class="font-bold text-xl mb-2">{data?.name}</div>
                                     <p class="text-gray-700 text-base mb-2">

@@ -8,17 +8,6 @@ import { jwtDecode } from "jwt-decode";
 import orderSlice from "./order/orderSlice";
 import feedbackSlice from "./feedback/feedbackSlice";
 import userRoleSlice from "./userRole/userRoleSlice";
-const checkTokenExpiration = (store) => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      const decodedToken = jwtDecode(token);
-      const currentDate = new Date().getTime();
-      const isTokenExpired = decodedToken.exp * 1000 < currentDate;
-      store.dispatch(setIsLogin(!isTokenExpired));
-    } else {
-      store.dispatch(setIsLogin(false));
-    }
-  };
 
 const reducer = combineReducers({
     modal: modalSlice,
@@ -35,5 +24,4 @@ const store = configureStore({
     reducer,
 })
 
-checkTokenExpiration(store);
 export default store;

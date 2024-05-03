@@ -26,8 +26,6 @@ const Details = () => {
         dispatch(getRoomById({ id: id }))
     }, [])
 
-
-
     return (
         <>
             <div className="sm:container mx-auto">

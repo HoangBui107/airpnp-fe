@@ -5,12 +5,13 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProfileByToken, updateProfile, uploadAvatar } from "../../redux/profile/profileThunk";
 import BreadcrumbSetting from "./Breadcrumb";
-import { div, TextField, Button } from '@mui/material';
+import { TextField, Button } from '@mui/material';
 import ReactQuill from 'react-quill';
 import * as yup from "yup";
 import { useFormik } from 'formik';
 import 'react-quill/dist/quill.snow.css';
 import './UpdateProfile.scss';
+
 const validationSchema = yup.object({
     fullName: yup.string().required("Name is required"),
     description: yup.string().required("description is required"),
@@ -36,7 +37,6 @@ const UpdateProfile = () => {
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-
             dispatch(updateProfile({ id: user.UserId, profile: values }));
         },
     });

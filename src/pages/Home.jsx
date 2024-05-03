@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import Header from "../layout/header/Header";
 import ListingItem from "../components/list/ListingItem";
-import LoginModal from "../components/modals/LoginModal";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllRooms } from "../redux/room/roomThunks";
 

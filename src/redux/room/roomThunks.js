@@ -2,6 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit"
 import http from "../../api/axios-interceptor"
 import { openMessage } from "../modal/modalSlice"
 import axios from "axios";
+import getCoordinatesFromAddress from "../../pages/Room/GetCoordinatesFromAddress ";
 
 const axiosClient = axios.create({
     baseURL: "",
@@ -72,7 +73,11 @@ export const getRoomOrdersStatsById = createAsyncThunk('room/getRoomOrdersStatsB
 
 export const createRoom = createAsyncThunk('room/createRoom', async(data, thunkApi)=>{
     try {
-        const response1 = await http.post(`api/Rooms/`,data)
+        const {name, street, country, codeCountry, city, codeCity, description, district, email, userId, categoryId, files, price} = data
+
+        const coordinates = await  getCoordinatesFromAddress(street, city, country)
+
+        const response1 = await http.post(`api/Rooms/`,{data})
 
         const response2 = await http.get(`api/Rooms/PreSignUrlToUploadImage/${response1.id}/${data.files.length}`)
   

@@ -52,8 +52,6 @@ export default function Navbar() {
   }, [])
   const { profile } = useSelector((state) => state.profile)
 
-  const menuId = 'primary-search-account-menu';
-
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
     <Menu
@@ -132,7 +130,6 @@ export default function Navbar() {
                     </div>
                 </div>
             </div>
-
 
             <div className="p-2 h-10 w-10 flex justify-center items-center rounded-full bg-primary lg:mr-2 cursor-pointer" onClick={() => { navigate('/list') }}>
                 <div className="cursor-pointer p-2 lg:p-4 bg-airbnb hover:bg-airbnb-dark transition rounded-full text-white" >

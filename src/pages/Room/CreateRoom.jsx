@@ -17,9 +17,10 @@ const validationSchema = yup.object({
     name: yup.string().required("Name is required"),
     description: yup.string().required("description is required"),
     street: yup.string().required("street is required"),
-    price: yup.number().required("price is required"),
+    street: yup.string().required("street is required"),
+    city: yup.string().required("street is required"),
+    country: yup.string().required("street is required"),
 });
-
 
 const CreateRoom = () => {
     const dispatch = useDispatch();
@@ -35,26 +36,23 @@ const CreateRoom = () => {
             description: '',
             district: '',
             email: user?.UserName,
-            latitude: '',
-            longitude: '',
             userId: user?.UserId,
             categoryId: '',
             files: [],
-            price: 0,
-            latitude: "16.028102540830243",
-            longitude: "108.23789666115937"
+            price: 0
         },
         validationSchema: validationSchema,
-        onSubmit:  async (values) => {
-            const coordinates = await getCoordinatesFromAddress(values.street, values.city, values.country);
-             dispatch(createRoom({...values, latitude: coordinates.latitude, longitude: coordinates.longitude}));
-        },
+        onSubmit: (values) => {
+            dispatch(createRoom(values));
+            console.log('Dispatch successful');
+
+        }
     });
 
     const [description, setDescription] = useState('');
     const handleEditorChange = (content) => {
         setDescription(content);
-        formik.setFieldValue('description', content); 
+        formik.setFieldValue('description', content);
     };
     const [selectedCountry, setSelectedCountry] = useState(Country.getAllCountries()[0] ? {
         label: `${Country.getAllCountries()[0].name} (${Country.getAllCountries()[0].isoCode})`,
@@ -71,28 +69,27 @@ const CreateRoom = () => {
         if (newCountry) {
             setSelectedCountry(newCountry);
             formik.setFieldValue('country', newCountry.name);
-            formik.setFieldValue('codeCountry', newCountry.isoCode); 
+            formik.setFieldValue('codeCountry', newCountry.isoCode);
         } else {
-            setSelectedCountry(null); 
+            setSelectedCountry(null);
             formik.setFieldValue('country', '');
-            formik.setFieldValue('codeCountry', ''); 
+            formik.setFieldValue('codeCountry', '');
         }
     };
 
     const handleStateChange = (event, newState) => {
         if (newState) {
-            setSelectedState(newState); 
-            formik.setFieldValue('city', newState.name); 
-            formik.setFieldValue('codeCity', newState.isoCode); 
+            setSelectedState(newState);
+            formik.setFieldValue('city', newState.name);
+            formik.setFieldValue('codeCity', newState.isoCode);
 
-            
+
         } else {
-            setSelectedState(null); 
-            formik.setFieldValue('city', ''); 
-            formik.setFieldValue('codeCity', ''); 
+            setSelectedState(null);
+            formik.setFieldValue('city', '');
+            formik.setFieldValue('codeCity', '');
         }
     };
-    const [address, setAddress] = useState('')
     const { categories } = useSelector((state) => state.category)
 
     useEffect(() => {
@@ -111,15 +108,15 @@ const CreateRoom = () => {
 
     };
     const removeImage = (i) => {
-        formik.setFieldValue('files', formik.values.files.filter(x => x.name !== i)); 
+        formik.setFieldValue('files', formik.values.files.filter(x => x.name !== i));
         setImagesUpload(imagesUpload.filter(x => x.name !== i));
 
     };
     const handleCategoryChange = (event, newValue) => {
         if (newValue) {
-            formik.setFieldValue('categoryId', newValue.id); 
+            formik.setFieldValue('categoryId', newValue.id);
         } else {
-            formik.setFieldValue('categoryId', ''); 
+            formik.setFieldValue('categoryId', '');
         }
     };
     return (
@@ -237,7 +234,7 @@ const CreateRoom = () => {
                                 </label>
                             </div>
                             <div className="flex flex-wrap gap-2 mt-2 relative">
-                                {imagesUpload.map((file, key) => {
+                                {imagesUpload?.map((file, key) => {
                                     return (
                                         <div key={key} className="overflow-hidden relative">
                                             <i onClick={() => { removeImage(file.name) }} className="mdi mdi-close absolute right-1 hover:text-white cursor-pointer">X</i>

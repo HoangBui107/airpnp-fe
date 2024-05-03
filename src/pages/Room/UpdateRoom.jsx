@@ -6,8 +6,7 @@ import './CreateRoom.css';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from "react-redux";
 import { getAllCategory } from "../../redux/category/categoryThunk";
-import getCoordinatesFromAddress from "./GetCoordinatesFromAddress ";
-import { createRoom, getRoomById, updateRoom } from "../../redux/room/roomThunks";
+import {  getRoomById, updateRoom } from "../../redux/room/roomThunks";
 import { jwtDecode } from "jwt-decode";
 import * as yup from "yup";
 import { Autocomplete, TextField, Button } from '@mui/material';
@@ -21,7 +20,6 @@ const validationSchema = yup.object({
     price: yup.number().required("price is required"),
 });
 
-
 const UpdateRoom = () => {
     const dispatch = useDispatch();
     const { id } = useParams()
@@ -34,7 +32,7 @@ const UpdateRoom = () => {
     const [description, setDescription] = useState('');
     const handleEditorChange = (content) => {
         setDescription(content);
-        formik.setFieldValue('description', content); // Set country ISO code in Formik
+        formik.setFieldValue('description', content);
     };
     const user = jwtDecode(localStorage.getItem('token'))
     const formik = useFormik({
@@ -102,30 +100,29 @@ const UpdateRoom = () => {
 
     const handleCountryChange = (event, newCountry) => {
         if (newCountry) {
-            setSelectedCountry(newCountry); 
-            formik.setFieldValue('country', newCountry.name); 
-            formik.setFieldValue('codeCountry', newCountry.isoCode); 
+            setSelectedCountry(newCountry);
+            formik.setFieldValue('country', newCountry.name);
+            formik.setFieldValue('codeCountry', newCountry.isoCode);
         } else {
-            setSelectedCountry(null); 
+            setSelectedCountry(null);
             formik.setFieldValue('country', '');
-            formik.setFieldValue('codeCountry', ''); 
+            formik.setFieldValue('codeCountry', '');
         }
     };
 
     const handleStateChange = (event, newState) => {
         if (newState) {
-            setSelectedState(newState); 
-            formik.setFieldValue('city', newState.name); 
-            formik.setFieldValue('codeCity', newState.isoCode); 
+            setSelectedState(newState);
+            formik.setFieldValue('city', newState.name);
+            formik.setFieldValue('codeCity', newState.isoCode);
 
-            
+
         } else {
-            setSelectedState(null); 
-            formik.setFieldValue('city', ''); 
-            formik.setFieldValue('codeCity', ''); 
+            setSelectedState(null);
+            formik.setFieldValue('city', '');
+            formik.setFieldValue('codeCity', '');
         }
     };
-    const [address, setAddress] = useState('')
     const { categories } = useSelector((state) => state.category)
 
     useEffect(() => {
@@ -144,13 +141,13 @@ const UpdateRoom = () => {
 
     };
     const removeImage = (i) => {
-        formik.setFieldValue('files', formik.values.files.filter(x => x.name !== i)); 
+        formik.setFieldValue('files', formik.values.files.filter(x => x.name !== i));
         setImagesUpload(imagesUpload.filter(x => x.name !== i));
 
     };
     const handleCategoryChange = (event, newValue) => {
         if (newValue) {
-            formik.setFieldValue('categoryId', newValue.id); 
+            formik.setFieldValue('categoryId', newValue.id);
         } else {
             formik.setFieldValue('categoryId', '');
         }
@@ -279,7 +276,7 @@ const UpdateRoom = () => {
                                     )
                                 })}
                             </div>
-                        
+
                             <button type="submit" class="bg-blue-500 mt-2 hover:bg-blue-700 w-[30%] rounded-lg py-2 text-white font-medium" onClick={formik.handleSubmit}>
                                 Update product
                             </button>

@@ -4,9 +4,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { activeUser, bandUser, getAllUser } from '../../../redux/auth/authThunks';
 import './User.scss';
-const { Column, ColumnGroup } = Table;
-
-
+const { Column } = Table;
 
 const ManagerUser = () => {
     const dispatch = useDispatch()
