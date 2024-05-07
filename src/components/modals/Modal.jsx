@@ -64,7 +64,7 @@ const Modal = (props) => {
           >
             <div className="flex items-center p-6 rounded-t justify-center relative border-b-[1px]">
               <button
-                className="p-1 bg-black border-0 hover:opacity-70 transition absolute left-9"
+                className="p-1 bg-black border-0 hover:opacity-70 transition absolute left-9 rounded-2xl"
                 onClick={handleClose}
               >
                 <IoMdClose className='text-white'size={18} />

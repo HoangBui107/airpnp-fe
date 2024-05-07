@@ -14,7 +14,6 @@ const DatePicker = ({
       ranges={[value]}
       date={new Date()}
       onChange={onChange}
-      // direction="vertical"
       months={2}
       direction="horizontal"
       showDateDisplay={false}

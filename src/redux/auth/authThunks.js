@@ -7,9 +7,11 @@ import { openMessage } from "../modal/modalSlice";
 export const login = createAsyncThunk('auth/login', async(data, thunkApi)=>{
     try {
         const reponse = await http.post('Login', data)
-        thunkApi.dispatch(getProfileByToken());
+
         return reponse
     } catch (error) {
+        thunkApi.dispatch(openMessage({message:error, notificationType: 'error'}))
+
         return thunkApi.rejectWithValue(error)
     }
 })
@@ -17,7 +19,7 @@ export const login = createAsyncThunk('auth/login', async(data, thunkApi)=>{
 export const register = createAsyncThunk('auth/register', async(data, thunkApi)=>{
     try {
         const reponse = await http.post('Register', data)
-        thunkApi.dispatch(openMessage({message:"Register Success! Please Login Again!", notificationType: 'success'}))
+        thunkApi.dispatch(openMessage({message:"Register Success!", notificationType: 'success'}))
         return reponse
     } catch (error) {
         thunkApi.dispatch(openMessage({message:"Register Failed!", notificationType: 'error'}))
@@ -25,6 +27,27 @@ export const register = createAsyncThunk('auth/register', async(data, thunkApi)=
     }
 })
 
+export const registerByGoogleAccount = createAsyncThunk('auth/registerByGoogleAccount', async(data, thunkApi)=>{
+    try {
+        const reponse = await http.post(`/RegisterByGoogleAccount?token=${data}` )
+        thunkApi.dispatch(openMessage({message:"Register Success!", notificationType: 'success'}))
+        return reponse
+    } catch (error) {
+        thunkApi.dispatch(openMessage({message:"Register Failed!", notificationType: 'error'}))
+        return thunkApi.rejectWithValue(error)
+    }
+})
+
+export const loginByGoogleAccount = createAsyncThunk('auth/loginByGoogleAccount', async(data, thunkApi)=>{
+    try {
+        const reponse = await http.post(`/LoginByGoogleAccount?token=${data}` )
+        console.log(reponse.token)
+        return reponse
+    } catch (error) {
+        thunkApi.dispatch(openMessage({message:"Login Failed!", notificationType: 'error'}))
+        return thunkApi.rejectWithValue(error)
+    }
+})
 
 export const getAllUser = createAsyncThunk('auth/getAllUser', async(_, thunkApi)=>{
     try {
@@ -72,7 +95,7 @@ export const resetPassword = createAsyncThunk('auth/resetPassword', async(data, 
     const {email} = data
     try {
         const reponse = await http.post(`ResetPassword/${email}`)
-        thunkApi.dispatch(openMessage({message:"", notificationType: 'success'}))
+        thunkApi.dispatch(openMessage({message:"Check your email, the new password has been sent to your email.", notificationType: 'success'}))
         return reponse
     } catch (error) {
         thunkApi.dispatch(openMessage({message:"Reset Password Failed!", notificationType: 'error'}))
@@ -83,7 +106,6 @@ export const resetPassword = createAsyncThunk('auth/resetPassword', async(data, 
 
 
 export const activeUser = createAsyncThunk('auth/activeUser', async(data, thunkApi)=>{
-    const {email} = data
     try {
         const reponse = await http.post(`/BanUser/${data}?isBanned=false`)
         thunkApi.dispatch(openMessage({message:"Active User Success!", notificationType: 'success'}))
@@ -96,7 +118,6 @@ export const activeUser = createAsyncThunk('auth/activeUser', async(data, thunkA
 
 
 export const bandUser = createAsyncThunk('auth/bandUser', async(data, thunkApi)=>{
-    const {email} = data
     try {
         const reponse = await http.post(`/BanUser/${data}?isBanned=true`)
         thunkApi.dispatch(openMessage({message:"Band User Success!", notificationType: 'success'}))

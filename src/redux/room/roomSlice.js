@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createRoom, deleteRoom, getAllRooms, getRoomById, updateRoom, getRoomOrdersStats, getRoomOrdersStatsById } from "./roomThunks";
+import { createRoom, deleteRoom, getAllRooms, getRoomById, updateRoom, getRoomOrdersStats, getRoomOrdersStatsById, sendFeedback, sendFeedbackByEmail, getRoomByOwnerHotel } from "./roomThunks";
 
 
 
@@ -35,6 +35,19 @@ const roomSlice = createSlice({
             state.error = ''
         })
         builder.addCase(getAllRooms.rejected, (state,action) =>{
+            state.loading= false
+            state.error = action.payload
+        })
+        builder.addCase(getRoomByOwnerHotel.pending,(state,action)=>{
+            state.loading = true
+            state.error = ''
+        })
+        builder.addCase(getRoomByOwnerHotel.fulfilled, (state, action) =>{
+            state.loading=false
+            state.room = action.payload
+            state.error = ''
+        })
+        builder.addCase(getRoomByOwnerHotel.rejected, (state,action) =>{
             state.loading= false
             state.error = action.payload
         })
@@ -98,7 +111,7 @@ const roomSlice = createSlice({
         })
         builder.addCase(deleteRoom.fulfilled, (state, action) =>{
             state.loading=false
-            state.room = state.room.filter((item) => item.id !== action.payload)
+            state.room = action.payload
             state.error = ''
         })
         builder.addCase(deleteRoom.rejected, (state,action) =>{
@@ -116,6 +129,32 @@ const roomSlice = createSlice({
             state.error = ''
         })
         builder.addCase(updateRoom.rejected, (state,action) =>{
+            state.loading= false
+            state.error = action.payload
+        })
+        
+        builder.addCase(sendFeedback.pending,(state,action)=>{
+            state.loading = true
+            state.error = ''
+        })
+        builder.addCase(sendFeedback.fulfilled, (state, action) =>{
+            state.loading=false
+            state.error = ''
+        })
+        builder.addCase(sendFeedback.rejected, (state,action) =>{
+            state.loading= false
+            state.error = action.payload
+        })
+        builder.addCase(sendFeedbackByEmail.pending,(state,action)=>{
+            state.loading = true
+            state.error = ''
+        })
+        builder.addCase(sendFeedbackByEmail.fulfilled, (state, action) =>{
+            state.loading=false
+            state.details = action.payload
+            state.error = ''
+        })
+        builder.addCase(sendFeedbackByEmail.rejected, (state,action) =>{
             state.loading= false
             state.error = action.payload
         })

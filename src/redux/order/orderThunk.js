@@ -77,8 +77,8 @@ export const createOrderPaypal = createAsyncThunk('order/createOrderPaypal', asy
                     {
                         items: [
                             {
-                                name: "T-Shirt",
-                                description: "Green XL",
+                                name: "Royal Oaks Inn",
+                                description: "Hà Nội, Nam Từ Liêm",
                                 quantity: "1",
                                 unit_amount: {
                                     currency_code: "USD",

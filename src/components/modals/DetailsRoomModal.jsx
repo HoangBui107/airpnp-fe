@@ -4,7 +4,7 @@ import { Button, Modal } from 'antd';
 import { useEffect } from "react";
 import { getRoomById } from "../../redux/room/roomThunks";
 
-const DetailsModal = ({id}) => {
+const DetailsRoomModal = ({id}) => {
     const dispatch = useDispatch()
     const { isLoading } = useSelector((state) => state.auth)
     const open = useSelector((state) => state.modal.details)
@@ -52,4 +52,4 @@ const DetailsModal = ({id}) => {
     );
 };
 
-export default DetailsModal;
+export default DetailsRoomModal;

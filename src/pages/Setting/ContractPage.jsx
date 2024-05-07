@@ -56,7 +56,7 @@ useEffect(() => {
         <div className="sm:container px-6 lg:mx-auto">
             <div className="flex flex-col w-full md:mx-12 lg:px-36 py-14  gap-4">
                 <BreadcrumbSetting />
-                <div className='flex mx-28'>
+                <div className='flex mx-2 sm:mx-6 xl:mx-28'>
 
                     <div className="flex flex-col w-full  px-4 py-4 rounded-lg border border-gray-300 contract-page" >
                         <h1 className='text-xl font-bold text-center'>HỢP ĐỒNG NÂNG CẤP VAI TRÒ CHỦ KHÁCH SẠN</h1>

@@ -1,25 +1,27 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { getRoomById } from "../../redux/room/roomThunks";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { createOrderPaypal, onApprove } from "../../redux/order/orderThunk";
 import moment from "moment";
 
-const Details = () => {
+const CheckoutOrder = () => {
     const dispatch = useDispatch()
     const location = useLocation()
-
+    const navigate = useNavigate()
     const { id } = useParams()
     const { details } = useSelector((state) => state.room)
     const [totalPrice, setTotalPrice] = useState(parseInt(location?.state?.totalPrice));
 
     const handleCreateOrder = async () => {
-        const orderId = await dispatch(createOrderPaypal(totalPrice));
+        const orderId = await dispatch(createOrderPaypal(totalPrice + (totalPrice  / 10)));
         return orderId.payload;
     };
     const handleOnApprove = (data) => {
-        dispatch(onApprove({ dataPaypal: data, price: parseInt(location?.state?.totalPrice), note: "", startDate: moment(location?.state?.date?.startDate).toISOString(), endDate: moment(location?.state?.date?.endDate).toISOString(), roomId: id }));
+        dispatch(onApprove({ dataPaypal: data, price: totalPrice + (totalPrice  / 10), note: "", startDate: moment(location?.state?.date?.startDate).toISOString(), endDate: moment(location?.state?.date?.endDate).toISOString(), roomId: id })).unwrap().then((res)=>{
+            navigate('/orders')
+        });
     };
 
     useEffect(() => {
@@ -28,13 +30,13 @@ const Details = () => {
 
     return (
         <>
-            <div className="sm:container mx-auto">
+            <div className="sm:container mx-auto pt-10">
                 <div>
                     <div className="relative">
                         <div className="grid gap-1 grid-cols-2 overflow-hidden">
                             <div className="aspect-square w-full ">
                                 <img
-                                    className="aspect-square rounded-l-xl object-cover cursor-pointer "
+                                    className="aspect-square rounded-l-xl object-cover cursor-pointer h-full"
                                     src={details?.roomImages?.[0]?.url}
                                     alt=""
                                 />
@@ -112,7 +114,7 @@ const Details = () => {
                                 <div className="border border-gray-200 w-full"></div>
                                 <div className="flex py-2 justify-between mb-10">
                                     <h1 className="font-bold text-xl">Total after tax </h1>
-                                    <h2 className="font-bold text-xl">{location?.state?.totalPrice - (location?.state?.totalPrice  / 10)} $</h2>
+                                    <h2 className="font-bold text-xl">{location?.state?.totalPrice + (location?.state?.totalPrice  / 10)} $</h2>
                                 </div>
                                 <PayPalScriptProvider
                                     options={{
@@ -161,4 +163,4 @@ const Details = () => {
         </>
     )
 }
-export default Details;
+export default CheckoutOrder;

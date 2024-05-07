@@ -4,9 +4,7 @@ import { combineReducers, configureStore  } from "@reduxjs/toolkit";
 import profileSlice from "./profile/profileSlice";
 import roomSlice from "./room/roomSlice";
 import categorySlice from "./category/categorySlice";
-import { jwtDecode } from "jwt-decode";
 import orderSlice from "./order/orderSlice";
-import feedbackSlice from "./feedback/feedbackSlice";
 import userRoleSlice from "./userRole/userRoleSlice";
 
 const reducer = combineReducers({
@@ -16,7 +14,6 @@ const reducer = combineReducers({
     room: roomSlice,
     category: categorySlice,
     order: orderSlice,
-    feedback: feedbackSlice,
     userRole: userRoleSlice
 })
 

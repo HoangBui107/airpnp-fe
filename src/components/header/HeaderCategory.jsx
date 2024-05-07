@@ -34,7 +34,7 @@ const icons = [
     TbParking, TbGasStation, 
 ]; 
 
-const HeaderItem = ({name, btn, isActive}) => {
+const HeaderCategory = ({name, btn, isActive}) => {
     const RandomIcon = icons[Math.floor(Math.random() * icons.length)];
 
     return (
@@ -48,4 +48,4 @@ const HeaderItem = ({name, btn, isActive}) => {
         </>
     )
 }
-export default HeaderItem;
+export default HeaderCategory;

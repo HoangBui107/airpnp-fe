@@ -1,30 +1,22 @@
-
 import { Button, Space, Table, Tag } from 'antd';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { activeUser, bandUser, getAllUser } from '../../../redux/auth/authThunks';
-import './User.scss';
-const { Column } = Table;
+import { getAllStore, getAllUser } from '../../../redux/auth/authThunks';
+import '../ManageUser/User.scss';
+const { Column, ColumnGroup } = Table;
 
-const ManagerUser = () => {
+const ManagerOwner = () => {
     const dispatch = useDispatch()
-    const {data} = useSelector((state) => state.auth)
-    console.log(data)
-    const activeUserButton = (id, active) =>{
-        if(active === true){
-            return dispatch(activeUser(id))
-        }
-        dispatch(bandUser(id))
-    }
-    
+    const data = useSelector((state) => state.auth.store)
+
     useEffect(()=>{
-        dispatch(getAllUser())
+        dispatch(getAllStore())
     },[])
     return (
         <>
             <div className='flex flex-col w-full bg-[#222b3c] '>
                 <div className='px-6 py-8' >
-                    <h1 className='text-white text-3xl font-bold'> Manager User</h1>
+                    <h1 className='text-white text-3xl font-bold'> Manager Owner Hotel</h1>
                 </div>
                 <div className='flex w-full px-6'>
        
@@ -47,7 +39,7 @@ const ManagerUser = () => {
                         key="action"
                         render={(_, record) => (
                             <Space size="middle">
-                                <Button onClick={()=>{activeUserButton(record?.id, record?.isBanned)}}>{record.isBanned? 'Active User' : 'Ban User'} </Button>
+                                <Button>Ban Store </Button>
                             </Space>
                         )}
                     />
@@ -59,4 +51,4 @@ const ManagerUser = () => {
     )
 }
 
-export default ManagerUser;
+export default ManagerOwner;

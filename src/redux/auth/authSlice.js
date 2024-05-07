@@ -1,10 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { activeUser, bandUser, changePassword, getAllStore, getAllUser, getTopDeals, login, register, resetPassword } from "./authThunks";
+import { activeUser, bandUser, changePassword, getAllStore, getAllUser, getTopDeals, login, register, registerByGoogleAccount, resetPassword, loginByGoogleAccount } from "./authThunks";
 import { jwtDecode } from "jwt-decode";
+import decodeTokenAndCheckExpiration from "../../api/decodeTokenAndCheckExpiration";
 
+let userSignedIn = "";
+let isLoggedIn = "";
+
+if (localStorage.getItem("token")) {
+  const token = localStorage.getItem("token");
+  isLoggedIn = decodeTokenAndCheckExpiration(token);
+  userSignedIn = jwtDecode(token);
+}
 
 const initialState ={
-    isLogin: false, 
+    isLoggedIn: isLoggedIn.isValid,
+    avatarUrl: userSignedIn.AvatarUrl,
+    role: userSignedIn.Roles,
     loading: false,
     error: '',
     token: [],
@@ -20,11 +31,11 @@ const authSlice = createSlice({
     reducers:{
         logOut:(state, action)=>{
             localStorage.removeItem('token')
-            state.isLogin = false; 
+            state.isLoggedIn = false; 
             window.location.href ="/"
         } ,
         setIsLogin: (state, action) => {
-            state.isLogin = action.payload;
+            state.isLoggedIn = action.payload;
         },
         setToken:(state,action)=>{
             state.token = action.payload
@@ -40,7 +51,15 @@ const authSlice = createSlice({
             state.token = action.payload.token
             localStorage.setItem("token",action.payload.token) 
             state.user = jwtDecode(action.payload.token)
-            state.isLogin= true
+            userSignedIn = jwtDecode(action.payload.token);
+            if(userSignedIn.Roles == "Administrator"){
+                window.location.href = "/admin";
+            }else{
+                window.location.href = "/";
+
+            }
+
+            state.isLoggedIn= true
             state.error = ''
         })
         builder.addCase(login.rejected, (state,action) =>{
@@ -54,12 +73,41 @@ const authSlice = createSlice({
         })
         builder.addCase(register.fulfilled, (state, action) =>{
             state.loading=false
-            state.token = action.payload.token
-            localStorage.setItem("token",action.payload.token)
-            state.isLogin= true
             state.error = ''
         })
         builder.addCase(register.rejected, (state,action) =>{
+            state.loading= false
+            state.error = action.payload
+        })
+
+        builder.addCase(registerByGoogleAccount.pending,(state,action)=>{
+            state.loading = true
+            state.error = ''
+        })
+        builder.addCase(registerByGoogleAccount.fulfilled, (state, action) =>{
+            state.loading=false
+            state.token = action.payload.token
+            localStorage.setItem("token",action.payload.token)
+            state.isLoggedIn= true
+            state.error = ''
+        })
+        builder.addCase(registerByGoogleAccount.rejected, (state,action) =>{
+            state.loading= false
+            state.error = action.payload
+        })
+
+        builder.addCase(loginByGoogleAccount.pending,(state,action)=>{
+            state.loading = true
+            state.error = ''
+        })
+        builder.addCase(loginByGoogleAccount.fulfilled, (state, action) =>{
+            state.loading=false
+            state.token = action.payload.token
+            localStorage.setItem("token",action.payload.token)
+            state.isLoggedIn= true
+            state.error = ''
+        })
+        builder.addCase(loginByGoogleAccount.rejected, (state,action) =>{
             state.loading= false
             state.error = action.payload
         })

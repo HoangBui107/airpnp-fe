@@ -4,7 +4,7 @@ import { Button, Modal } from 'antd';
 import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { createCategory, deleteCategory, getAllCategory, updateCategory } from "../../redux/category/categoryThunk";
+import { createCategory, deleteCategory, getAllCategory, getCategoryId, updateCategory } from "../../../redux/category/categoryThunk";
 import "./ManageCategory.css"
 import { MdDeleteForever } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
@@ -24,7 +24,8 @@ const ManageCategories = () => {
     const [updateOpen, setUpdateOpen] = useState(false);
     const dispatch = useDispatch()
     const categories = useSelector((state) => state.category.categories)
-    const [selectedCategoryIndex, setSelectedCategoryIndex] = useState(null)
+    const [selectedCategory, setSelectedCategory] = useState(null)
+    const  category  = useSelector((state) => state.category.category)
 
     const formik = useFormik({
         initialValues: {
@@ -36,8 +37,6 @@ const ManageCategories = () => {
         onSubmit: async (values) => {
             await dispatch(createCategory(values)).unwrap();
             setModal2Open(false)
-            setSelectedCategoryIndex(null)
-
         },
     });
 
@@ -50,12 +49,20 @@ const ManageCategories = () => {
         },
         validationSchema: validationSchema2,
         onSubmit: async (values) => {
-            await dispatch(updateCategory({ id: selectedCategoryIndex, name: values.name, description: values.description })).unwrap().then((res) => {
+            await dispatch(updateCategory({ id: selectedCategory, name: values.name, description: values.description })).unwrap().then((res) => {
                 setUpdateOpen(false);
-                setSelectedCategoryIndex(null)
             });
         },
     });
+
+    useEffect(() => {
+        if (category) {
+            formik2.setValues({               
+                name: category.name || "",
+                description: category.description || "",                       
+            });
+        }
+    }, [category]);
 
 
     const showConfirm = (id) => {
@@ -81,9 +88,10 @@ const ManageCategories = () => {
         dispatch(getAllCategory());
     }, []);
 
-    const handleDeleteCategory = (id) => {
-        dispatch(deleteCategory(id));
-    };
+    useEffect(() => {
+        dispatch(getCategoryId(selectedCategory));
+    }, [selectedCategory]);
+
     return (
         <>
             <div className="max-h-[94vh] overflow-hidden overflow-y-auto w-screen bg-[#222b3c]">
@@ -139,7 +147,7 @@ const ManageCategories = () => {
                                         <span className="badge bg-green-500 text-white rounded-full px-3 py-1">Active</span>
                                     </div>
                                     <div>
-                                        {selectedCategoryIndex === item?.id ? (
+                                        {selectedCategory === item?.id ? (
                                             <Modal
                                                 title="Update Category"
                                                 centered
@@ -181,11 +189,11 @@ const ManageCategories = () => {
                                             </>
                                         )}
                                         <p>{item.description}</p>
-                                        <p className="text-gray-600">{item?.products?.length} products</p>
+                                        <p className="text-gray-600">{item?.rooms?.length} rooms</p>
                                     </div>
                                 </div>
                                 <div className="bg-gray-100 p-4 flex justify-around">
-                                    <button onClick={() => { setSelectedCategoryIndex(item?.id), setUpdateOpen(true) }} className="text-4xl text-[#008489] "><FaEdit /></button>
+                                    <button onClick={() => { setSelectedCategory(item?.id), setUpdateOpen(true) }} className="text-4xl text-[#008489] "><FaEdit /></button>
                                     <button onClick={()=>{showConfirm(item?.id)}} className="text-4xl text-red-500 "><MdDeleteForever /></button>
                                 </div>
                             </div>

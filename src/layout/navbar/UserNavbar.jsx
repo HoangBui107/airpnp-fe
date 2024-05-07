@@ -1,13 +1,12 @@
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { useEffect, useState } from "react";
 import { FaAirbnb } from "react-icons/fa6";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getProfileByToken } from "../../redux/profile/profileThunk";
 import UserMenu from "../../components/header/UserMenu";
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
@@ -20,7 +19,7 @@ import { IoIosSearch } from "react-icons/io";
 import { getAllRooms } from "../../redux/room/roomThunks";
 import TextField from '@mui/material/TextField';
 
-export default function Navbar() {
+export default function UserNavbar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -34,8 +33,6 @@ export default function Navbar() {
   };
 
 
-  const navigate = useNavigate()
-  const [type, setType] = useState('current')
   const dispatch = useDispatch();
 
   const [name, setName] = useState()
@@ -46,11 +43,17 @@ export default function Navbar() {
   const handleChange = (event) => {
       setName(event.target.value || '');
   };
+  
+  const handleRefresh = (event) => {
+    window.location.href = "/";
 
+};
   useEffect(() => {
-    dispatch(getProfileByToken())
+    if (isLoggedIn){
+      dispatch(getProfileByToken())
+    }
   }, [])
-  const { profile } = useSelector((state) => state.profile)
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn)
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
@@ -110,9 +113,9 @@ export default function Navbar() {
 
         <AppBar position="static" sx={{ divShadow: '0px 0px 0px rgba(0, 0, 0, 0.1)', borderBottom: '1px solid rgba(0, 0, 0, 0.1)' }} >
           <Toolbar>
-            <div
+            <div onClick ={(e)=>{handleRefresh(e)}}
               className="flex flex-row items-center cursor-pointer sm:ml-4 md:ml-6 lg:ml-16 "
-              onClick={() => { navigate('/') }}>
+              >
               <FaAirbnb className="font-semibold transform rotate-180 cursor-pointer" color="#F5385D" size={40} />
               <h1 className="text-primary text-lg font-semibold font-circular pl-3">EarthPnP</h1>
             </div>
@@ -131,16 +134,15 @@ export default function Navbar() {
                 </div>
             </div>
 
-            <div className="p-2 h-10 w-10 flex justify-center items-center rounded-full bg-primary lg:mr-2 cursor-pointer" onClick={() => { navigate('/list') }}>
+            <Link to={"/list"} className="p-2 h-10 w-10 flex justify-center items-center rounded-full bg-primary lg:mr-2 cursor-pointer" >
                 <div className="cursor-pointer p-2 lg:p-4 bg-airbnb hover:bg-airbnb-dark transition rounded-full text-white" >
                     <IoIosSearch size={24} />
                 </div>
-            </div>
+            </Link>
 
         </div>
             </div>
-            {/* <div sx={{ flexGrow: 20, height:10 }} /> */}
-              <UserMenu currentUser={profile} />
+              <UserMenu />
           </Toolbar>
         </AppBar>
         {renderMobileMenu}

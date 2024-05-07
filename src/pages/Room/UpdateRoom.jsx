@@ -28,7 +28,7 @@ const UpdateRoom = () => {
         dispatch(getRoomById({ id: id }))
         dispatch(getAllCategory())
     }, [])
-    const { details } = useSelector((state) => state.room)
+    const  details  = useSelector((state) => state.room.details)
     const [description, setDescription] = useState('');
     const handleEditorChange = (content) => {
         setDescription(content);
@@ -53,8 +53,6 @@ const UpdateRoom = () => {
             categoryId: '',
             files: [],
             price: 0,
-            latitude: "16.028102540830243",
-            longitude: "108.23789666115937"
         },
         validationSchema: validationSchema,
         onSubmit: async (values) => {

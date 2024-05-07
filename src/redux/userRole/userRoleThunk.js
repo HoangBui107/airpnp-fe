@@ -5,9 +5,10 @@ import { openMessage } from "../modal/modalSlice"
 export const upgrateToOwnerStore = createAsyncThunk('userRole/upgrateToOwnerStore', async(_, thunkApi)=>{
     try {
         const reponse = await http.put('api/UserRoles/UpgradeToOwnerStore')
+        thunkApi.dispatch(openMessage({message:"Upgrade To OwnerRoom Successful!", notificationType: 'success'}))
         return reponse
     } catch (error) {
-        thunkApi.dispatch(openMessage({message:"UpgradeToOwnerStore Failed!", notificationType: 'error'}))
+        thunkApi.dispatch(openMessage({message:"Upgrade To OwnerRoom Failed!", notificationType: 'error'}))
         return thunkApi.rejectWithValue(error)
     }
 })

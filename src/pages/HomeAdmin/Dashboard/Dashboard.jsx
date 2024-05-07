@@ -1,5 +1,4 @@
 import ChartBox from "../../../components/chart/ChartBox";
-import TopBox from "../../../components/topBox/TopBox";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getAllStore, getAllUser, getTopDeals } from "../../../redux/auth/authThunks";
@@ -32,12 +31,30 @@ const Dashboard = () => {
                 <div className="grid grid-cols-1 mg:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-4">
                     <div className="  grid grid-col-1 grid-row-2 gap-4 col-span-2 " >
                         <div className="p-5 rounded-10 border-2 border-solid border-[#384256]">
-                            <TopBox data={topDeals} />
+                            <div className="p-4">
+                                <h1 className="mb-5 text-2xl font-bold text-white">Top Deals</h1>
+                                <div>
+                                    {topDeals?.map((user) => (
+                                        <div key={user?.id} className="flex items-center justify-between mb-7">
+
+                                            <div className="flex items-center gap-5">
+
+                                                <img src={user?.profile?.avatarUrl} alt="" className="w-10 h-10 rounded-full object-cover " />
+
+                                                <div className="flex flex-col gap-1">
+                                                    <span className="text-sm font-semibold text-white">{user?.profile?.fullName}</span>
+                                                    <span className="text-xs hidden lg:block text-white">{user?.email}</span>
+                                                </div>
+                                            </div>
+                                           
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
                         </div>
                         <div className="p-5 rounded-10 border-2 border-solid border-[#384256]">
                             <ResponsiveContainer width="100%" height={400}>
                                 <BarChart data={categoriesChart}>
-                                    <CartesianGrid strokeDasharray="3 3" />
                                     <XAxis dataKey="name" />
                                     <YAxis />
                                     <Tooltip formatter={(value) => `${value.toLocaleString()}`} />
@@ -52,7 +69,7 @@ const Dashboard = () => {
                     <div className="grid grid-cols-1 gap-5 col-span-1 lg:col-span-2 ">
                         <div className="grid xl:grid-cols-2 grid-row-2 gap-4" >
                             <div className="p-5 rounded-10 border-2 border-solid border-[#384256] "  >
-                                
+
                                 <ChartBox props={chartBoxUser} data={{ title: "Total User", number: data?.length }} />
                             </div>
                             <div className="p-5 rounded-10 border-2 border-solid border-[#384256]" >
@@ -64,24 +81,6 @@ const Dashboard = () => {
                             <div className="p-5 rounded-10 border-2 border-solid border-[#384256]" >
                                 <ChartBox props={chartBoxUser} data={{ title: "Total Room", number: rooms?.length }} />
                             </div>
-                        </div>
-                        <div className="p-5 rounded-10 border-2 border-solid border-[#384256]">
-                            <div className="w-full h-full ">
-                                <h1 className="text-lg sm:text-xl md:text-2xl mb-5 font-semibold" style={{ color: 'white' }}>{countByMonth.title}</h1>
-                                <div className="chart">
-                                    <ResponsiveContainer width="99%" height={150}>
-                                        <BarChart data={countByMonth}>
-                                            <Tooltip
-                                                contentStyle={{ background: "#2a3447", borderRadius: "5px" }}
-                                                labelStyle={{ display: "none" }}
-                                                cursor={{ fill: "none" }}
-                                            />
-                                            <Bar dataKey={countByMonth.dataKey} fill={countByMonth.color} />
-                                        </BarChart>
-                                    </ResponsiveContainer>
-                                </div>
-                            </div>
-                            {/* <BigChartBox data={countByMonth} /> */}
                         </div>
                     </div>
                 </div>

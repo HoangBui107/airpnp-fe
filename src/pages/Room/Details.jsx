@@ -13,7 +13,7 @@ const Details = () => {
     const dispatch = useDispatch()
     const { id } = useParams()
     const { details } = useSelector((state) => state.room)
-    const { isLogin } = useSelector((state) => state.auth)
+    const isLoggedIn = useSelector((state) => state.auth.isLoggedIn)
 
     const navigate = useNavigate()
     useEffect(() => {
@@ -43,21 +43,22 @@ const Details = () => {
 
 
     const handleSubmit = () => {
-        if (!isLogin) {
+        if (!isLoggedIn) {
             dispatch(openLogin())
+            return
         }
         navigate(`/order/${id}`, { state: { date: selectedDateRange, totalPrice: totalPrice, price: details?.price, diffDay: diffDay } })
     }
     const disabledDatesArray = details?.busyDates?.map(busyDate => new Date(busyDate));
     return (
         <>
-            <div className="sm:container mx-auto">
+            <div className="sm:container mx-auto pt-10">
                 <div>
                     <div className="relative">
                         <div className="grid gap-1 grid-cols-2 overflow-hidden">
                             <div className="aspect-square w-full ">
                                 <img
-                                    className="aspect-square rounded-l-xl object-cover cursor-pointer "
+                                    className="aspect-square rounded-l-xl object-cover cursor-pointer h-full "
                                     src={details?.roomImages?.[0]?.url}
                                     alt=""
                                 />
@@ -191,7 +192,7 @@ const Details = () => {
 
                                 </div>
                                 <div className="flex items-center justify-center">
-                                    <button className="flex py-3 px-8 border border-none justify-center items-center w-full rounded-2xl bg-primary text-white">
+                                    <button className="flex py-3 px-8 border border-none justify-center items-center w-full rounded-2xl bg-primary text-white"  onClick={() => { handleSubmit()}}>
                                         Booking
                                     </button><i className="fas fa-eye  ms-2"></i>
                                 </div>
@@ -224,8 +225,8 @@ const Details = () => {
                                 </div>
 
                                 <div className="flex py-2 justify-between">
-                                    <h1 className="underline">Long stay discount</h1>
-                                    <h1 className="text-green-600">-$43</h1>
+                                    <h1 className="underline">%Tax</h1>
+                                    <h1 className="text-green-600">+10%</h1>
                                 </div>
                                 <div className="mt-2 border border-gray-200 w-full"></div>
 
@@ -293,7 +294,7 @@ const Details = () => {
                             <div className="flex flex-col">
                                 <h1 className="font-semibold text-lg">Cancellation policy</h1>
                                 <h1>This reservation is non-refundable.</h1>
-                                <h1>Review the Host’s full cancellation policy which applies even if you cancel for illness or disruptions caused by COVID-19.</h1>
+                                <h1>Review the Hosts full cancellation policy which applies even if you cancel for illness or disruptions caused by COVID-19.</h1>
 
                             </div>
                         </div>

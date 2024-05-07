@@ -1,27 +1,24 @@
-import { Link, useNavigate, Await, useLoaderData } from "react-router-dom";
+import { Link,  Await, useLoaderData } from "react-router-dom";
 import { Suspense, useEffect } from "react";
-import List from "../../components/list/List";
+import ListRoomInHotelOwner from "./ListRoomInHotelOwner";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllRooms, getRoomOrdersStats } from "../../redux/room/roomThunks";
+import { getAllRooms, getRoomByOwnerHotel, getRoomOrdersStats } from "../../redux/room/roomThunks";
 import SpinLoading from "../../components/spin/Spin";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 function OwnerPage() {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { room } = useSelector((state) => state.room)
+  const rooms = useSelector((state) => state.room.room)
   const { dataChart } = useSelector((state) => state.room)
 
   useEffect(() => {
-    dispatch(getAllRooms())
+    dispatch(getRoomByOwnerHotel())
     dispatch(getRoomOrdersStats())
   }, [])
 
   const chart = dataChart.slice(0, 6)
   return (
-
-    <>
 
       <>
         <div className=" sm:container sm:mx-auto py-8 ">
@@ -44,8 +41,6 @@ function OwnerPage() {
                   </ResponsiveContainer>
                   <h1 className="text-center mt-4">Total Order In Year Per Room</h1>
                 </div>
-             
-
 
               <div className="title flex items-center justify-between">
                 <h1 className="font-[100] text-3xl">My List Room</h1>
@@ -59,18 +54,17 @@ function OwnerPage() {
                 </>
               }>
                 <Await
-                  resolve={room}
+                  resolve={rooms}
                   errorElement={<p>Error loading posts!</p>}
 
                 >
-                  <List rooms={room} />
+                  <ListRoomInHotelOwner rooms={rooms} />
                 </Await>
               </Suspense>
             </div>
           </div>
           <div className="chatContainer flex-[2_2_0%] bg-fcf5f3 h-full"></div>
         </div>
-      </>
     </>
   );
 

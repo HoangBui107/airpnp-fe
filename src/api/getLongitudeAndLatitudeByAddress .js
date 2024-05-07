@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const getCoordinatesFromAddress = async (address, city, country) => {
+const getLongitudeAndLatitudeByAddress = async (address, city, country) => {
   try {
     const response = await axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
       params: {
@@ -10,7 +10,7 @@ const getCoordinatesFromAddress = async (address, city, country) => {
     });
     const { results } = response.data;
     if (results.length > 0) {
-      const { lat, lng } = results[0].geometry.location;
+      const { lat, lng } = results[0].geometry.location; 
       return { latitude: lat, longitude: lng };
     }
     return null;
@@ -20,4 +20,4 @@ const getCoordinatesFromAddress = async (address, city, country) => {
   }
 };
 
-export default getCoordinatesFromAddress;
+export default getLongitudeAndLatitudeByAddress;

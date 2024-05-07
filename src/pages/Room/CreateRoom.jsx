@@ -6,7 +6,6 @@ import './CreateRoom.css';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from "react-redux";
 import { getAllCategory } from "../../redux/category/categoryThunk";
-import getCoordinatesFromAddress from "./GetCoordinatesFromAddress ";
 import { createRoom } from "../../redux/room/roomThunks";
 import { jwtDecode } from "jwt-decode";
 import * as yup from "yup";

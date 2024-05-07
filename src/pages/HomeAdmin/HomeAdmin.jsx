@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import Menu from "../../layout/menu/Menu";
+import MenuAdmin from "../../layout/menu/MenuAdmin";
 import AdminNavbar from "../../layout/navbar/AdminNavbar"
 
 
@@ -10,7 +10,7 @@ const HomeAdmin = () => {
                 <AdminNavbar />
                 <div className="flex">
                     <div className="w-1/6">
-                        <Menu />
+                        <MenuAdmin />
                     </div>
                     <div className="flex w-5/6  max-h-[93vh] max-w-full">
                         <Outlet/>

@@ -1,30 +1,30 @@
 import { Suspense, lazy, useEffect, useState } from "react";
 import Map, { GeolocateControl } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import Header from "../../layout/header/Header";
+import HeaderCategories from "../../layout/header/HeaderCategories";
 import './CustomMarket.scss'
-import CustomMarker from "../../components/common/CustomMarket";
+import CustomMarker from "../../components/common/CustomMarketMap";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllRooms } from "../../redux/room/roomThunks";
 import SpinLoading from "../../components/spin/Spin";
-const ListingItem = lazy(() => import('../../components/list/ListingItem'));
+const RoomItem = lazy(() => import('../../components/list/RoomItem'));
 
-const ListPage = () => {
+const ListSearchMap = () => {
     const dispatch = useDispatch()
     const [favorite, setFavorite] = useState(false)
     const [selectedPlaceId, setSelectedPlaceId] = useState(null);
     const favoriteButton = () => {
         setFavorite(!favorite)
     }
-    const { room, loading } = useSelector((state) => state.room)
     useEffect(() => {
         dispatch(getAllRooms())
     }, [])
-
+    const { room, loading } = useSelector((state) => state.room)
+    
     return (
         <>
             <div className="relative h-24 z-10 ">
-                <Header />
+                <HeaderCategories />
             </div>
             {!loading && room.length > 0 ?
                 (
@@ -34,7 +34,7 @@ const ListPage = () => {
                                 <Suspense fallback={<div>Loading...</div>}>
                                     {room?.map((item) => {
                                         return (
-                                            <ListingItem key={item?.id} data={item} isFavorite={favorite} btn={() => { favoriteButton() }} />
+                                            <RoomItem key={item?.id} data={item} isFavorite={favorite} btn={() => { favoriteButton() }} />
                                         )
                                     })}
                                 </Suspense>
@@ -51,17 +51,17 @@ const ListPage = () => {
                                             }}
                                             mapStyle="mapbox://styles/mapbox/streets-v11"
                                         >
-                                            {room?.map((item) => (
-                                                <CustomMarker
-                                                    key={item.id}
-                                                    latitude={item?.latitude}
-                                                    longitude={item?.longitude}
-                                                    data={item}
-                                                    isSelected={item.id === selectedPlaceId}
-                                                    onPress={(e) => setSelectedPlaceId(e)}
-                                                />
+                                                {room?.map((item) => (
+                                                    <CustomMarker
+                                                        key={item.id}
+                                                        latitude={item?.latitude}
+                                                        longitude={item?.longitude}
+                                                        data={item}
+                                                        isSelected={item.id === selectedPlaceId}
+                                                        onPress={(e) => setSelectedPlaceId(e)}
+                                                    />
 
-                                            ))}
+                                                ))}
                                             <GeolocateControl
                                                 positionOptions={{ enableHighAccuracy: true }}
                                                 trackUserLocation={true}
@@ -84,4 +84,4 @@ const ListPage = () => {
     )
 }
 
-export default ListPage;
+export default ListSearchMap;

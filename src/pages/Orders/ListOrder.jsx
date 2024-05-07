@@ -9,7 +9,7 @@ import './ListOrder.css';
 import TextField from '@mui/material/TextField';
 import PaidIcon from '../../components/svg/PaidIcon';
 import { jwtDecode } from "jwt-decode";
-import { createFeedback } from "../../redux/feedback/feedbackThunks";
+import { sendFeedback } from "../../redux/room/roomThunks";
 
 const ListOrder = () => {
   const dispatch = useDispatch()
@@ -33,7 +33,7 @@ const ListOrder = () => {
   const user = jwtDecode(localStorage.getItem('token'))
 
   const handleSendFeedback = (roomId, index) => {
-    dispatch(createFeedback({ userId: user.UserId, roomId: roomId, content: feedbacks[index] }))
+    dispatch(sendFeedback({ userId: user.UserId, roomId: roomId, content: feedbacks[index] }))
   };
   return (
     <>
@@ -44,12 +44,12 @@ const ListOrder = () => {
           <div className="py-10">
             <h1 className=" text-3xl font-semibold">Welcome, {user.UserName}!</h1>
           </div>
-          <div className="bg-[#F7F7F7] flex flex-col">
+          <div className=" flex flex-col">
             {data ? (
               <>
                 {data.map((item, index) => (
                   <div>
-                    <div className="flex flex-col sm:flex-row py-4 px-2 gap-4" key={item?.id}>
+                    <div className="flex flex-col sm:flex-row py-4 px-2 gap-4 mb-4 bg-[#F7F7F7]" key={item?.id}>
                       <div className=" flex items-center relative w-full sm:h-48 sm:w-48">
                         <img className=" object-cover sm:max-w-48 sm:max-h-48 rounded-xl" src={item?.room?.roomImages?.[0]?.url} alt="" />
                       </div>
@@ -57,7 +57,7 @@ const ListOrder = () => {
                         <div className="flex flex-col justify-center  sm:items-start gap-3">
                           <h1 className="text-xl font-medium md:w-full md:text-center">{item?.room?.name}</h1>
                           <div className='flex justify-around w-full'>
-                            <p>StartDate</p>
+                            <p>StartDate</p>  
                             <p>EndDate</p>
                           </div>
                           <div className='flex justify-around w-full'>

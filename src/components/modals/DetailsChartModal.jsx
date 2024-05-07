@@ -7,23 +7,17 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsive
 
 const DetailsChartModal = ({ id }) => {
     const dispatch = useDispatch()
-    const { isLoading } = useSelector((state) => state.auth)
     const open = useSelector((state) => state.modal.detailsChart)
     const dataRoom = useSelector((state) => state.room.dataRoom)
 
     const onClose = () => {
         dispatch(closeDetailsChart())
     }
-    const { details } = useSelector((state) => state.room)
-    const onOpen = () => {
-        dispatch(openDetailsChart())
-    }
+    const details = useSelector((state) => state.room.details)
 
     useEffect(() => {
         dispatch(getRoomOrdersStatsById(id))
     }, [id])
-
-
 
     return (
         <>

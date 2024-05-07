@@ -7,11 +7,13 @@ import MenuItem from "../common/MenuItem";
 import Avatar from "./Avatar";
 
 import { logOut } from "../../redux/auth/authSlice";
-const UserMenu = ({ currentUser }) => {
+const UserMenu = () => {
   const dropdownRef = useRef(null);
   const navigate = useNavigate()
   const dispatch = useDispatch();
-  const { isLogin } = useSelector((state) => state.auth)
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn)
+  const role = useSelector((state) => state.auth.role)
+  const avatarUrl = useSelector((state) => state.auth.avatarUrl)
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -67,7 +69,7 @@ const UserMenu = ({ currentUser }) => {
         >
           <AiOutlineMenu />
           <div className="hidden md:block">
-            <Avatar src={currentUser?.avatarUrl || 'https://www.w3schools.com/howto/img_avatar.png'} />
+            <Avatar src={avatarUrl || 'https://www.w3schools.com/howto/img_avatar.png'} />
           </div>
         </div>
       </div>
@@ -82,14 +84,21 @@ const UserMenu = ({ currentUser }) => {
             md:w-3/4 
             bg-white 
             overflow-hidden 
-            right-0 
-            top-12 
+            right-[-15px]
+            md:right-1
+            top-11 
             text-sm
           "
         >
           <div className="flex flex-col cursor-pointer">
-            {isLogin ? (
+            {isLoggedIn ? (
               <>
+                {role == "Hotel Owner" && (
+                  <MenuItem
+                    label="Manage Rooms"
+                    onClick={() => navigate('/owner')}
+                  />
+                )}
                 <MenuItem
                   label="My Orders"
                   onClick={() => navigate('/orders')}
@@ -98,7 +107,7 @@ const UserMenu = ({ currentUser }) => {
                   label="My Account"
                   onClick={() => navigate('/account-setting')}
                 />
-               
+
                 <MenuItem
                   label="Logout"
                   onClick={() => { logout() }}
@@ -115,7 +124,7 @@ const UserMenu = ({ currentUser }) => {
                   label="Sign up"
                   onClick={() => { registerModal() }}
                 />
-          
+
               </>
             )}
           </div>

@@ -1,19 +1,14 @@
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-const ListingItem = ({data, isFavorite, btn}) => {
-    const navigate = useNavigate()
-
-    const navigateDetails = () =>{
-        navigate(`/details/${data?.id}`)
-    }
+const RoomItem = ({data, isFavorite, btn}) => {
     return (
         <>
             <div className="col-span-1 p-0 cursor-pointer group ">
                 <div className="flex flex-col w-full my-2">
-                    <div 
+                    <Link
+                    to={`/details/${data?.id}`}
                     className="aspect-square w-full relative overflow-hidden rounded-xl bg-black"
-                    onClick={()=>{navigateDetails()}}
                     >
                         <img
                             className="object-cover h-full w-full group-hover:scale-110 transition"
@@ -34,7 +29,7 @@ const ListingItem = ({data, isFavorite, btn}) => {
                                 />
                             </div>
                         </div>
-                    </div>
+                    </Link>
                     <div className="font-semibold text-lg">
                         {data?.name} 
                     </div>
@@ -56,4 +51,4 @@ const ListingItem = ({data, isFavorite, btn}) => {
     )
 }
 
-export default ListingItem;
+export default RoomItem;
